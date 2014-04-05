@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : SmartCalculator.cpp
-// Author      : 
+// Author      :
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -12,7 +12,44 @@ using namespace std;
 
 int main() {
 	AbstractNumber * test = new SumExpression("54-7");
-	cout << test->toString();
+	cout << test->toString() << endl;
+    cout << "USING THE CALCULATOR" << endl;
+    cout << " \"x to the power of y\" == x^y" << endl;
+    cout << " \"the square root of x\" == sqrt:x" << endl;
+    cout << " \"the nth root of x\" == nrt:x, where \"n\" is replaced by a number." << endl;
+    cout << " \"log base b of x\" == log_b:x" << endl;
 
+    bool menuLoop = true;
+    int input = 0;
 
+    while (menuLoop)
+    {
+        cout << "1. Compute New Expression" << endl;
+        cout << "2. Help" << endl;
+        cout << "3. Review Previous Expressions and Answers" << endl;
+        cout << "4. Quit" << endl;
+
+        cin>>input;
+
+        if ( !( (1 <= input) && (input <= 4) ) )
+        {
+            cin.clear();
+            while (cin.get() != '\n');
+            cout << "Not a valid menu option." << endl;
+            continue;
+        }
+
+        switch (input)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                menuLoop = false;
+                break;
+        }
+    }
 }

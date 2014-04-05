@@ -1,6 +1,6 @@
 #ifndef PI_H
 #define PI_H
-
+#include "AbstractNumber.h"
 
 class Pi: public AbstractNumber {
 public:
