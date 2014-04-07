@@ -13,6 +13,7 @@ class Log: public AbstractNumber
         double toDouble();
         bool simplify();
         string getName();
+        vector<int> primeFactors(int num);
 
         AbstractNumber *base, *value;
     protected:

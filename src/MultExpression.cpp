@@ -99,14 +99,14 @@ vector<AbstractNumber*> MultExpression::divide(AbstractNumber *number){
 }
 string MultExpression::toString(){
 	string output ="";
-	for (int i =0; i < numerator.size(); i++){
+	for (int i =0; (unsigned)i < numerator.size(); i++){
 		output += numerator[i]->toString();
-		if (i < numerator.size()-1)
+		if ((unsigned)i < numerator.size()-1)
 		{
 			output += "*";
 		}
 	}
-	for (int i = 0; i < denominator.size(); i++){
+	for (int i = 0; (unsigned)i < denominator.size(); i++){
 		output += "/";
 		output += denominator[i]->toString();
 
