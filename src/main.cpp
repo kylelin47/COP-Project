@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SumExpression.h"
+
 using namespace std;
 
 int main() {
@@ -20,7 +21,7 @@ int main() {
         {
             cin.clear();
             while (cin.get() != '\n');
-            cout << "Not a valid menu option." << endl;
+            cout << "Not a valid menu option. Please enter 1, 2, 3, or 4." << endl;
             continue;
         }
 

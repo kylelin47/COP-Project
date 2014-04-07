@@ -3,6 +3,10 @@
 
 Log::Log(AbstractNumber *base, AbstractNumber *value)
 {
+    if (value->toDouble() <= 0)
+    {
+        throw "Can't take log of a negative number";
+    }
     this->base = base;
     this->value = value;
 }
