@@ -41,7 +41,7 @@ string SmartInteger::toString(){
 
 double SmartInteger::toDouble()
 {
-	return 0;
+	return (double)value;
 }
 
 bool SmartInteger::simplify()

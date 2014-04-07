@@ -1,11 +1,11 @@
 #ifndef Radical_H
 #define Radical_H
-#include "AbstractNumber.h"
+#include "MultExpression.h"
 #include "math.h"
 class Radical: public AbstractNumber
 {
     public:
-        Radical(AbstractNumber* value, AbstractNumber* root);
+        Radical(AbstractNumber* value, AbstractNumber* root, int coefficient);
         ~Radical();
         AbstractNumber* root;
         AbstractNumber* value;

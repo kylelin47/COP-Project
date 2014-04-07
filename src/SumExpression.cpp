@@ -6,7 +6,7 @@
  */
 
 //gsdfagsdagsdagdsgsdagsadgsdag
- 
+
 #include "SumExpression.h"
 
 using namespace std;
@@ -68,7 +68,7 @@ vector<AbstractNumber*> SumExpression::divide(AbstractNumber *number){
 }
 string SumExpression::toString(){
 	string output ="";
-	for (int i =0; i < expression.size(); i++){
+	for (int i =0; (unsigned)i < expression.size(); i++){
 		output += expression[i].getSign();
 		output += expression[i].toString();
 

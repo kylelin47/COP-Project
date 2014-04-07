@@ -1,6 +1,6 @@
 #ifndef LOG_H
 #define LOG_H
-#include "AbstractNumber.h"
+#include "MultExpression.h"
 
 class Log: public AbstractNumber
 {

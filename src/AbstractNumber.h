@@ -26,9 +26,8 @@ public:
 	virtual bool simplify() = 0;
 	virtual string getName() = 0;
 
-	AbstractNumber *base;
-
-
+	AbstractNumber *base, *root, *value;
+    int coefficient;
 
 };
 
