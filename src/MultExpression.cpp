@@ -20,8 +20,6 @@ using namespace std;
 
 void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2) {
 
-
-
 	  //This chunk pulls out the string from the MultExpression without the * or /
 	  int hasSign;
 	  char nextValue = '*';
@@ -85,14 +83,15 @@ void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*>
 			  s.erase(0, pos+ 1);
 		  }
 	}
-
 }
-
 
 MultExpression::MultExpression(const string &input) {
 
 	split(numerator, denominator, input, '*', '/');
+}
 
+MultExpression::MultExpression(vector<AbstractNumber*> nums) {
+	this->nums = nums;
 }
 
 char MultExpression::getSign()
@@ -105,22 +104,22 @@ MultExpression::~MultExpression() {
 	// TODO Auto-generated destructor stub
 }
 
-vector<AbstractNumber*> MultExpression::add(AbstractNumber *number){
+AbstractNumber * MultExpression::add(AbstractNumber *number){
 
 }
-vector<AbstractNumber*> MultExpression::multiply(AbstractNumber *number){
+AbstractNumber * MultExpression::multiply(AbstractNumber *number){
 
 }
-vector<AbstractNumber*> MultExpression::divide(AbstractNumber *number){
+AbstractNumber * MultExpression::divide(AbstractNumber *number){
 
 }
 string MultExpression::toString(){
 	string output ="";
-	for (int i =0; (unsigned)i < numerator.size(); i++){
-		output += numerator[i]->toString();
-		if ((unsigned)i < numerator.size()-1)
+	for (int i =0; (unsigned)i < nums.size(); i++){
+		output += nums[i]->toString();
+		if ((unsigned)i < nums.size() - 1)
 		{
-			output += "*";
+			output += " * ";
 		}
 	}
 	for (int i = 0; (unsigned)i < denominator.size(); i++){
@@ -147,12 +146,34 @@ int MultExpression::count(string input, int begin, int end, char symbol)
 
 double MultExpression::toDouble()
 {
-	return 0;
+    double x = 1;
+
+    for (int i=0; (unsigned)i < nums.size(); i++)
+    {
+        x = x * nums[i]->toDouble();
+    }
+	return x;
 }
 
-bool MultExpression::simplify()
+AbstractNumber* MultExpression::simplify()
 {
-	return false;
+    vector<AbstractNumber*> SimplifiedTerms;
+
+    for (int i=0; (unsigned)i < nums.size(); i++)
+    {
+        SimplifiedTerms.push_back(nums[i]->simplify());
+    }
+    static MultExpression simpleMult = MultExpression(SimplifiedTerms);
+    simpleMult = MultExpression(SimplifiedTerms);
+
+    if (SimplifiedTerms.size() == this->nums.size())
+    {
+        return &simpleMult;
+    }
+    else
+    {
+        return simpleMult.simplify();
+    }
 }
 string MultExpression::getName()
 {

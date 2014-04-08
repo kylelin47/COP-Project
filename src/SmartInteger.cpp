@@ -9,6 +9,11 @@
 
 using namespace std;
 
+SmartInteger::SmartInteger(int value) {
+
+    this->value = value;
+}
+
 SmartInteger::SmartInteger(const string &input) {
 
 	stringstream ss(input);
@@ -17,19 +22,39 @@ SmartInteger::SmartInteger(const string &input) {
 
 }
 
-
-
 SmartInteger::~SmartInteger() {
 	// TODO Auto-generated destructor stub
 }
 
-vector<AbstractNumber*> SmartInteger::add(AbstractNumber *number){
+AbstractNumber * SmartInteger::add(AbstractNumber *number){
+    vector<AbstractNumber*> SumTerms;
 
-}
-vector<AbstractNumber*> SmartInteger::multiply(AbstractNumber *number){
+    if (number->getName() == "Integer")
+    {
+        AbstractNumber *n = new SmartInteger(this->value + number->toDouble());
+        return n;
+    }
 
+    else
+    {
+        return number->add(this);
+    }
+    AbstractNumber *s = new SumExpression(SumTerms);
+    return s;
 }
-vector<AbstractNumber*> SmartInteger::divide(AbstractNumber *number){
+AbstractNumber * SmartInteger::multiply(AbstractNumber *number){
+    vector<AbstractNumber*> MultipliedTerms;
+
+    if (number->getName() == "Integer")
+    {
+        AbstractNumber *n = new SmartInteger(this->value * number->toDouble());
+        MultipliedTerms.push_back(n);
+    }
+
+    AbstractNumber *M = new MultExpression(MultipliedTerms);
+    return M;
+}
+AbstractNumber * SmartInteger::divide(AbstractNumber *number){
 
 }
 string SmartInteger::toString(){
@@ -44,14 +69,11 @@ double SmartInteger::toDouble()
 	return (double)value;
 }
 
-bool SmartInteger::simplify()
+AbstractNumber * SmartInteger::simplify()
 {
-	return false;
+	return this;
 }
 string SmartInteger::getName()
 {
-	return "SmartInteger";
+	return "Integer";
 }
-
-
-

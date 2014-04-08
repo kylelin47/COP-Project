@@ -1,22 +1,21 @@
 #ifndef Radical_H
 #define Radical_H
-#include "MultExpression.h"
+#include "SumExpression.h"
 #include "math.h"
 class Radical: public AbstractNumber
 {
     public:
-        Radical(AbstractNumber* value, AbstractNumber* root, int coefficient);
+        Radical(AbstractNumber* value, AbstractNumber* root);
         ~Radical();
         AbstractNumber* root;
         AbstractNumber* value;
-        vector<AbstractNumber*> add(AbstractNumber *number);
-        vector<AbstractNumber*> multiply(AbstractNumber *number);
-        vector<AbstractNumber*> divide(AbstractNumber *number);
+        AbstractNumber * add(AbstractNumber *number);
+        AbstractNumber * multiply(AbstractNumber *number);
+        AbstractNumber * divide(AbstractNumber *number);
         string toString();
         double toDouble();
-        bool simplify();
+        AbstractNumber * simplify();
         string getName();
-        int coefficient;
     protected:
     private:
 };

@@ -15,11 +15,11 @@ using namespace std;
 
 class MultExpression: public AbstractNumber {
 public:
-	MultExpression(const string &input);
+	MultExpression(vector<AbstractNumber*> nums);
 	virtual ~MultExpression();
-	vector<AbstractNumber*> add(AbstractNumber *number);
-	vector<AbstractNumber*> multiply(AbstractNumber *number);
-	vector<AbstractNumber*> divide(AbstractNumber *number);
+	AbstractNumber * add(AbstractNumber *number);
+	AbstractNumber * multiply(AbstractNumber *number);
+	AbstractNumber * divide(AbstractNumber *number);
 	string toString();
 	void split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2);
 	vector<string> expression;
@@ -27,10 +27,12 @@ public:
 	vector<AbstractNumber*> denominator;
 	char getSign();
 	double toDouble();
-	bool simplify();
+	AbstractNumber* simplify();
 	string getName();
 	int getTypeFromString(string input);
 	int count(string input, int begin, int end, char symbol);
+
+	vector <AbstractNumber*> nums;
 
 private:
 	char sign;

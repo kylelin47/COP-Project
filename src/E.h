@@ -6,12 +6,12 @@ class E: public AbstractNumber {
 public:
 	E(const string &input);
 	virtual ~E();
-	vector<AbstractNumber*> add(AbstractNumber *number);
-	vector<AbstractNumber*> multiply(AbstractNumber *number);
-	vector<AbstractNumber*> divide(AbstractNumber *number);
+	AbstractNumber * add(AbstractNumber *number);
+	AbstractNumber * multiply(AbstractNumber *number);
+	AbstractNumber * divide(AbstractNumber *number);
 	string toString();
 	double toDouble();
-	bool simplify();
+	AbstractNumber * simplify();
 	string getName();
 
 private:
