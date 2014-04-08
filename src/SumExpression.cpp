@@ -7,7 +7,7 @@
 #include "SumExpression.h"
 
 using namespace std;
-
+/*
 void SumExpression::split(vector<MultExpression> &tokens, const string &text, char sep1, char sep2) {
   size_t pos = 0;
   size_t skipUntil = 0;
@@ -42,10 +42,10 @@ void SumExpression::split(vector<MultExpression> &tokens, const string &text, ch
 	}
 
 }
-
+*/
 SumExpression::SumExpression(const string &input) {
 
-	split(expression, makeStringUsable(input), '+' , '-');
+//	split(expression, makeStringUsable(input), '+' , '-');
 }
 
 
@@ -106,22 +106,18 @@ double SumExpression::toDouble()
 AbstractNumber * SumExpression::simplify()
 {
     vector<AbstractNumber*> SimplifiedTerms;
-
     AbstractNumber *tmp;
 
     for (int i=0; (unsigned)i < nums.size(); i++)
     {
-        if (nums[i]->getName() != "Integer")
-        {
-            nums[i] = nums[i]->simplify();
-        }
+        nums[i] = nums[i]->simplify();
+
         SimplifiedTerms.push_back(nums[i]);
         cout << SimplifiedTerms[i]->toString() + " ADD TERM" << endl;
     }
-
     if (SimplifiedTerms.size() == 1)
     {
-        return SimplifiedTerms[0]->simplify();
+        return SimplifiedTerms[0];
     }
     SumExpression te = SumExpression(SimplifiedTerms);
     cout << te.toString() << endl;
@@ -134,28 +130,27 @@ AbstractNumber * SumExpression::simplify()
             cout <<"ADDING SUCCESS" << endl;
             cout <<tmp->getName()<<endl;
             cout << tmp->toString() << endl;
-            //cout << tmp->nums[1]->toString() << endl;
-            if (tmp->getName() != "SumExpression")
+
+            SimplifiedTerms[i] = tmp;
+            cout <<"ERASING " + SimplifiedTerms[j]->toString()<<endl;
+            SimplifiedTerms.erase(SimplifiedTerms.begin() + j);
+            if (SimplifiedTerms.size() != 1)
             {
-                SimplifiedTerms[i] = tmp;
-                cout <<"ERASING " + SimplifiedTerms[j]->toString()<<endl;
-                SimplifiedTerms.erase(SimplifiedTerms.begin() + j);
                 j = j - 1;
             }
         }
 
     }
     cout <<"SUMEXPRESSION CREATED" << endl;
-    static SumExpression simpleSum = SumExpression(SimplifiedTerms);
-    simpleSum = SumExpression(SimplifiedTerms);
+    AbstractNumber *simpleSum = new SumExpression(SimplifiedTerms);
 
-    if (SimplifiedTerms.size() == this->nums.size())
+    if (SimplifiedTerms.size() == 1)
     {
-        return &simpleSum;
+        return simpleSum;
     }
     else
     {
-        return simpleSum.simplify();
+        return simpleSum->simplify();
     }
 }
 string SumExpression::getName()

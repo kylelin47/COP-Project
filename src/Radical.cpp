@@ -26,15 +26,12 @@ AbstractNumber * Radical::add(AbstractNumber *number)
     else
     {
         cout <<"ADDING INTEGER" << endl;
-        static Radical self = Radical(value, root);
-        self = Radical(value, root);
-        SumTerms.push_back(&self);
+        SumTerms.push_back(this);
         SumTerms.push_back(number);
     }
 
-    static SumExpression s = SumExpression(SumTerms);
-    s = SumExpression(SumTerms);
-    return &s;
+    AbstractNumber *s = new SumExpression(SumTerms);
+    return s;
 }
 
 AbstractNumber * Radical::multiply(AbstractNumber *number)
