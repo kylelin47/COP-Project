@@ -37,7 +37,7 @@ AbstractNumber * SmartInteger::add(AbstractNumber *number){
         self = SmartInteger(value);
         return number->add(&self);
     }
-
+    S = SumExpression(SumTerms);
     return &S;
 }
 AbstractNumber * SmartInteger::multiply(AbstractNumber *number){
@@ -72,7 +72,7 @@ double SmartInteger::toDouble()
 AbstractNumber * SmartInteger::simplify()
 {
     static SmartInteger Int = SmartInteger(value);
-
+    Int = SmartInteger(value);
 	return &Int;
 }
 string SmartInteger::getName()

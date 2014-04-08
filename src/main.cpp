@@ -46,17 +46,23 @@ int main() {
                     {
                         SmartInteger Int1 = SmartInteger(25);
                         SmartInteger Int2 = SmartInteger(2);
+                        SmartInteger Int3 = SmartInteger(10);
                         Radical Rad1 = Radical(&Int1, &Int2);
+                        Radical Rad2 = Radical(&Int3, &Int2);
+                        Radical Rad3 = Radical(&Int2, &Int1);
                         Log Log1 = Log(&Int2, &Int1);
-                        AbstractNumber *n1 = Int1.add(&Int2);
-                        AbstractNumber *n2 = n1->add(&Rad1);
-                        cout << "" << endl;
-                        //AbstractNumber *n3 = n1->add(n2);
-                        //cout << n3->toString() << endl;
-                        AbstractNumber *n4 = n2->simplify();
-                        cout << n2->toString() << endl;
-                        cout << n4->toString() << endl;
-                        cout << Log1.simplify()->toString() << endl;
+                        vector<AbstractNumber*> nums;
+                        nums.push_back(&Rad1);
+                        nums.push_back(&Int1);
+                        nums.push_back(&Int3);
+                        nums.push_back(&Int3);
+                        nums.push_back(&Int2);
+                        nums.push_back(&Rad3);
+                        //nums.push_back(&Log1);
+                        nums.push_back(&Rad2);
+                        SumExpression s = SumExpression(nums);
+                        cout << s.toString() << endl;
+                        cout << s.simplify()->toString() << endl;
                     }
                 }
                 break;

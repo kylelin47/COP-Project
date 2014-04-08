@@ -46,7 +46,7 @@ void SumExpression::split(vector<MultExpression> &tokens, const string &text, ch
 
 }
 */
-SumExpression::SumExpression(vector<AbstractNumber*> nums) {
+SumExpression::SumExpression(vector<AbstractNumber*> &nums) {
 
 	this->nums = nums;
 
@@ -59,11 +59,8 @@ SumExpression::~SumExpression() {
 }
 
 AbstractNumber * SumExpression::add(AbstractNumber *number){
-    vector<AbstractNumber*> SumTerms;
-    for(int i=0; (unsigned)i < nums.size(); i++)
-    {
-
-    }
+    nums.push_back(number);
+    return this;
 }
 AbstractNumber * SumExpression::multiply(AbstractNumber *number){
 
@@ -101,30 +98,41 @@ AbstractNumber * SumExpression::simplify()
 
     for (int i=0; (unsigned)i < nums.size(); i++)
     {
-        SimplifiedTerms.push_back(nums[i]->simplify());
+        if (nums[i]->getName() != "Integer")
+        {
+            nums[i] = nums[i]->simplify();
+        }
+        SimplifiedTerms.push_back(nums[i]);
+        cout << SimplifiedTerms[i]->toString() + " ADD TERM" << endl;
     }
+
+    if (SimplifiedTerms.size() == 1)
+    {
+        return SimplifiedTerms[0]->simplify();
+    }
+    SumExpression te = SumExpression(SimplifiedTerms);
+    cout << te.toString() << endl;
     for (int i=0; (unsigned) i < SimplifiedTerms.size(); i++)
     {
         for (int j=i+1; (unsigned) j < SimplifiedTerms.size(); j++)
         {
-
+            cout <<"ADDING " + SimplifiedTerms[i]->toString() + " " + SimplifiedTerms[j]->toString() << endl;
             tmp = SimplifiedTerms[i]->add(SimplifiedTerms[j]);
-
-            if (tmp->nums.size() < 2)
+            cout <<"ADDING SUCCESS" << endl;
+            cout <<tmp->getName()<<endl;
+            cout << tmp->toString() << endl;
+            //cout << tmp->nums[1]->toString() << endl;
+            if (tmp->getName() != "SumExpression")
             {
-                if (tmp->getName() != "SumExpression")
-                {
-                    SimplifiedTerms[i] = tmp;
-                }
-                else
-                {
-                    SimplifiedTerms[i] = tmp->nums[0];
-                }
-
+                SimplifiedTerms[i] = tmp;
+                cout <<"ERASING " + SimplifiedTerms[j]->toString()<<endl;
                 SimplifiedTerms.erase(SimplifiedTerms.begin() + j);
+                j = j - 1;
             }
         }
+
     }
+    cout <<"SUMEXPRESSION CREATED" << endl;
     static SumExpression simpleSum = SumExpression(SimplifiedTerms);
     simpleSum = SumExpression(SimplifiedTerms);
 
@@ -142,6 +150,10 @@ string SumExpression::getName()
 	return "SumExpression";
 }
 
+vector<AbstractNumber*> SumExpression::getNums()
+{
+    return nums;
+}
 
 
 

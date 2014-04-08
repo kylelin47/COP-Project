@@ -25,12 +25,15 @@ AbstractNumber * Radical::add(AbstractNumber *number)
 
     else
     {
+        cout <<"ADDING INTEGER" << endl;
         static Radical self = Radical(value, root);
+        self = Radical(value, root);
         SumTerms.push_back(&self);
         SumTerms.push_back(number);
     }
 
     static SumExpression s = SumExpression(SumTerms);
+    s = SumExpression(SumTerms);
     return &s;
 }
 
@@ -73,6 +76,7 @@ AbstractNumber * Radical::divide(AbstractNumber *number)
 AbstractNumber* Radical::simplify()
 {
     static Radical newRad = Radical(value, root);
+    static Radical self = Radical(value, base);
     vector<AbstractNumber*> SimplifiedTerms;
     int coefficient = 1;
     if (value->getName() == "Integer")
@@ -95,6 +99,11 @@ AbstractNumber* Radical::simplify()
 
                 static SmartInteger newValueInt = SmartInteger(coefficient);
                 newValueInt = SmartInteger(coefficient);
+                if (coefficient == 1)
+                {
+                    self = Radical(value, base);
+                    return &self;
+                }
 
                 if (thisValue == 1)
                 {
@@ -111,7 +120,10 @@ AbstractNumber* Radical::simplify()
             }
         }
     }
-
+    else
+    {
+        return &self;
+    }
     static MultExpression MultTerms = MultExpression(SimplifiedTerms);
     MultTerms = MultExpression(SimplifiedTerms);
 
