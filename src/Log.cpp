@@ -11,14 +11,16 @@ Log::Log(AbstractNumber *base, AbstractNumber *value)
     this->value = value;
 }
 
-std::vector<AbstractNumber*> Log::add(AbstractNumber *number){
+AbstractNumber* Log::add(AbstractNumber *number){
 
     std::vector<AbstractNumber*> SumVector;
     SumVector.push_back(this);
     SumVector.push_back(number);
-    return SumVector;
+    static SumExpression s = SumExpression(SumVector);
+    s = SumExpression(SumVector);
+    return &s;
 }
-std::vector<AbstractNumber*> Log::multiply(AbstractNumber *number){
+AbstractNumber* Log::multiply(AbstractNumber *number){
 
     if (number->getName() == "Log")
     {
@@ -28,7 +30,7 @@ std::vector<AbstractNumber*> Log::multiply(AbstractNumber *number){
         }
     }
 }
-std::vector<AbstractNumber*> Log::divide(AbstractNumber *number){
+AbstractNumber* Log::divide(AbstractNumber *number){
 
 }
 string Log::toString(){
@@ -46,28 +48,39 @@ double Log::toDouble()
 	return log(value->toDouble())/log(base->toDouble());
 }
 
-bool Log::simplify()
+AbstractNumber* Log::simplify()
 {
     if (abs(remainder(toDouble(), 1)) < pow(10, -6))
     {
-        return true;
+        static SmartInteger Int = SmartInteger((int)round(toDouble()));
+        return &Int;
     }
+
+    static Log L = Log(base, value);
+    vector<AbstractNumber*> SimplifiedTerms;
+
     if (value->getName() == "Integer")
     {
-        vector<int> factors = primeFactors(int(value->toDouble()));
+        static SmartInteger Int = SmartInteger(0);
+
+        vector<int> factors = primeFactors((int)(value->toDouble()));
         for (int i=0; (unsigned)i < factors.size(); i++)
         {
-            return true;
-            //factors[i]
+            Int = SmartInteger(factors[i]);
+            L = Log(base, &Int);
+            SimplifiedTerms.push_back(&L);
         }
     }
-	return false;
+    static SumExpression s = SumExpression(SimplifiedTerms);
+    s = SumExpression(SimplifiedTerms);
+
+    return &s;
 }
 
 vector<int> Log::primeFactors(int num)
 {
     vector<int> factors;
-    for (int i=2; i<=num/2; i++)
+    for (int i=2; i<=num; i++)
     {
         if (num%i == 0)
         {
