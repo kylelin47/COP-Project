@@ -23,16 +23,16 @@ void SumExpression::split(vector<MultExpression> &tokens, const string &text, ch
 		  pos = s.find(sep2, skipUntil);
 	  }
 
-	  cout << "Working Substring: " << s.substr(0,pos) << endl;
+	  //cout << "Working Substring: " << s.substr(0,pos) << endl;
 
 	  if (count(s.substr(0 , pos), 0, pos, '(') > count(s.substr(0 , pos), 0, pos, ')'))
 	  {
 		  skipUntil = pos + 1;
-		  cout << "Skipping until " << skipUntil << endl;
+		  //cout << "Skipping until " << skipUntil << endl;
 	  }
 	  else
 	  {
-		  cout << "Substring:" << s.substr(0 , pos) << endl;
+		  //cout << "Substring:" << s.substr(0 , pos) << endl;
 		  tokens.push_back(MultExpression(sign + s.substr(0 , pos)));
 
 		  sign = s[pos];
@@ -163,21 +163,59 @@ string SumExpression::makeStringUsable(string input)
 	cout << "Starting Make String Usable" << endl;
 	string output = input;
 	size_t end = input.size();
+	string checkPar = output;
 
 	//make sure the parenthesis are in check
-	while (count(output, 0, output.size(), '(') != count(output, 0, output.size(), ')'))
-	{
-		cout << output << endl;
-		if (count(output, 0, end, '(') > count(output, 0, end, ')'))
+	end = output.size();
+	//compare parten
+
+	for (size_t i = 0; i < end; i++) //luckly none the places we want to split at share any charactors
 		{
-			output.insert(end,")");
+			if (checkPar[i] == '(') //make sure the split point is not already signed
+			{
+				//sketchy error handling
+				for (size_t j = i; j < end; j++){
+					if (checkPar[j] == ')')
+					{
+						checkPar.erase(j,1);
+						end--;
+						j = end;
+					}
+					if (j == (end - 1)){
+						cout << "ERROR: parenthesis" << endl; //THROW here
+					}
+				}
+
+			}
+			if (checkPar[i] == ')')
+			{
+				cout << "Parenthesis error" << endl; //THROW here
+			}
+
+
+
 		}
-		else
+
+
+	end = output.size();
+
+	for (size_t i = 0; i < end-1; i++)
+	{
+		if ((	output[i] == '*' || //l for log
+				output[i] == '/' || //p for pi
+				output[i] == '+' || //e is e
+				output[i] == '-' ) //a for ans
+				&& (
+				output[i+1] == '*' ||
+				output[i+1] == '/'  ||
+				output[i+1] == '+'  ||
+				output[i+1] == '-'  )) //make sure the split point is not already signed
 		{
-			output.insert(0,"(");
+			cout << "ERROR: double operator" << endl;
 		}
 	}
-	end = output.size();
+
+
 	for (size_t i = 1; i < end; i++) //luckly none the places we want to split at share any charactors
 	{
 		if ((	output[i] == '(' || //break at (
@@ -195,6 +233,6 @@ string SumExpression::makeStringUsable(string input)
 
 
 	}
-	cout << "Usable string: "<< output << endl << endl;
+	//cout << "Usable string: "<< output << endl << endl;
 	return output;
 }
