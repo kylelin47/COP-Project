@@ -30,6 +30,7 @@ public:
 	bool simplify();
 	string getName();
 	int getTypeFromString(string input);
+	int count(string input, int begin, int end, char symbol);
 
 private:
 	char sign;
