@@ -13,41 +13,57 @@ using namespace std;
 
 void SumExpression::split(vector<MultExpression> &tokens, const string &text, char sep1, char sep2) {
   size_t pos = 0;
+  size_t skipUntil = 0;
   string s = text;
   string sign = "";
   s += '+';
-  while ((pos = s.find(sep1)) != string::npos || (pos = s.find(sep2)) != string::npos) {
-	  if (s.find(sep1) < s.find(sep2))
+  while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {
+	  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
 	  {
-		  pos = s.find(sep1);
+		  pos = s.find(sep1, skipUntil);
 	  }
 	  else {
-		  pos = s.find(sep2);
+		  pos = s.find(sep2, skipUntil);
 	  }
 
-	  cout << "Substring:" << s.substr(0 , pos) << endl;
-	  tokens.push_back(MultExpression(sign + s.substr(0 , pos)));
+	  cout << "Working Substring: " << s.substr(0,pos) << endl;
 
-	  sign = s[pos];
-	  s.erase(0, pos+ 1);
+	  if (count(s.substr(0 , pos), 0, pos, '(') > count(s.substr(0 , pos), 0, pos, ')'))
+	  {
+		  skipUntil = pos + 1;
+		  cout << "Skipping until " << skipUntil << endl;
+	  }
+	  else
+	  {
+		  cout << "Substring:" << s.substr(0 , pos) << endl;
+		  tokens.push_back(MultExpression(sign + s.substr(0 , pos)));
+
+		  sign = s[pos];
+		  s.erase(0, pos+ 1);
+		  skipUntil = 0;
+	  }
 	}
-
-
-
- /*	stringstream ss(text);
-	string item;
-	while (getline(ss, item, sep1)){
-
-		cout << item << "\n\n";
-		tokens.push_back(MultExpression("+" + item));
-
-	}*/
 
 }
 
 SumExpression::SumExpression(const string &input) {
 
-	split(expression, input, '+' , '-');
+
+	split(expression, makeStringUsable(input), '+' , '-');
+
+}
+
+int SumExpression::count(string input, int begin, int end, char symbol)
+{
+	int count = 0;
+	for (int i = begin; i <= end; i++)
+	{
+		if (input[i] == symbol)
+		{
+			count++;
+		}
+	}
+	return count;
 
 }
 
@@ -90,6 +106,46 @@ string SumExpression::getName()
 	return "SumExpression";
 }
 
+string SumExpression::makeStringUsable(string input)
+{
+	cout << "Starting Make String Usable" << endl;
+	string output = input;
+	size_t end = input.size();
+
+	//make sure the parenthesis are in check
+	while (count(output, 0, output.size(), '(') != count(output, 0, output.size(), ')'))
+	{
+		cout << output << endl;
+		if (count(output, 0, end, '(') > count(output, 0, end, ')'))
+		{
+			output.insert(end,")");
+		}
+		else
+		{
+			output.insert(0,"(");
+		}
+	}
+	end = output.size();
+	for (size_t i = 1; i < end; i++) //luckly none the places we want to split at share any charactors
+	{
+		if ((	output[i] == '(' || //break at (
+				output[i] == 'l' || //l for log
+				output[i] == 'p' || //p for pi
+				output[i] == 'e' || //e is e
+				output[i] == 'a' ) //a for ans
+				&& output[i-1] != '*' && output[i-1] != '/' && output[i-1] != '+' && output[i-1] != '-' && output[i-1] != '(') //make sure the split point is not already signed
+		{
+			output.insert(i,"*");
+			i++;
+			end++;
+		}
+
+
+
+	}
+	cout << "Usable string: "<< output << endl << endl;
+	return output;
+}
 
 
 
