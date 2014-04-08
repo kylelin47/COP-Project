@@ -16,9 +16,9 @@ AbstractNumber* Log::add(AbstractNumber *number){
     std::vector<AbstractNumber*> SumVector;
     SumVector.push_back(this);
     SumVector.push_back(number);
-    static SumExpression s = SumExpression(SumVector);
-    s = SumExpression(SumVector);
-    return &s;
+    AbstractNumber *s = new SumExpression(SumVector);
+
+    return s;
 }
 AbstractNumber* Log::multiply(AbstractNumber *number){
 
@@ -52,29 +52,27 @@ AbstractNumber* Log::simplify()
 {
     if (abs(remainder(toDouble(), 1)) < pow(10, -6))
     {
-        static SmartInteger Int = SmartInteger((int)round(toDouble()));
-        return &Int;
+        AbstractNumber *n = new SmartInteger((int)round(toDouble()));
+        return n;
     }
 
-    static Log L = Log(base, value);
     vector<AbstractNumber*> SimplifiedTerms;
 
     if (value->getName() == "Integer")
     {
-        static SmartInteger Int = SmartInteger(0);
 
         vector<int> factors = primeFactors((int)(value->toDouble()));
         for (int i=0; (unsigned)i < factors.size(); i++)
         {
-            Int = SmartInteger(factors[i]);
-            L = Log(base, &Int);
-            SimplifiedTerms.push_back(&L);
+            AbstractNumber *Int = new SmartInteger(factors[i]);
+            AbstractNumber *L = new Log(base, Int);
+            //delete Int;
+            SimplifiedTerms.push_back(L);
         }
     }
-    static SumExpression s = SumExpression(SimplifiedTerms);
-    s = SumExpression(SimplifiedTerms);
+    AbstractNumber *s = new SumExpression(SimplifiedTerms);
 
-    return &s;
+    return s;
 }
 
 vector<int> Log::primeFactors(int num)

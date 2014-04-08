@@ -22,37 +22,31 @@ SmartInteger::~SmartInteger() {
 
 AbstractNumber * SmartInteger::add(AbstractNumber *number){
     vector<AbstractNumber*> SumTerms;
-    static SumExpression S = SumExpression(SumTerms);
-    static SmartInteger Int = SmartInteger(0);
-    static SmartInteger self = SmartInteger(value);
 
     if (number->getName() == "Integer")
     {
-        Int = SmartInteger(this->value + number->toDouble());
-        return &Int;
+        AbstractNumber *n = new SmartInteger(this->value + number->toDouble());
+        return n;
     }
 
     else
     {
-        self = SmartInteger(value);
-        return number->add(&self);
+        return number->add(this);
     }
-    S = SumExpression(SumTerms);
-    return &S;
+    AbstractNumber *s = new SumExpression(SumTerms);
+    return s;
 }
 AbstractNumber * SmartInteger::multiply(AbstractNumber *number){
     vector<AbstractNumber*> MultipliedTerms;
-    static SmartInteger Int = SmartInteger(0);
-    static MultExpression M = MultExpression(MultipliedTerms);
 
     if (number->getName() == "Integer")
     {
-        Int = SmartInteger(this->value * number->toDouble());
-        MultipliedTerms.push_back(&Int);
+        AbstractNumber *n = new SmartInteger(this->value * number->toDouble());
+        MultipliedTerms.push_back(n);
     }
 
-    M = MultExpression(MultipliedTerms);
-    return &M;
+    AbstractNumber *M = new MultExpression(MultipliedTerms);
+    return M;
 }
 AbstractNumber * SmartInteger::divide(AbstractNumber *number){
 
@@ -71,9 +65,7 @@ double SmartInteger::toDouble()
 
 AbstractNumber * SmartInteger::simplify()
 {
-    static SmartInteger Int = SmartInteger(value);
-    Int = SmartInteger(value);
-	return &Int;
+	return this;
 }
 string SmartInteger::getName()
 {

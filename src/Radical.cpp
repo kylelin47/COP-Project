@@ -45,27 +45,25 @@ AbstractNumber * Radical::multiply(AbstractNumber *number)
         if (number->root->toDouble() == this->root->toDouble())
         {
             AbstractNumber* newValue = this->value->multiply(number->value);
-            static Radical newRad = Radical(newValue->nums[0], this->root);
-            newRad = Radical(newValue->nums[0], this->root);
-            SimplifiedTerms.push_back(&newRad);
+            AbstractNumber* n = new Radical(newValue->nums[0], this->root);
+            SimplifiedTerms.push_back(n);
 
             for (int i=1; (unsigned)i < newValue->nums.size(); i++)
             {
-                newRad = Radical(newValue->nums[i], this->root);
-                SimplifiedTerms.push_back(&newRad);
+                n = new Radical(newValue->nums[i], this->root);
+                SimplifiedTerms.push_back(n);
             }
         }
     }
     if (number->getName() == "Integer")
     {
-        static Radical self = Radical(value, root);
 
-        SimplifiedTerms.push_back(&self);
+        SimplifiedTerms.push_back(this);
         SimplifiedTerms.push_back(number);
     }
-    static MultExpression m = MultExpression(SimplifiedTerms);
-
-    return &m;
+    AbstractNumber *m = new MultExpression(SimplifiedTerms);
+    SimplifiedTerms.clear();
+    return m;
 }
 
 AbstractNumber * Radical::divide(AbstractNumber *number)
@@ -75,8 +73,6 @@ AbstractNumber * Radical::divide(AbstractNumber *number)
 
 AbstractNumber* Radical::simplify()
 {
-    static Radical newRad = Radical(value, root);
-    static Radical self = Radical(value, base);
     vector<AbstractNumber*> SimplifiedTerms;
     int coefficient = 1;
     if (value->getName() == "Integer")
@@ -96,33 +92,29 @@ AbstractNumber* Radical::simplify()
                         i = 1;
                     }
                 }
-
-                static SmartInteger newValueInt = SmartInteger(coefficient);
-                newValueInt = SmartInteger(coefficient);
+                AbstractNumber *n1 = new SmartInteger(coefficient);
                 if (coefficient == 1)
                 {
-                    self = Radical(value, base);
-                    return &self;
+                    return this;
                 }
 
                 if (thisValue == 1)
                 {
-                    return &newValueInt;
+                    return n1;
                 }
 
                 else
                 {
-                    SimplifiedTerms.push_back(&newValueInt);
-                    newValueInt = SmartInteger(thisValue);
-                    newRad = Radical(&newValueInt, this->root);
-                    SimplifiedTerms.push_back(&newRad);
+                    SimplifiedTerms.push_back(n1);
+                    AbstractNumber *n2 = new Radical(n1, this->root);
+                    SimplifiedTerms.push_back(n2);
                 }
             }
         }
     }
     else
     {
-        return &self;
+        return this;
     }
     static MultExpression MultTerms = MultExpression(SimplifiedTerms);
     MultTerms = MultExpression(SimplifiedTerms);

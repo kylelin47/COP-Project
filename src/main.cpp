@@ -58,11 +58,13 @@ int main() {
                         nums.push_back(&Int3);
                         nums.push_back(&Int2);
                         nums.push_back(&Rad3);
-                        //nums.push_back(&Log1);
+                        nums.push_back(&Log1);
                         nums.push_back(&Rad2);
                         SumExpression s = SumExpression(nums);
                         cout << s.toString() << endl;
                         cout << s.simplify()->toString() << endl;
+                        s.nums.clear();
+                        delete &s;
                     }
                 }
                 break;
