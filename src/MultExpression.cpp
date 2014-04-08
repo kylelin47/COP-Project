@@ -181,6 +181,22 @@ string MultExpression::getName()
 }
 int MultExpression::getTypeFromString(string input)
 {
+	cout << "Current string:" << input << endl;
+	if (input[0] == 'l' && input[1] =='o' && input[2] == 'g' && input[3] == '_')
+	{
+		cout << input << " is a log" << endl;
+		return SMART_LOG;
+	}
+	if (input[0] == 'l' && input[1] == 'n')
+	{
+		cout << input << " is ln" << endl;
+		return SMART_LN;
+	}
+	if (input[0] == 's' && input[1] == 'q' && input[2] == 'r' && input[3] == 't' && input[4] == ':')
+	{
+		cout << input << " is a square root" << endl;
+		return SMART_POWER;
+	}
 	return SMART_INTEGER;
 }
 
