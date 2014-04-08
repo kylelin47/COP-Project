@@ -18,16 +18,16 @@ using namespace std;
 
 class AbstractNumber {
 public:
-	virtual vector<AbstractNumber*> add(AbstractNumber *number) = 0;
-	virtual vector<AbstractNumber*> multiply(AbstractNumber *number) = 0;
-	virtual vector<AbstractNumber*> divide(AbstractNumber *number) = 0;
+	virtual AbstractNumber * add(AbstractNumber *number) = 0;
+	virtual AbstractNumber * multiply(AbstractNumber *number) = 0;
+	virtual AbstractNumber * divide(AbstractNumber *number) = 0;
 	virtual string toString() = 0;
 	virtual double toDouble() = 0;
-	virtual bool simplify() = 0;
+	virtual AbstractNumber * simplify() = 0;
 	virtual string getName() = 0;
 
 	AbstractNumber *base, *root, *value;
-    int coefficient;
+	vector<AbstractNumber*> nums;
 
 };
 

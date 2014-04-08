@@ -13,19 +13,19 @@ using namespace std;
 
 class SumExpression: public AbstractNumber {
 public:
-	SumExpression(const string &input);
+	SumExpression(vector<AbstractNumber*> nums);
 	virtual ~SumExpression();
-	vector<AbstractNumber*> add(AbstractNumber *number);
-	vector<AbstractNumber*> multiply(AbstractNumber *number);
-	vector<AbstractNumber*> divide(AbstractNumber *number);
+	AbstractNumber * add(AbstractNumber *number);
+	AbstractNumber * multiply(AbstractNumber *number);
+	AbstractNumber * divide(AbstractNumber *number);
 	string toString();
-	void split(vector<MultExpression> &tokens, const string &text, char sep1, char sep2);
-	vector<MultExpression> expression;
+	//void split(vector<MultExpression> &tokens, const string &text, char sep1, char sep2);
+	//vector<MultExpression> expression;
 	double toDouble();
-	bool simplify();
+	AbstractNumber* simplify();
 	string getName();
 
-
+    vector<AbstractNumber*> nums;
 
 };
 

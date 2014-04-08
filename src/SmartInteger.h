@@ -7,20 +7,20 @@
 
 #ifndef SmartInteger_H_
 #define SmartInteger_H_
-#include "MultExpression.h"
+#include "SumExpression.h"
 
 using namespace std;
 
 class SmartInteger: public AbstractNumber {
 public:
-	SmartInteger(const string &input);
+	SmartInteger(int value);
 	virtual ~SmartInteger();
-	vector<AbstractNumber*> add(AbstractNumber *number);
-	vector<AbstractNumber*> multiply(AbstractNumber *number);
-	vector<AbstractNumber*> divide(AbstractNumber *number);
+	AbstractNumber * add(AbstractNumber *number);
+	AbstractNumber * multiply(AbstractNumber *number);
+	AbstractNumber * divide(AbstractNumber *number);
 	string toString();
 	double toDouble();
-	bool simplify();
+	AbstractNumber * simplify();
 	string getName();
 
 private:

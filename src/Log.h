@@ -1,17 +1,17 @@
 #ifndef LOG_H
 #define LOG_H
-#include "MultExpression.h"
+#include "SumExpression.h"
 
 class Log: public AbstractNumber
 {
     public:
         Log(AbstractNumber *base, AbstractNumber *value);
-        vector<AbstractNumber*> add(AbstractNumber *number);
-        vector<AbstractNumber*> multiply(AbstractNumber *number);
-        vector<AbstractNumber*> divide(AbstractNumber *number);
+        AbstractNumber * add(AbstractNumber *number);
+        AbstractNumber * multiply(AbstractNumber *number);
+        AbstractNumber * divide(AbstractNumber *number);
         string toString();
         double toDouble();
-        bool simplify();
+        AbstractNumber* simplify();
         string getName();
         vector<int> primeFactors(int num);
 

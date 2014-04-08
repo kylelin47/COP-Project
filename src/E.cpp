@@ -10,13 +10,13 @@ E::~E()
     //dtor
 }
 
-vector<AbstractNumber*> E::add(AbstractNumber *number){
+AbstractNumber * E::add(AbstractNumber *number){
 
 }
-vector<AbstractNumber*> E::multiply(AbstractNumber *number){
+AbstractNumber * E::multiply(AbstractNumber *number){
 
 }
-vector<AbstractNumber*> E::divide(AbstractNumber *number){
+AbstractNumber * E::divide(AbstractNumber *number){
 
 }
 string E::toString(){
@@ -31,9 +31,8 @@ double E::toDouble()
 	return 0;
 }
 
-bool E::simplify()
+AbstractNumber * E::simplify()
 {
-	return false;
 }
 string E::getName()
 {

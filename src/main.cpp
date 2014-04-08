@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SumExpression.h"
+#include "SmartInteger.h"
 #include "Radical.h"
 #include "Log.h"
 
@@ -44,16 +44,19 @@ int main() {
                     }
                     else
                     {
-                        SmartInteger Int1 = SmartInteger("2");
-                        SmartInteger Int2 = SmartInteger("8");
-                        AbstractNumber *Num1 = &Int1;
-                        AbstractNumber *Num2 = &Int2;
-                        Radical Rad1 = Radical(Num1, Num2, 1);
-                        Log Log1 = Log(Num1, Num2);
-                        cout << Rad1.toString() << endl;
-                        cout << Rad1.toDouble() << endl;
-                        cout << Log1.toString() << endl;
-                        cout << Log1.toDouble() << endl;
+                        SmartInteger Int1 = SmartInteger(25);
+                        SmartInteger Int2 = SmartInteger(2);
+                        Radical Rad1 = Radical(&Int1, &Int2);
+                        Log Log1 = Log(&Int2, &Int1);
+                        AbstractNumber *n1 = Int1.add(&Int2);
+                        AbstractNumber *n2 = n1->add(&Rad1);
+                        cout << "" << endl;
+                        //AbstractNumber *n3 = n1->add(n2);
+                        //cout << n3->toString() << endl;
+                        AbstractNumber *n4 = n2->simplify();
+                        cout << n2->toString() << endl;
+                        cout << n4->toString() << endl;
+                        cout << Log1.simplify()->toString() << endl;
                     }
                 }
                 break;
