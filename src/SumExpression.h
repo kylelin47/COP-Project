@@ -24,6 +24,8 @@ public:
 	double toDouble();
 	bool simplify();
 	string getName();
+	int count(string input, int begin, int end, char symbol);
+	string makeStringUsable(string input);
 
 
 
