@@ -15,6 +15,7 @@ using namespace std;
 
 class MultExpression: public AbstractNumber {
 public:
+    MultExpression(const string &input);
 	MultExpression(vector<AbstractNumber*> nums);
 	virtual ~MultExpression();
 	AbstractNumber * add(AbstractNumber *number);
