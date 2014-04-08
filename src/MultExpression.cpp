@@ -16,6 +16,8 @@
 
 using namespace std;
 
+//Testing to see if this works
+
 void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2) {
 
 	  //This chunk pulls out the string from the MultExpression without the * or /
