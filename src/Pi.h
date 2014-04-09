@@ -1,6 +1,6 @@
 #ifndef PI_H
 #define PI_H
-#include "AbstractNumber.h"
+#include "E.h"
 
 class Pi: public AbstractNumber {
 public:
@@ -13,7 +13,7 @@ public:
 	double toDouble();
 	AbstractNumber * simplify();
 	string getName();
-	string getSign();
+	char getSign();
 
 private:
 	double value;
