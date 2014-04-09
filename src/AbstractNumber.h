@@ -25,6 +25,7 @@ public:
 	virtual double toDouble() = 0;
 	virtual AbstractNumber * simplify() = 0;
 	virtual string getName() = 0;
+	virtual char getSign() = 0;
 
 	AbstractNumber *base, *root, *value;
 	vector<AbstractNumber*> nums;
