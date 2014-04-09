@@ -77,3 +77,8 @@ string SmartInteger::getName()
 {
 	return "Integer";
 }
+
+char SmartInteger::getSign()
+{
+	return '+';
+}
