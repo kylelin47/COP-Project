@@ -7,8 +7,8 @@
 #include "SumExpression.h"
 
 using namespace std;
-/*
-void SumExpression::split(vector<MultExpression> &tokens, const string &text, char sep1, char sep2) {
+
+void SumExpression::split(vector<AbstractNumber*> &tokens, const string &text, char sep1, char sep2) {
   size_t pos = 0;
   size_t skipUntil = 0;
   string s = text;
@@ -33,7 +33,7 @@ void SumExpression::split(vector<MultExpression> &tokens, const string &text, ch
 	  else
 	  {
 		  //cout << "Substring:" << s.substr(0 , pos) << endl;
-		  tokens.push_back(MultExpression(sign + s.substr(0 , pos)));
+		  tokens.push_back(new MultExpression(sign + s.substr(0 , pos)));
 
 		  sign = s[pos];
 		  s.erase(0, pos+ 1);
@@ -42,15 +42,18 @@ void SumExpression::split(vector<MultExpression> &tokens, const string &text, ch
 	}
 
 }
-*/
+char SumExpression::getSign()
+{
+	return '+';
+}
 SumExpression::SumExpression(const string &input) {
 
-//	split(expression, makeStringUsable(input), '+' , '-');
+	split(expression, makeStringUsable(input), '+' , '-');
 }
 
 
 SumExpression::SumExpression(vector<AbstractNumber*> &nums) {
-    this->nums = nums;
+    this->expression = nums;
 }
 int SumExpression::count(string input, int begin, int end, char symbol)
 {
@@ -72,27 +75,7 @@ SumExpression::~SumExpression() {
 }
 
 AbstractNumber * SumExpression::add(AbstractNumber *number){
-    vector<AbstractNumber*> SumTerms = nums;
-    SumTerms.push_back(number);
-    AbstractNumber *tmp;
-    for (int i=0; (unsigned)i < SumTerms.size(); i++)
-    {
-        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
-        if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
-        {
-            if (SumTerms[i]->getName() != "SumExpression")
-            {
-                tmp = SumTerms[i]->add(SumTerms[SumTerms.size() - 1]);
-                cout << SumTerms[i]->getName() << endl;
-                if (tmp->getName() != "SumExpression")
-                {
-                    SumTerms[i] = tmp;
-                    SumTerms.erase(SumTerms.end() - 1);
-                }
-            }
-        }
-    }
-    nums = SumTerms;
+    expression.push_back(number);
     return this;
 }
 AbstractNumber * SumExpression::multiply(AbstractNumber *number){
@@ -103,12 +86,14 @@ AbstractNumber * SumExpression::divide(AbstractNumber *number){
 }
 string SumExpression::toString(){
 	string output ="";
-	for (int i =0; (unsigned)i < nums.size(); i++){
-		output += nums[i]->toString();
-		if ((unsigned)i != nums.size() - 1)
-        {
-            output += " + ";
-        }
+	for (int i =0; i < expression.size(); i++){
+		output += expression[i]->getSign();
+		output += expression[i]->toString();
+
+	}
+	if (output[0] == '+')
+	{
+		output.erase(0,1);
 	}
 	return output;
 }
