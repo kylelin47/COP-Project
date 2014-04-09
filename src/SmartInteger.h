@@ -23,6 +23,8 @@ public:
 	double toDouble();
 	AbstractNumber * simplify();
 	string getName();
+	char getSign();
+
 
 private:
 	int value;
