@@ -20,10 +20,7 @@ AbstractNumber * Pi::divide(AbstractNumber *number){
 
 }
 string Pi::toString(){
-	stringstream ss;
-
-	ss << value;
-	return ss.str();
+	return "pi";
 }
 
 double Pi::toDouble()
