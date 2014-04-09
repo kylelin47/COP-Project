@@ -20,16 +20,16 @@ public:
 	AbstractNumber * multiply(AbstractNumber *number);
 	AbstractNumber * divide(AbstractNumber *number);
 	string toString();
-//	void split(vector<MultExpression> &tokens, const string &text, char sep1, char sep2);
-//	vector<MultExpression> expression;
+	void split(vector<AbstractNumber*> &tokens, const string &text, char sep1, char sep2);
+	vector<AbstractNumber*> expression;
 	double toDouble();
 	string getName();
 	int count(string input, int begin, int end, char symbol);
 	string makeStringUsable(string input);
 
 	AbstractNumber* simplify();
-
-    vector<AbstractNumber*> nums;
+	char getSign();
+    //vector<AbstractNumber*> nums;
 
 };
 
