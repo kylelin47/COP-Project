@@ -9,6 +9,7 @@
 #include <Algorithm>
 #include "Log.h"
 #include "E.h"
+#include "Pi.h"
 #include "Radical.h"
 #include "SumExpression.h"
 #define SMART_INTEGER 1
@@ -214,6 +215,14 @@ void MultExpression::appendNumberFromString(string input, vector<AbstractNumber*
 		input.erase(input.size()-1,1);
 
 		express.push_back(new SumExpression(input));
+	}
+	else if (input[0] == 'e' && input.size() == 1)
+	{
+		express.push_back(new E());
+	}
+	else if (input[0] == 'p' && input[1] == 'i' && input.size() == 2)
+	{
+		express.push_back(new Pi());
 	}
 	else if (isNumber(input))
 	{
