@@ -93,19 +93,38 @@ MultExpression::MultExpression(const string &input) {
 	split(numerator, denominator, input, '*', '/');
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem) {
+MultExpression::MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem, char sign) {
 	this->numerator = nums;
 	this->denominator = dem;
+	this->sign = sign;
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums)
+MultExpression::MultExpression(vector<AbstractNumber*> nums, char sign)
 {
 	this->numerator = nums;
+	this->sign = sign;
 }
 
 AbstractNumber * MultExpression::multiply(AbstractNumber *number)
 {
-	this->numerator.push_back(number);
+	if (	number->getName() == "Integer" ||
+			number->getName() == "E" ||
+			number->getName() == "SumExpression" ||
+			number->getName() == "Pi" ||
+			number->getName() == "Log" ||
+			number->getName() == "Radical" )
+	{
+		vector<AbstractNumber*> output= numerator;
+		output.push_back(number);
+		if (this->sign == number->getSign())
+		{
+			return new MultExpression(output, denominator, '+');
+		}
+		else{
+			return new MultExpression(output, denominator, '-');
+		}
+	}
+
 }
 
 char MultExpression::getSign()
