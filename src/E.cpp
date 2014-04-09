@@ -1,6 +1,6 @@
 #include "E.h"
 
-E::E(const string &input)
+E::E()
 {
     //ctor
 }
@@ -37,4 +37,9 @@ AbstractNumber * E::simplify()
 string E::getName()
 {
 	return "E";
+}
+
+char E::getSign()
+{
+	return '+';
 }
