@@ -16,6 +16,7 @@ using namespace std;
 class MultExpression: public AbstractNumber {
 public:
     MultExpression(const string &input);
+	MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem);
 	MultExpression(vector<AbstractNumber*> nums);
 	virtual ~MultExpression();
 	AbstractNumber * add(AbstractNumber *number);
@@ -23,7 +24,7 @@ public:
 	AbstractNumber * divide(AbstractNumber *number);
 	string toString();
 	void split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2);
-	vector<string> expression;
+	//vector<string> expression;
 	vector<AbstractNumber*> numerator;
 	vector<AbstractNumber*> denominator;
 	char getSign();
