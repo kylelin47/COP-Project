@@ -1,10 +1,10 @@
 #ifndef PI_H
 #define PI_H
-#include "AbstractNumber.h"
+#include "E.h"
 
 class Pi: public AbstractNumber {
 public:
-	Pi(const string &input);
+	Pi();
 	virtual ~Pi();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
 	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
@@ -13,6 +13,7 @@ public:
 	double toDouble();
 	tr1::shared_ptr<AbstractNumber> simplify();
 	string getName();
+	char getSign();
 
 private:
 	double value;

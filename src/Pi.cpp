@@ -1,6 +1,6 @@
 #include "Pi.h"
 
-Pi::Pi(const string &input)
+Pi::Pi()
 {
     //ctor
 }
@@ -20,10 +20,7 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 
 }
 string Pi::toString(){
-	stringstream ss;
-
-	ss << value;
-	return ss.str();
+	return "pi";
 }
 
 double Pi::toDouble()
@@ -38,4 +35,9 @@ tr1::shared_ptr<AbstractNumber> Pi::simplify()
 string Pi::getName()
 {
 	return "Pi";
+}
+
+char Pi::getSign()
+{
+	return '+';
 }

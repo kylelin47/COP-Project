@@ -13,6 +13,7 @@ public:
 	double toDouble();
 	tr1::shared_ptr<AbstractNumber> simplify();
 	string getName();
+	char getSign();
 
 private:
 	double value;
