@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
-#include <memory>
+
 #include <tr1/memory>
 
 using namespace std;

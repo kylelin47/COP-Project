@@ -1,7 +1,4 @@
 #include <iostream>
-#include "SmartInteger.h"
-#include "Radical.h"
-#include "Log.h"
 
 using namespace std;
 
@@ -44,19 +41,19 @@ int main() {
                     }
                     else
                     {
+                        /*
                         tr1::shared_ptr<AbstractNumber> Int1 (new SmartInteger(25));
                         tr1::shared_ptr<AbstractNumber> Int2 (new SmartInteger(5));
-                        tr1::shared_ptr<AbstractNumber> Rad1 (new Radical(Int1, Int2));
 
                         vector< tr1::shared_ptr<AbstractNumber> > expression;
                         expression.push_back(Int1);
                         expression.push_back(Int2);
-                        expression.push_back(Rad1);
 
                         SumExpression s = SumExpression(expression);
                         cout << s.toString() << endl;
                         cout << s.simplify()->toString() << endl;
                         s.expression.clear();
+                        */
                     }
                 }
                 break;

@@ -114,7 +114,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
         }
     }
     expression = SumTerms;
-    //delete number;
+
     return shared_from_this();
 }
 
@@ -177,7 +177,6 @@ double SumExpression::toDouble()
 
 tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 {
-    tr1::shared_ptr<AbstractNumber>tmp;
 
     for (int i=0; (unsigned)i < expression.size(); i++)
     {
@@ -192,10 +191,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
     {
         for (int j=i+1; (unsigned) j < expression.size(); j++)
         {
-            cout <<"ADDING " + expression[i]->toString() + " & " + expression[j]->toString() << endl;
             expression[i] = expression[i]->add(expression[j]);
-            cout <<"ADDING SUCCESS" << endl;
-            cout << "ERASING " + expression[j]->toString() <<endl;
             expression.erase(expression.begin() + j);
             if (expression.size() != 1)
             {
@@ -204,7 +200,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
         }
 
     }
-    cout <<"SUMEXPRESSION CREATED" << endl;
 
     if (expression.size() == 1)
     {
