@@ -101,3 +101,7 @@ string Log::getName()
 	return "Log";
 }
 
+char Log::getSign(){
+	return '+';
+}
+
