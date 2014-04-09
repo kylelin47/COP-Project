@@ -59,11 +59,19 @@ char SumExpression::getSign()
 SumExpression::SumExpression(const string &input) {
 
 	split(expression, makeStringUsable(input), '+' , '-');
+	this->noParenthesis = false;
+}
+
+SumExpression::SumExpression::SumExpression(const string &input, bool noParenthesis) {
+
+	split(expression, makeStringUsable(input), '+' , '-');
+	this->noParenthesis = noParenthesis;
 }
 
 
-SumExpression::SumExpression(vector<AbstractNumber*> &expression) {
-    this->expression = expression;
+SumExpression::SumExpression(vector<AbstractNumber*> &nums) {
+    this->expression = nums;
+    this->noParenthesis = false;
 }
 int SumExpression::count(string input, int begin, int end, char symbol)
 {
@@ -129,14 +137,27 @@ AbstractNumber * SumExpression::divide(AbstractNumber *number){
 }
 string SumExpression::toString(){
 	string output ="";
-	for (int i =0; (unsigned)i < expression.size(); i++){
+	if (!noParenthesis)
+	{
+		output+='(';
+	}
+
+	for (int i =0; i < expression.size(); i++){
 		output += expression[i]->getSign();
 		output += expression[i]->toString();
 
 	}
+	if (!noParenthesis && output[1] == '+')
+	{
+		output.erase(1,1);
+	}
 	if (output[0] == '+')
 	{
 		output.erase(0,1);
+	}
+	if (!noParenthesis)
+	{
+		output += ")";
 	}
 	return output;
 }
