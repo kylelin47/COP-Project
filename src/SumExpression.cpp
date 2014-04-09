@@ -14,6 +14,16 @@ void SumExpression::split(vector<AbstractNumber*> &tokens, const string &text, c
   string s = text;
   string sign = "";
   s += '+';
+
+  if (s[0] == '(' && s[s.size()-1] == ')')
+  	{
+  		cout << "Before reduce: " << s << endl;
+  		s.erase(0,1);
+  		s.erase(s.size()-1,1);
+  	}
+  	cout << "Reduced String: " << s << endl;
+
+
   while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {
 	  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
 	  {
@@ -176,7 +186,6 @@ string SumExpression::getName()
 
 string SumExpression::makeStringUsable(string input)
 {
-	cout << "Starting Make String Usable" << endl;
 	string output = input;
 	size_t end = input.size();
 	string checkPar = output;
@@ -239,7 +248,7 @@ string SumExpression::makeStringUsable(string input)
 				output[i] == 'p' || //p for pi
 				output[i] == 'e' || //e is e
 				output[i] == 'a' ) //a for ans
-				&& output[i-1] != '*' && output[i-1] != '/' && output[i-1] != '+' && output[i-1] != '-' && output[i-1] != '(') //make sure the split point is not already signed
+				&& output[i-1] != '*' && output[i-1] != '/' && output[i-1] != '+' && output[i-1] != '-' && output[i-1] != '(' && output[i-1] != ':' && output[i-1] != '_') //make sure the split point is not already signed
 		{
 			output.insert(i,"*");
 			i++;
