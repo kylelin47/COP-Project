@@ -10,13 +10,13 @@ Pi::~Pi()
     //dtor
 }
 
-AbstractNumber * Pi::add(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 
 }
-AbstractNumber * Pi::multiply(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>number){
 
 }
-AbstractNumber * Pi::divide(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number){
 
 }
 string Pi::toString(){
@@ -31,9 +31,9 @@ double Pi::toDouble()
 	return 0;
 }
 
-AbstractNumber * Pi::simplify()
+tr1::shared_ptr<AbstractNumber> Pi::simplify()
 {
-	return false;
+	return shared_from_this();
 }
 string Pi::getName()
 {

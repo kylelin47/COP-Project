@@ -26,35 +26,35 @@ SmartInteger::~SmartInteger() {
 	// TODO Auto-generated destructor stub
 }
 
-AbstractNumber * SmartInteger::add(AbstractNumber *number){
-    vector<AbstractNumber*> SumTerms;
+tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber>number){
+    vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
 
     if (number->getName() == "Integer")
     {
-        AbstractNumber *n = new SmartInteger(this->value + number->toDouble());
+        tr1::shared_ptr<AbstractNumber>n(new SmartInteger(this->value + number->toDouble()));
         return n;
     }
 
     else
     {
-        return number->add(this);
+        return number->add(shared_from_this());
     }
-    AbstractNumber *s = new SumExpression(SumTerms);
+    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumTerms));
     return s;
 }
-AbstractNumber * SmartInteger::multiply(AbstractNumber *number){
-    vector<AbstractNumber*> MultipliedTerms;
+tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractNumber>number){
+    vector< tr1::shared_ptr<AbstractNumber> > MultipliedTerms;
 
     if (number->getName() == "Integer")
     {
-        AbstractNumber *n = new SmartInteger(this->value * number->toDouble());
+        tr1::shared_ptr<AbstractNumber>n(new SmartInteger(this->value * number->toDouble()));
         MultipliedTerms.push_back(n);
     }
 
-    AbstractNumber *M = new MultExpression(MultipliedTerms);
+    tr1::shared_ptr<AbstractNumber>M (new MultExpression(MultipliedTerms));
     return M;
 }
-AbstractNumber * SmartInteger::divide(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNumber>number){
 
 }
 string SmartInteger::toString(){
@@ -69,9 +69,9 @@ double SmartInteger::toDouble()
 	return (double)value;
 }
 
-AbstractNumber * SmartInteger::simplify()
+tr1::shared_ptr<AbstractNumber> SmartInteger::simplify()
 {
-	return this;
+	return shared_from_this();
 }
 string SmartInteger::getName()
 {

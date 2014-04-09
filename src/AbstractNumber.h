@@ -13,22 +13,24 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include <memory>
+#include <tr1/memory>
 
 using namespace std;
 
-class AbstractNumber {
+class AbstractNumber: public tr1::enable_shared_from_this<AbstractNumber> {
 public:
-	virtual AbstractNumber * add(AbstractNumber *number) = 0;
-	virtual AbstractNumber * multiply(AbstractNumber *number) = 0;
-	virtual AbstractNumber * divide(AbstractNumber *number) = 0;
+	virtual tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number) = 0;
+	virtual tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number) = 0;
+	virtual tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number) = 0;
 	virtual string toString() = 0;
 	virtual double toDouble() = 0;
-	virtual AbstractNumber * simplify() = 0;
+	virtual tr1::shared_ptr<AbstractNumber> simplify() = 0;
 	virtual string getName() = 0;
 	virtual char getSign() = 0;
 
-	AbstractNumber *base, *root, *value;
-	vector<AbstractNumber*> expression;
+	tr1::shared_ptr<AbstractNumber>base, root, value;
+	vector< tr1::shared_ptr<AbstractNumber> > expression;
 
 };
 

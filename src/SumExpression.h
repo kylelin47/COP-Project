@@ -13,23 +13,22 @@ using namespace std;
 
 class SumExpression: public AbstractNumber {
 public:
-	SumExpression(vector<AbstractNumber*> &expression);
+	SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression);
 	SumExpression(const string &input);
 	virtual ~SumExpression();
-	AbstractNumber * add(AbstractNumber *number);
-	AbstractNumber * multiply(AbstractNumber *number);
-	AbstractNumber * divide(AbstractNumber *number);
+	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
+	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
+	tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
 	string toString();
-	void split(vector<AbstractNumber*> &tokens, const string &text, char sep1, char sep2);
-	vector<AbstractNumber*> expression;
+	void split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2);
+	vector< tr1::shared_ptr<AbstractNumber> > expression;
 	double toDouble();
 	string getName();
 	int count(string input, int begin, int end, char symbol);
 	string makeStringUsable(string input);
 
-	AbstractNumber* simplify();
+	tr1::shared_ptr<AbstractNumber> simplify();
 	char getSign();
-    //vector<AbstractNumber*> expression;
 
 };
 

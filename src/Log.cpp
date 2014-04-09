@@ -1,7 +1,7 @@
 #include "Log.h"
 #include <cmath>
 
-Log::Log(AbstractNumber *base, AbstractNumber *value)
+Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value)
 {
     if (value->toDouble() <= 0)
     {
@@ -11,16 +11,16 @@ Log::Log(AbstractNumber *base, AbstractNumber *value)
     this->value = value;
 }
 
-AbstractNumber* Log::add(AbstractNumber *number){
+ tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
 
-    std::vector<AbstractNumber*> SumVector;
-    SumVector.push_back(this);
+    std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+    SumVector.push_back(shared_from_this());
     SumVector.push_back(number);
-    AbstractNumber *s = new SumExpression(SumVector);
+    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumVector));
 
     return s;
 }
-AbstractNumber* Log::multiply(AbstractNumber *number){
+ tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
 
     if (number->getName() == "Log")
     {
@@ -30,7 +30,7 @@ AbstractNumber* Log::multiply(AbstractNumber *number){
         }
     }
 }
-AbstractNumber* Log::divide(AbstractNumber *number){
+ tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
 
 }
 string Log::toString(){
@@ -48,15 +48,15 @@ double Log::toDouble()
 	return log(value->toDouble())/log(base->toDouble());
 }
 
-AbstractNumber* Log::simplify()
+ tr1::shared_ptr<AbstractNumber>  Log::simplify()
 {
     if (abs(remainder(toDouble(), 1)) < pow(10, -6))
     {
-        AbstractNumber *n = new SmartInteger((int)round(toDouble()));
+        tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));
         return n;
     }
 
-    vector<AbstractNumber*> SimplifiedTerms;
+    vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
 
     if (value->getName() == "Integer")
     {
@@ -64,13 +64,13 @@ AbstractNumber* Log::simplify()
         vector<int> factors = primeFactors((int)(value->toDouble()));
         for (int i=0; (unsigned)i < factors.size(); i++)
         {
-            AbstractNumber *Int = new SmartInteger(factors[i]);
-            AbstractNumber *L = new Log(base, Int);
-            //delete Int;
+            tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
+            tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+
             SimplifiedTerms.push_back(L);
         }
     }
-    AbstractNumber *s = new SumExpression(SimplifiedTerms);
+    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SimplifiedTerms));
 
     return s;
 }

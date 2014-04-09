@@ -19,7 +19,7 @@ using namespace std;
 
 //Testing to see if this works
 
-void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2) {
+void MultExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &num, vector< tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2) {
 
 	  //This chunk pulls out the string from the MultExpression without the * or /
 	  int hasSign;
@@ -70,10 +70,10 @@ void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*>
 			  {
 				  case SMART_INTEGER: 		//This is the syntax for adding BaseNumbers
 					if (nextValue == '*'){
-						  numerator.push_back(new SmartInteger(substring));
+						  numerator.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(substring)));
 					  }
 					  else {
-						  denominator.push_back(new SmartInteger(substring));
+						  denominator.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(substring)));
 					  }
 					break;
 			  }
@@ -91,17 +91,17 @@ MultExpression::MultExpression(const string &input) {
 	split(numerator, denominator, input, '*', '/');
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem) {
+MultExpression::MultExpression(vector< tr1::shared_ptr<AbstractNumber> > nums , vector< tr1::shared_ptr<AbstractNumber> > dem) {
 	this->numerator = nums;
 	this->denominator = dem;
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums)
+MultExpression::MultExpression(vector< tr1::shared_ptr<AbstractNumber> > nums)
 {
 	this->numerator = nums;
 }
 
-AbstractNumber * MultExpression::multiply(AbstractNumber *number)
+tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
 	this->numerator.push_back(number);
 }
@@ -116,11 +116,11 @@ MultExpression::~MultExpression() {
 	// TODO Auto-generated destructor stub
 }
 
-AbstractNumber * MultExpression::add(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber>number){
 
 }
 
-AbstractNumber * MultExpression::divide(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> MultExpression::divide(tr1::shared_ptr<AbstractNumber>number){
 
 }
 string MultExpression::toString(){
@@ -161,9 +161,9 @@ double MultExpression::toDouble()
 	return x;
 }
 
-AbstractNumber* MultExpression::simplify()
+ tr1::shared_ptr<AbstractNumber>  MultExpression::simplify()
 {
-    vector<AbstractNumber*> SimplifiedTerms;
+    vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
 }
 string MultExpression::getName()
 {

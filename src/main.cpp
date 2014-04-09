@@ -44,34 +44,19 @@ int main() {
                     }
                     else
                     {
+                        tr1::shared_ptr<AbstractNumber> Int1 (new SmartInteger(25));
+                        tr1::shared_ptr<AbstractNumber> Int2 (new SmartInteger(5));
+                        tr1::shared_ptr<AbstractNumber> Rad1 (new Radical(Int1, Int2));
 
-                        SmartInteger Int1 = SmartInteger(25);
-                        SmartInteger Int2 = SmartInteger(2);
-                        SmartInteger Int3 = SmartInteger(10);
-                        Radical Rad1 = Radical(&Int1, &Int2);
-                        Radical Rad2 = Radical(&Int3, &Int2);
-                        Radical Rad3 = Radical(&Int2, &Int1);
-                        Radical Rad4 = Radical(&Int2, &Int1);
-                        Log Log1 = Log(&Int2, &Int1);
-                        Log Log2 = Log(&Int1, &Int1);
-                        vector<AbstractNumber*> expression;
-                        expression.push_back(&Rad1);
-                        expression.push_back(&Int1);
-                        expression.push_back(&Int3);
-                        expression.push_back(&Int3);
-                        expression.push_back(&Int2);
-                        expression.push_back(&Rad3);
-                        expression.push_back(&Log1);
-                        expression.push_back(&Rad2);
-                        expression.push_back(&Rad4);
-                        expression.push_back(&Int2);
-                        expression.push_back(&Log2);
+                        vector< tr1::shared_ptr<AbstractNumber> > expression;
+                        expression.push_back(Int1);
+                        expression.push_back(Int2);
+                        expression.push_back(Rad1);
+
                         SumExpression s = SumExpression(expression);
                         cout << s.toString() << endl;
                         cout << s.simplify()->toString() << endl;
                         s.expression.clear();
-                        delete &s;
-
                     }
                 }
                 break;

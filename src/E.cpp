@@ -10,13 +10,13 @@ E::~E()
     //dtor
 }
 
-AbstractNumber * E::add(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 
 }
-AbstractNumber * E::multiply(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>number){
 
 }
-AbstractNumber * E::divide(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number){
 
 }
 string E::toString(){
@@ -31,7 +31,7 @@ double E::toDouble()
 	return 0;
 }
 
-AbstractNumber * E::simplify()
+tr1::shared_ptr<AbstractNumber> E::simplify()
 {
 }
 string E::getName()

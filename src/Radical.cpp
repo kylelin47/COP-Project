@@ -1,6 +1,6 @@
 #include "Radical.h"
 
-Radical::Radical(AbstractNumber* value, AbstractNumber* root)
+Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root)
 {
     this->value = value;
     this->root = root;
@@ -11,9 +11,9 @@ Radical::~Radical()
     //dtor
 }
 
-AbstractNumber * Radical::add(AbstractNumber *number)
+tr1::shared_ptr<AbstractNumber> Radical::add(tr1::shared_ptr<AbstractNumber>number)
 {
-    vector<AbstractNumber*> SumTerms;
+    vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
 
     if (number->getName() == "Radical")
     {
@@ -26,51 +26,45 @@ AbstractNumber * Radical::add(AbstractNumber *number)
     else
     {
         cout <<"ADDING INTEGER" << endl;
-        SumTerms.push_back(this);
+        SumTerms.push_back(shared_from_this());
         SumTerms.push_back(number);
     }
 
-    AbstractNumber *s = new SumExpression(SumTerms);
+    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumTerms));
     return s;
 }
 
-AbstractNumber * Radical::multiply(AbstractNumber *number)
+tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-    vector<AbstractNumber*> SimplifiedTerms;
+    vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
     if (number->getName() == "Radical")
     {
         if (number->root->toDouble() == this->root->toDouble())
         {
-            AbstractNumber* newValue = this->value->multiply(number->value);
-            AbstractNumber* n = new Radical(newValue->expression[0], this->root);
+            tr1::shared_ptr<AbstractNumber> newValue = this->value->multiply(number->value);
+            tr1::shared_ptr<AbstractNumber> n(new Radical(newValue->expression[0], this->root));
             SimplifiedTerms.push_back(n);
-
-            for (int i=1; (unsigned)i < newValue->expression.size(); i++)
-            {
-                n = new Radical(newValue->expression[i], this->root);
-                SimplifiedTerms.push_back(n);
-            }
         }
     }
     if (number->getName() == "Integer")
     {
 
-        SimplifiedTerms.push_back(this);
+        SimplifiedTerms.push_back(shared_from_this());
         SimplifiedTerms.push_back(number);
     }
-    AbstractNumber *m = new MultExpression(SimplifiedTerms);
+    tr1::shared_ptr<AbstractNumber>m(new MultExpression(SimplifiedTerms));
     SimplifiedTerms.clear();
     return m;
 }
 
-AbstractNumber * Radical::divide(AbstractNumber *number)
+tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>number)
 {
 
 }
 
-AbstractNumber* Radical::simplify()
+ tr1::shared_ptr<AbstractNumber>  Radical::simplify()
 {
-    vector<AbstractNumber*> SimplifiedTerms;
+    vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
     int coefficient = 1;
     if (value->getName() == "Integer")
     {
@@ -89,10 +83,10 @@ AbstractNumber* Radical::simplify()
                         i = 1;
                     }
                 }
-                AbstractNumber *n1 = new SmartInteger(coefficient);
+                tr1::shared_ptr<AbstractNumber>n1(new SmartInteger(coefficient));
                 if (coefficient == 1)
                 {
-                    return this;
+                    return shared_from_this();
                 }
 
                 if (thisValue == 1)
@@ -103,7 +97,7 @@ AbstractNumber* Radical::simplify()
                 else
                 {
                     SimplifiedTerms.push_back(n1);
-                    AbstractNumber *n2 = new Radical(n1, this->root);
+                    tr1::shared_ptr<AbstractNumber>n2(new Radical(n1, this->root));
                     SimplifiedTerms.push_back(n2);
                 }
             }
@@ -111,18 +105,18 @@ AbstractNumber* Radical::simplify()
     }
     else
     {
-        return this;
+        return shared_from_this();
     }
-    static MultExpression MultTerms = MultExpression(SimplifiedTerms);
-    MultTerms = MultExpression(SimplifiedTerms);
+
+    tr1::shared_ptr<AbstractNumber> n (new MultExpression(SimplifiedTerms));
 
     if (SimplifiedTerms.size() == 1)
     {
-        return &MultTerms;
+        return n;
     }
     else
     {
-        return MultTerms.simplify();
+        return n->simplify();
     }
 }
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void SumExpression::split(vector<AbstractNumber*> &tokens, const string &text, char sep1, char sep2) {
+void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
   size_t pos = 0;
   size_t skipUntil = 0;
   string s = text;
@@ -33,7 +33,8 @@ void SumExpression::split(vector<AbstractNumber*> &tokens, const string &text, c
 	  else
 	  {
 		  //cout << "Substring:" << s.substr(0 , pos) << endl;
-		  tokens.push_back(new MultExpression(sign + s.substr(0 , pos)));
+		  tr1::shared_ptr<AbstractNumber> n (new MultExpression(sign + s.substr(0 , pos)));
+		  tokens.push_back(n);
 
 		  sign = s[pos];
 		  s.erase(0, pos+ 1);
@@ -52,7 +53,7 @@ SumExpression::SumExpression(const string &input) {
 }
 
 
-SumExpression::SumExpression(vector<AbstractNumber*> &expression) {
+SumExpression::SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression) {
     this->expression = expression;
 }
 int SumExpression::count(string input, int begin, int end, char symbol)
@@ -74,10 +75,10 @@ SumExpression::~SumExpression() {
 	// TODO Auto-generated destructor stub
 }
 
-AbstractNumber * SumExpression::add(AbstractNumber *number){
-    vector<AbstractNumber*> SumTerms = expression;
+tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
+    vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
     SumTerms.push_back(number);
-    AbstractNumber *tmp;
+    tr1::shared_ptr<AbstractNumber> tmp;
     for (int i=0; (unsigned)i < SumTerms.size(); i++)
     {
         cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
@@ -97,12 +98,12 @@ AbstractNumber * SumExpression::add(AbstractNumber *number){
     }
     expression = SumTerms;
     //delete number;
-    return this;
+    return shared_from_this();
 }
-AbstractNumber * SumExpression::multiply(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<AbstractNumber>number){
 
 }
-AbstractNumber * SumExpression::divide(AbstractNumber *number){
+tr1::shared_ptr<AbstractNumber> SumExpression::divide(tr1::shared_ptr<AbstractNumber>number){
 
 }
 string SumExpression::toString(){
@@ -129,9 +130,9 @@ double SumExpression::toDouble()
 	return x;
 }
 
-AbstractNumber * SumExpression::simplify()
+tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 {
-    AbstractNumber *tmp;
+    tr1::shared_ptr<AbstractNumber>tmp;
 
     for (int i=0; (unsigned)i < expression.size(); i++)
     {
@@ -166,7 +167,7 @@ AbstractNumber * SumExpression::simplify()
     }
     else
     {
-        return this;
+        return shared_from_this();
     }
 }
 string SumExpression::getName()

@@ -16,25 +16,25 @@ using namespace std;
 class MultExpression: public AbstractNumber {
 public:
     MultExpression(const string &input);
-	MultExpression(vector<AbstractNumber*> expression , vector<AbstractNumber*> dem);
-	MultExpression(vector<AbstractNumber*> expression);
+	MultExpression(vector< tr1::shared_ptr<AbstractNumber> > expression , vector< tr1::shared_ptr<AbstractNumber> > dem);
+	MultExpression(vector< tr1::shared_ptr<AbstractNumber> > expression);
 	virtual ~MultExpression();
-	AbstractNumber * add(AbstractNumber *number);
-	AbstractNumber * multiply(AbstractNumber *number);
-	AbstractNumber * divide(AbstractNumber *number);
+	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
+	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
+	tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
 	string toString();
-	void split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2);
+	void split(vector< tr1::shared_ptr<AbstractNumber> > &num, vector< tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2);
 	//vector<string> expression;
-	vector<AbstractNumber*> numerator;
-	vector<AbstractNumber*> denominator;
+	vector< tr1::shared_ptr<AbstractNumber> > numerator;
+	vector< tr1::shared_ptr<AbstractNumber> > denominator;
 	char getSign();
 	double toDouble();
-	AbstractNumber* simplify();
+	 tr1::shared_ptr<AbstractNumber>  simplify();
 	string getName();
 	int getTypeFromString(string input);
 	int count(string input, int begin, int end, char symbol);
 
-	vector <AbstractNumber*> expression;
+	vector < tr1::shared_ptr<AbstractNumber> > expression;
 
 private:
 	char sign;

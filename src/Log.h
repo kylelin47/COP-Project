@@ -5,18 +5,18 @@
 class Log: public AbstractNumber
 {
     public:
-        Log(AbstractNumber *base, AbstractNumber *value);
-        AbstractNumber * add(AbstractNumber *number);
-        AbstractNumber * multiply(AbstractNumber *number);
-        AbstractNumber * divide(AbstractNumber *number);
+        Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value);
+        tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
+        tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
+        tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
         string toString();
         double toDouble();
-        AbstractNumber* simplify();
+         tr1::shared_ptr<AbstractNumber>  simplify();
         string getName();
         vector<int> primeFactors(int num);
     	char getSign();
-    
-        AbstractNumber *base, *value;
+
+        tr1::shared_ptr<AbstractNumber>base, value;
     protected:
     private:
 };
