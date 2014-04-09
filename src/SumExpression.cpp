@@ -60,11 +60,18 @@ char SumExpression::getSign()
 SumExpression::SumExpression(const string &input) {
 
 	split(expression, makeStringUsable(input), '+' , '-');
+	this->noParenthesis = false;
 }
 
+SumExpression::SumExpression::SumExpression(const string &input, bool noParenthesis) {
+
+	split(expression, makeStringUsable(input), '+' , '-');
+	this->noParenthesis = noParenthesis;
+}
 
 SumExpression::SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression) {
     this->expression = expression;
+    this->noParenthesis = false;
 }
 int SumExpression::count(string input, int begin, int end, char symbol)
 {
@@ -110,22 +117,47 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
 
     return shared_from_this();
 }
+
 tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<AbstractNumber>number){
 
+	for (int i = 0; i < expression.size(); i++)
+	{
+		expression[i] = expression[i]->multiply(number);
+	}
+	return shared_from_this();
 }
+
 tr1::shared_ptr<AbstractNumber> SumExpression::divide(tr1::shared_ptr<AbstractNumber>number){
 
+	for (int i = 0; i < expression.size(); i++)
+	{
+		expression[i] = expression[i]->divide(number);
+	}
+	return shared_from_this();
 }
 string SumExpression::toString(){
 	string output ="";
-	for (int i =0; (unsigned)i < expression.size(); i++){
+	if (!noParenthesis)
+	{
+		output+='(';
+	}
+
+	for (int i =0; i < expression.size(); i++){
 		output += expression[i]->getSign();
 		output += expression[i]->toString();
 
 	}
+	if (!noParenthesis && output[1] == '+')
+	{
+		output.erase(1,1);
+	}
 	if (output[0] == '+')
 	{
 		output.erase(0,1);
+	}
+	if (!noParenthesis)
+	{
+		output += ")";
 	}
 	return output;
 }
@@ -236,6 +268,17 @@ string SumExpression::makeStringUsable(string input)
 		}
 	}
 
+	for (size_t i = 0; i < end-1; i++)
+	{
+		if (output[i] == ' ')
+		{
+			output.erase(i,1);
+			--i;
+			--end;
+		}
+	}
+
+	end - output.size();
 
 	for (size_t i = 1; i < end; i++) //luckly none the places we want to split at share any charactors
 	{

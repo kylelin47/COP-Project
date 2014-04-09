@@ -17,6 +17,10 @@ public:
     MultExpression(const string &input);
 	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > num , vector< tr1::shared_ptr<AbstractNumber> > dem);
 	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > expression);
+	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > expression , vector<tr1::shared_ptr<AbstractNumber> > dem);
+	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > expression);
+	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign);
+	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, char sign);
 	virtual ~MultExpression();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
 	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);

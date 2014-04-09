@@ -15,6 +15,7 @@ class SumExpression: public AbstractNumber {
 public:
 	SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression);
 	SumExpression(const string &input);
+	SumExpression(const string &input, bool noParenthesis);
 	virtual ~SumExpression();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
 	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
@@ -29,7 +30,7 @@ public:
 
 	tr1::shared_ptr<AbstractNumber> simplify();
 	char getSign();
-
+	bool noParenthesis;
 };
 
 

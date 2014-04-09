@@ -93,41 +93,53 @@ MultExpression::MultExpression(const string &input) {
 	split(numerator, denominator, input, '*', '/');
 }
 
-MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem) {
+
+MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign) {
 	this->numerator = nums;
 	this->denominator = dem;
+	this->sign = sign;
 }
 
-MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums)
+
+MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, char sign)
 {
 	this->numerator = nums;
+	this->sign = sign;
 }
 
+tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
+{
+
+}
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-    vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
-    SumTerms.push_back(number);
-    tr1::shared_ptr<AbstractNumber> tmp;
-    for (int i=0; (unsigned)i < SumTerms.size(); i++)
-    {
-        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
-        if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
-        {
-            if (SumTerms[i]->getName() != "SumExpression")
-            {
-                tmp = SumTerms[i]->add(SumTerms[SumTerms.size() - 1]);
 
-                if (tmp->getName() != "SumExpression")
-                {
-                    SumTerms[i] = tmp;
-                    SumTerms.erase(SumTerms.end() - 1);
-                }
-            }
-        }
-    }
-    expression = SumTerms;
+	this->numerator.push_back(number);
 
-    return shared_from_this();
+	if (this->sign == number->getSign())
+	{
+	    sign = '+';
+		return shared_from_this();
+	}
+	else{
+        sign = '-';
+		return shared_from_this();
+	}
+
+}
+
+tr1::shared_ptr<AbstractNumber> MultExpression::divide(tr1::shared_ptr<AbstractNumber> number){
+	denominator.push_back(number);
+
+	if (this->sign == number->getSign())
+	{
+	    sign = '+';
+		return shared_from_this();
+	}
+	else{
+        sign = '-';
+		return shared_from_this();
+	}
 }
 
 char MultExpression::getSign()
@@ -140,13 +152,6 @@ MultExpression::~MultExpression() {
 	// TODO Auto-generated destructor stub
 }
 
-tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber>number){
-
-}
-
-tr1::shared_ptr<AbstractNumber> MultExpression::divide(tr1::shared_ptr<AbstractNumber>number){
-
-}
 string MultExpression::toString(){
 	string output ="";
 		for (int i =0; i < numerator.size(); i++){
