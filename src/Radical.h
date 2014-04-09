@@ -16,6 +16,8 @@ class Radical: public AbstractNumber
         double toDouble();
         AbstractNumber * simplify();
         string getName();
+        char getSign();
+
     protected:
     private:
 };
