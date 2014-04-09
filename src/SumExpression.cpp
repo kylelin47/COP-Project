@@ -72,7 +72,27 @@ SumExpression::~SumExpression() {
 }
 
 AbstractNumber * SumExpression::add(AbstractNumber *number){
-    nums.push_back(number);
+    vector<AbstractNumber*> SumTerms = nums;
+    SumTerms.push_back(number);
+    AbstractNumber *tmp;
+    for (int i=0; (unsigned)i < SumTerms.size(); i++)
+    {
+        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
+        if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
+        {
+            if (SumTerms[i]->getName() != "SumExpression")
+            {
+                tmp = SumTerms[i]->add(SumTerms[SumTerms.size() - 1]);
+                cout << SumTerms[i]->getName() << endl;
+                if (tmp->getName() != "SumExpression")
+                {
+                    SumTerms[i] = tmp;
+                    SumTerms.erase(SumTerms.end() - 1);
+                }
+            }
+        }
+    }
+    nums = SumTerms;
     return this;
 }
 AbstractNumber * SumExpression::multiply(AbstractNumber *number){
