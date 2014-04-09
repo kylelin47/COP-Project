@@ -107,24 +107,34 @@ MultExpression::MultExpression(vector<AbstractNumber*> nums, char sign)
 
 AbstractNumber * MultExpression::multiply(AbstractNumber *number)
 {
-	if (	number->getName() == "Integer" ||
-			number->getName() == "E" ||
-			number->getName() == "SumExpression" ||
-			number->getName() == "Pi" ||
-			number->getName() == "Log" ||
-			number->getName() == "Radical" )
+	vector<AbstractNumber*> outNumerator = numerator;
+	vector<AbstractNumber*> outDenominator = denominator;
+
+	outNumerator.push_back(number);
+
+	if (this->sign == number->getSign())
 	{
-		vector<AbstractNumber*> output= numerator;
-		output.push_back(number);
-		if (this->sign == number->getSign())
-		{
-			return new MultExpression(output, denominator, '+');
-		}
-		else{
-			return new MultExpression(output, denominator, '-');
-		}
+		return new MultExpression(outNumerator, outDenominator, '+');
+	}
+	else{
+		return new MultExpression(outNumerator, outDenominator, '-');
 	}
 
+}
+
+AbstractNumber * MultExpression::divide(AbstractNumber *number){
+	vector<AbstractNumber*> outNumerator = numerator;
+	vector<AbstractNumber*> outDenominator = denominator;
+
+	outDenominator.push_back(number);
+
+	if (this->sign == number->getSign())
+	{
+		return new MultExpression(outNumerator, outDenominator, '+');
+	}
+	else{
+		return new MultExpression(outNumerator, outDenominator, '-');
+	}
 }
 
 char MultExpression::getSign()
@@ -138,10 +148,6 @@ MultExpression::~MultExpression() {
 }
 
 AbstractNumber * MultExpression::add(AbstractNumber *number){
-
-}
-
-AbstractNumber * MultExpression::divide(AbstractNumber *number){
 
 }
 string MultExpression::toString(){
