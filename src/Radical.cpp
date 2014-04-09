@@ -42,12 +42,12 @@ AbstractNumber * Radical::multiply(AbstractNumber *number)
         if (number->root->toDouble() == this->root->toDouble())
         {
             AbstractNumber* newValue = this->value->multiply(number->value);
-            AbstractNumber* n = new Radical(newValue->nums[0], this->root);
+            AbstractNumber* n = new Radical(newValue->expression[0], this->root);
             SimplifiedTerms.push_back(n);
 
-            for (int i=1; (unsigned)i < newValue->nums.size(); i++)
+            for (int i=1; (unsigned)i < newValue->expression.size(); i++)
             {
-                n = new Radical(newValue->nums[i], this->root);
+                n = new Radical(newValue->expression[i], this->root);
                 SimplifiedTerms.push_back(n);
             }
         }

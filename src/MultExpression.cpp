@@ -158,32 +158,12 @@ double MultExpression::toDouble()
 {
     double x = 1;
 
-    for (int i=0; (unsigned)i < nums.size(); i++)
-    {
-        x = x * nums[i]->toDouble();
-    }
 	return x;
 }
 
 AbstractNumber* MultExpression::simplify()
 {
     vector<AbstractNumber*> SimplifiedTerms;
-
-    for (int i=0; (unsigned)i < nums.size(); i++)
-    {
-        SimplifiedTerms.push_back(nums[i]->simplify());
-    }
-    static MultExpression simpleMult = MultExpression(SimplifiedTerms);
-    simpleMult = MultExpression(SimplifiedTerms);
-
-    if (SimplifiedTerms.size() == this->nums.size())
-    {
-        return &simpleMult;
-    }
-    else
-    {
-        return simpleMult.simplify();
-    }
 }
 string MultExpression::getName()
 {

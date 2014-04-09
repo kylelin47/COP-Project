@@ -28,7 +28,7 @@ public:
 	virtual char getSign() = 0;
 
 	AbstractNumber *base, *root, *value;
-	vector<AbstractNumber*> nums;
+	vector<AbstractNumber*> expression;
 
 };
 

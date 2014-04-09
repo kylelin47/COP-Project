@@ -44,37 +44,52 @@ int main() {
                     }
                     else
                     {
+
                         SmartInteger Int1 = SmartInteger(25);
                         SmartInteger Int2 = SmartInteger(2);
                         SmartInteger Int3 = SmartInteger(10);
                         Radical Rad1 = Radical(&Int1, &Int2);
                         Radical Rad2 = Radical(&Int3, &Int2);
                         Radical Rad3 = Radical(&Int2, &Int1);
+                        Radical Rad4 = Radical(&Int2, &Int1);
                         Log Log1 = Log(&Int2, &Int1);
-                        vector<AbstractNumber*> nums;
-                        nums.push_back(&Rad1);
-                        nums.push_back(&Int1);
-                        nums.push_back(&Int3);
-                        nums.push_back(&Int3);
-                        nums.push_back(&Int2);
-                        nums.push_back(&Rad3);
-                        nums.push_back(&Log1);
-                        nums.push_back(&Rad2);
-                        SumExpression s = SumExpression(nums);
+                        Log Log2 = Log(&Int1, &Int1);
+                        vector<AbstractNumber*> expression;
+                        expression.push_back(&Rad1);
+                        expression.push_back(&Int1);
+                        expression.push_back(&Int3);
+                        expression.push_back(&Int3);
+                        expression.push_back(&Int2);
+                        expression.push_back(&Rad3);
+                        expression.push_back(&Log1);
+                        expression.push_back(&Rad2);
+                        expression.push_back(&Rad4);
+                        expression.push_back(&Int2);
+                        expression.push_back(&Log2);
+                        SumExpression s = SumExpression(expression);
                         cout << s.toString() << endl;
                         cout << s.simplify()->toString() << endl;
-                        s.nums.clear();
+                        s.expression.clear();
                         delete &s;
+
                     }
                 }
                 break;
             }
             case 2:
+                cout << "=====================================================================" << endl;
                 cout << "USING THE CALCULATOR" << endl;
+                cout << " Use +, -, /, * as their respective operators." << endl;
+                cout << " Parentheses and implicit multiplication are supported." << endl;
+                cout << " PEMDAS rules will be applied to any expression entered." << endl << endl;
+                cout << "SUPPORTED NUMBER TYPES" << endl;
                 cout << " \"x to the power of y\" == x^y" << endl;
                 cout << " \"the square root of x\" == sqrt:x" << endl;
                 cout << " \"the nth root of x\" == nrt:x, where \"n\" is replaced by a number." << endl;
                 cout << " \"log base b of x\" == log_b:x" << endl;
+                cout << " \"e\" == e" << endl;
+                cout << " \"pi\" == pi" << endl;
+                cout << "=====================================================================" << endl;
                 break;
             case 3:
                 break;

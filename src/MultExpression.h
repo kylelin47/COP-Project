@@ -16,8 +16,8 @@ using namespace std;
 class MultExpression: public AbstractNumber {
 public:
     MultExpression(const string &input);
-	MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem);
-	MultExpression(vector<AbstractNumber*> nums);
+	MultExpression(vector<AbstractNumber*> expression , vector<AbstractNumber*> dem);
+	MultExpression(vector<AbstractNumber*> expression);
 	virtual ~MultExpression();
 	AbstractNumber * add(AbstractNumber *number);
 	AbstractNumber * multiply(AbstractNumber *number);
@@ -34,7 +34,7 @@ public:
 	int getTypeFromString(string input);
 	int count(string input, int begin, int end, char symbol);
 
-	vector <AbstractNumber*> nums;
+	vector <AbstractNumber*> expression;
 
 private:
 	char sign;

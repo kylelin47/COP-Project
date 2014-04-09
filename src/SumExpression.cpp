@@ -52,8 +52,8 @@ SumExpression::SumExpression(const string &input) {
 }
 
 
-SumExpression::SumExpression(vector<AbstractNumber*> &nums) {
-    this->expression = nums;
+SumExpression::SumExpression(vector<AbstractNumber*> &expression) {
+    this->expression = expression;
 }
 int SumExpression::count(string input, int begin, int end, char symbol)
 {
@@ -75,7 +75,28 @@ SumExpression::~SumExpression() {
 }
 
 AbstractNumber * SumExpression::add(AbstractNumber *number){
-    expression.push_back(number);
+    vector<AbstractNumber*> SumTerms = expression;
+    SumTerms.push_back(number);
+    AbstractNumber *tmp;
+    for (int i=0; (unsigned)i < SumTerms.size(); i++)
+    {
+        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
+        if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
+        {
+            if (SumTerms[i]->getName() != "SumExpression")
+            {
+                tmp = SumTerms[i]->add(SumTerms[SumTerms.size() - 1]);
+
+                if (tmp->getName() != "SumExpression")
+                {
+                    SumTerms[i] = tmp;
+                    SumTerms.erase(SumTerms.end() - 1);
+                }
+            }
+        }
+    }
+    expression = SumTerms;
+    //delete number;
     return this;
 }
 AbstractNumber * SumExpression::multiply(AbstractNumber *number){
@@ -86,7 +107,7 @@ AbstractNumber * SumExpression::divide(AbstractNumber *number){
 }
 string SumExpression::toString(){
 	string output ="";
-	for (int i =0; i < expression.size(); i++){
+	for (int i =0; (unsigned)i < expression.size(); i++){
 		output += expression[i]->getSign();
 		output += expression[i]->toString();
 
@@ -101,45 +122,36 @@ string SumExpression::toString(){
 double SumExpression::toDouble()
 {
     double x = 0;
-    for (int i=0; (unsigned)i < nums.size(); i++)
+    for (int i=0; (unsigned)i < expression.size(); i++)
     {
-        x = x + nums[i]->toDouble();
+        x = x + expression[i]->toDouble();
     }
 	return x;
 }
 
 AbstractNumber * SumExpression::simplify()
 {
-    vector<AbstractNumber*> SimplifiedTerms;
     AbstractNumber *tmp;
 
-    for (int i=0; (unsigned)i < nums.size(); i++)
+    for (int i=0; (unsigned)i < expression.size(); i++)
     {
-        nums[i] = nums[i]->simplify();
+        expression[i] = expression[i]->simplify();
+    }
+    if (expression.size() == 1)
+    {
+        return expression[0];
+    }
 
-        SimplifiedTerms.push_back(nums[i]);
-        cout << SimplifiedTerms[i]->toString() + " ADD TERM" << endl;
-    }
-    if (SimplifiedTerms.size() == 1)
+    for (int i=0; (unsigned) i < expression.size(); i++)
     {
-        return SimplifiedTerms[0];
-    }
-    SumExpression te = SumExpression(SimplifiedTerms);
-    cout << te.toString() << endl;
-    for (int i=0; (unsigned) i < SimplifiedTerms.size(); i++)
-    {
-        for (int j=i+1; (unsigned) j < SimplifiedTerms.size(); j++)
+        for (int j=i+1; (unsigned) j < expression.size(); j++)
         {
-            cout <<"ADDING " + SimplifiedTerms[i]->toString() + " " + SimplifiedTerms[j]->toString() << endl;
-            tmp = SimplifiedTerms[i]->add(SimplifiedTerms[j]);
+            cout <<"ADDING " + expression[i]->toString() + " & " + expression[j]->toString() << endl;
+            expression[i] = expression[i]->add(expression[j]);
             cout <<"ADDING SUCCESS" << endl;
-            cout <<tmp->getName()<<endl;
-            cout << tmp->toString() << endl;
-
-            SimplifiedTerms[i] = tmp;
-            cout <<"ERASING " + SimplifiedTerms[j]->toString()<<endl;
-            SimplifiedTerms.erase(SimplifiedTerms.begin() + j);
-            if (SimplifiedTerms.size() != 1)
+            cout << "ERASING " + expression[j]->toString() <<endl;
+            expression.erase(expression.begin() + j);
+            if (expression.size() != 1)
             {
                 j = j - 1;
             }
@@ -147,15 +159,14 @@ AbstractNumber * SumExpression::simplify()
 
     }
     cout <<"SUMEXPRESSION CREATED" << endl;
-    AbstractNumber *simpleSum = new SumExpression(SimplifiedTerms);
 
-    if (SimplifiedTerms.size() == 1)
+    if (expression.size() == 1)
     {
-        return simpleSum;
+        return expression[0];
     }
     else
     {
-        return simpleSum->simplify();
+        return this;
     }
 }
 string SumExpression::getName()

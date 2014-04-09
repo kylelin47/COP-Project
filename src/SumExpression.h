@@ -13,7 +13,7 @@ using namespace std;
 
 class SumExpression: public AbstractNumber {
 public:
-	SumExpression(vector<AbstractNumber*> &nums);
+	SumExpression(vector<AbstractNumber*> &expression);
 	SumExpression(const string &input);
 	virtual ~SumExpression();
 	AbstractNumber * add(AbstractNumber *number);
@@ -29,7 +29,7 @@ public:
 
 	AbstractNumber* simplify();
 	char getSign();
-    //vector<AbstractNumber*> nums;
+    //vector<AbstractNumber*> expression;
 
 };
 
