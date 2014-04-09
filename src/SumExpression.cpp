@@ -251,8 +251,19 @@ string SumExpression::makeStringUsable(string input)
 			cout << "ERROR: double operator" << endl;
 		}
 	}
+	
+	for (size_t i = 0; i < end-1; i++)
+	{
+		if (output[i] == ' ')
+		{
+			output.erase(i,1);
+			--i;
+			--end;
+		}
+	}
 
-
+	end - output.size();
+	
 	for (size_t i = 1; i < end; i++) //luckly none the places we want to split at share any charactors
 	{
 		if ((	output[i] == '(' || //break at (
