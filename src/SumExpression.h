@@ -15,6 +15,7 @@ class SumExpression: public AbstractNumber {
 public:
 	SumExpression(vector<AbstractNumber*> &expression);
 	SumExpression(const string &input);
+	SumExpression(const string &input, bool noParenthesis);
 	virtual ~SumExpression();
 	AbstractNumber * add(AbstractNumber *number);
 	AbstractNumber * multiply(AbstractNumber *number);
@@ -29,6 +30,7 @@ public:
 
 	AbstractNumber* simplify();
 	char getSign();
+	bool noParenthesis;
     //vector<AbstractNumber*> expression;
 
 };
