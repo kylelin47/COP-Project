@@ -6,6 +6,11 @@
  */
 
 #include "MultExpression.h"
+#include <Algorithm>
+#include "Log.h"
+#include "E.h"
+#include "Radical.h"
+#include "SumExpression.h"
 #define SMART_INTEGER 1
 #define SMART_POWER 2
 #define SMART_LOG 4
@@ -27,6 +32,7 @@ void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*>
 	  size_t skipUntil=0;
 	  string substring;
 	  size_t pos = 0;
+	  int type;
 	  if (text[0] != '+' && text[0] != '-' ){
 	  		sign = '+';
 	  }
@@ -65,26 +71,21 @@ void MultExpression::split(vector<AbstractNumber*> &num, vector<AbstractNumber*>
 		  }
 		  else
 		  {
-			  cout << "MultSubstring: " << substring << endl;
-			  switch(getTypeFromString(substring))
-			  {
-				  case SMART_INTEGER: 		//This is the syntax for adding BaseNumbers
-					if (nextValue == '*'){
-						  numerator.push_back(new SmartInteger(substring));
-					  }
-					  else {
-						  denominator.push_back(new SmartInteger(substring));
-					  }
-					break;
-			  }
+			  //cout << "MultSubstring: " << substring << endl;
 
-
+			  if (nextValue == '*'){
+					  appendNumberFromString(substring, numerator);
+				  }
+			  else {
+					 appendNumberFromString(substring, denominator);
+				  }
 
 			  nextValue = s[pos];
 			  s.erase(0, pos+ 1);
 		  }
 	}
 }
+
 
 MultExpression::MultExpression(const string &input) {
 
@@ -169,24 +170,88 @@ string MultExpression::getName()
 {
 	return "MultExpression";
 }
-int MultExpression::getTypeFromString(string input)
+void MultExpression::appendNumberFromString(string input, vector<AbstractNumber*> &express)
 {
-	cout << "Current string:" << input << endl;
-	if (input[0] == 'l' && input[1] =='o' && input[2] == 'g' && input[3] == '_')
+	stringstream ss;
+	int num;
+	if (input[0] == 'l' && input[1] =='o' && input[2] == 'g' && input[3] == '_' && findOutside(':', input) != string::npos)
 	{
+		AbstractNumber* base = new SumExpression( input.substr(4, findOutside(':',input)-4));
+		cout << "value substring: " << reduceString(input.substr( findOutside(':', input) + 1 , input.size())) << endl;
+		AbstractNumber* value = new SumExpression( input.substr( findOutside(':', input) + 1 , input.size() - findOutside(':', input)));
+
 		cout << input << " is a log" << endl;
-		return SMART_LOG;
+		express.push_back(new Log(base, value));
+
 	}
-	if (input[0] == 'l' && input[1] == 'n')
+	else if (input[0] == 'l' && input[1] == 'n' && input[2] == ':')
 	{
+		AbstractNumber* value = new SumExpression( input.substr( findOutside(':', input) + 1 , input.size()));
+		AbstractNumber* base = new E();
 		cout << input << " is ln" << endl;
-		return SMART_LN;
+		express.push_back(new Log(base, value));
 	}
-	if (input[0] == 's' && input[1] == 'q' && input[2] == 'r' && input[3] == 't' && input[4] == ':')
+	else if (input[0] == 's' && input[1] == 'q' && input[2] == 'r' && input[3] == 't' && input[4] == ':')
 	{
+
 		cout << input << " is a square root" << endl;
-		return SMART_POWER;
+		AbstractNumber* value = new SumExpression( input.substr( findOutside(':', input) + 1, input.size()));
+		AbstractNumber* root = new SmartInteger("2");
+		express.push_back(new Radical(value, root));
 	}
-	return SMART_INTEGER;
+	else if(input[findOutside('r', input)+1] == 't' && input[findOutside('r', input)+2] == ':'){
+		cout << input << " is an nth root" << endl;
+
+		AbstractNumber* root = new SumExpression(input.substr(0 , findOutside('r', input)));
+		AbstractNumber* value = new SumExpression(input.substr(findOutside(':', input)+1, input.size()));
+
+		express.push_back(new Radical(value, root));
+	}
+	else if (input[0] == '(' && input[input.size()-1] ==')')
+	{
+		cout << input << " is a SumExpression" << endl;
+		input.erase(0,1);
+		input.erase(input.size()-1,1);
+
+		express.push_back(new SumExpression(input));
+	}
+	else if (isNumber(input))
+	{
+		cout << input << " is an Integer" << endl;
+		express.push_back(new SmartInteger(input));
+	}
+	else
+	{
+		cout << input << " is not a valid expression" << endl; // THROW here
+	}
 }
 
+bool MultExpression::isNumber(string input)
+{
+	for (int i = 0; (unsigned)i < input.size(); i++)
+	{
+		if (!isdigit(input[i]))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+size_t MultExpression::findOutside(char symbol , string input)
+{
+	size_t pos;
+	size_t skipUntil = 0;
+	while ((pos = input.find(symbol,skipUntil)) != string::npos)
+	{
+		if (count(input, 0, pos, '(') > count(input, 0, pos, ')'))
+		{
+				skipUntil = pos+1;
+		}
+		else
+		{
+			return pos;
+		}
+	}
+	return string::npos;
+}
