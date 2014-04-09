@@ -4,7 +4,7 @@
 
 class Pi: public AbstractNumber {
 public:
-	Pi(const string &input);
+	Pi();
 	virtual ~Pi();
 	AbstractNumber * add(AbstractNumber *number);
 	AbstractNumber * multiply(AbstractNumber *number);
@@ -13,6 +13,7 @@ public:
 	double toDouble();
 	AbstractNumber * simplify();
 	string getName();
+	string getSign();
 
 private:
 	double value;
