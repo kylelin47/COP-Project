@@ -1,6 +1,6 @@
 #include "Pi.h"
 
-Pi::Pi(const string &input)
+Pi::Pi()
 {
     //ctor
 }
@@ -38,4 +38,9 @@ AbstractNumber * Pi::simplify()
 string Pi::getName()
 {
 	return "Pi";
+}
+
+char Pi::getSign()
+{
+	return '+';
 }
