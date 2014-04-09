@@ -31,9 +31,12 @@ public:
 	double toDouble();
 	AbstractNumber* simplify();
 	string getName();
-	int getTypeFromString(string input);
+	void appendNumberFromString(string input, vector<AbstractNumber*> &express);
 	int count(string input, int begin, int end, char symbol);
-
+	bool isNumber(string input);
+	string reduceString(string input);
+	size_t findOutside(char symbol, string input);
+	
 	vector <AbstractNumber*> expression;
 
 private:
