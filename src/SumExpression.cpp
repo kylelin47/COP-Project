@@ -119,7 +119,13 @@ AbstractNumber * SumExpression::multiply(AbstractNumber *number){
 	return new SumExpression(output);
 }
 AbstractNumber * SumExpression::divide(AbstractNumber *number){
+	vector<AbstractNumber*> output = expression;
+	for (int i = 0; i < output.size(); i++)
+	{
+		output[i] = output[i]->divide(number);
+	}
 
+	return new SumExpression(output);
 }
 string SumExpression::toString(){
 	string output ="";
