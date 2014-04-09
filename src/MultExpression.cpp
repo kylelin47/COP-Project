@@ -9,6 +9,7 @@
 #define SMART_INTEGER 1
 #define SMART_POWER 2
 #define SMART_LOG 4
+#define SMART_LN 5
 #define SMART_FLOAT 8
 #define SMART_PI 16
 #define SMART_E 32
@@ -90,8 +91,19 @@ MultExpression::MultExpression(const string &input) {
 	split(numerator, denominator, input, '*', '/');
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums) {
-	this->nums = nums;
+MultExpression::MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem) {
+	this->numerator = nums;
+	this->denominator = dem;
+}
+
+MultExpression::MultExpression(vector<AbstractNumber*> nums)
+{
+	this->numerator = nums;
+}
+
+AbstractNumber * MultExpression::multiply(AbstractNumber *number)
+{
+	this->numerator.push_back(number);
 }
 
 char MultExpression::getSign()
@@ -107,27 +119,25 @@ MultExpression::~MultExpression() {
 AbstractNumber * MultExpression::add(AbstractNumber *number){
 
 }
-AbstractNumber * MultExpression::multiply(AbstractNumber *number){
 
-}
 AbstractNumber * MultExpression::divide(AbstractNumber *number){
 
 }
 string MultExpression::toString(){
 	string output ="";
-	for (int i =0; (unsigned)i < nums.size(); i++){
-		output += nums[i]->toString();
-		if ((unsigned)i < nums.size() - 1)
-		{
-			output += " * ";
+		for (int i =0; i < numerator.size(); i++){
+			output += numerator[i]->toString();
+			if (i < numerator.size()-1)
+			{
+				output += "*";
+			}
 		}
-	}
-	for (int i = 0; (unsigned)i < denominator.size(); i++){
-		output += "/";
-		output += denominator[i]->toString();
+		for (int i = 0; i < denominator.size(); i++){
+			output += "/";
+			output += denominator[i]->toString();
 
-	}
-	return output;
+		}
+		return output;
 }
 
 int MultExpression::count(string input, int begin, int end, char symbol)
