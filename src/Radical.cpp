@@ -151,3 +151,7 @@ string Radical::getName()
 {
     return "Radical";
 }
+
+char Radical::getSign(){
+	return '+';
+}
