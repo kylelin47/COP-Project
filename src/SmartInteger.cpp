@@ -23,7 +23,7 @@ SmartInteger::SmartInteger(const string &input) {
 }
 
 SmartInteger::~SmartInteger() {
-	// TODO Auto-generated destructor stub
+	this->delete;
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber>number){

@@ -7,7 +7,7 @@
 
 #ifndef SmartInteger_H_
 #define SmartInteger_H_
-#include "SumExpression.h"
+#include "AbstractNumber.h"
 
 using namespace std;
 
