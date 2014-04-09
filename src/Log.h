@@ -14,7 +14,8 @@ class Log: public AbstractNumber
         AbstractNumber* simplify();
         string getName();
         vector<int> primeFactors(int num);
-
+    	char getSign();
+    
         AbstractNumber *base, *value;
     protected:
     private:
