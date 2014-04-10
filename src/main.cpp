@@ -10,9 +10,10 @@ using namespace std;
 int main() {
     bool run = true;
     string input;
+
 	while (run)
 	{
-		cin >> input;
+		getline(cin, input);
 		if (input != "q")
 		{
 			tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
