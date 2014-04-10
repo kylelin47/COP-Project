@@ -29,9 +29,17 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
             //probably unnecessary
         }
     }
+	std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+	MultVector.push_back(shared_from_this());
+	MultVector.push_back(number);
+	tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
+	return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
 
+	// Changes number to exponent with power of -1 then multiplies inverted number
+    // tr1::shared_ptr<AbstractNumber> r(new Exponent(number, new SmartInteger(-1)));
+    // return multiply(r);
 }
 string Log::toString(){
 	std::stringstream ss;
@@ -48,8 +56,11 @@ double Log::toDouble()
 	return log(value->toDouble())/log(base->toDouble());
 }
 
- tr1::shared_ptr<AbstractNumber>  Log::simplify()
+ tr1::shared_ptr<AbstractNumber> Log::simplify()
 {
+    base = base->simplify();
+    value = value->simplify();
+
     if (abs(remainder(toDouble(), 1)) < pow(10, -6))
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));

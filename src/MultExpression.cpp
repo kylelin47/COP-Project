@@ -304,6 +304,15 @@ double MultExpression::toDouble()
 {
     double x = 1;
 
+    for (int i=0; i<numerator.size(); i++)
+    {
+        x = x * numerator[i]->toDouble();
+    }
+    for (int i=0; i<denominator.size(); i++)
+    {
+        x = x / denominator[i]->toDouble();
+    }
+
 	return x;
 }
 
@@ -318,12 +327,23 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     {
         return tr1::shared_ptr<AbstractNumber>(new SmartInteger(toDouble()));
     }
-    numerator = simplifyVector(numerator);
-    denominator = simplifyVector(denominator);
+
+    if (numerator.size() == 1 && denominator.size() == 0)
+    {
+        return numerator[0]->simplify();
+    }
+    if (numerator.size() != 0)
+    {
+        numerator = simplifyVector(numerator);
+    }
+    if (denominator.size() != 0)
+    {
+        denominator = simplifyVector(denominator);
+    }
 
     for (int i=0; i < numerator.size(); i++)
     {
-        for (int j=i; j < numerator.size(); j++)
+        for (int j=i; j < denominator.size(); j++)
         {
             tmp = numerator[i]->divide(denominator[j]);
             if (tmp->getName() != "MultExpression")
@@ -353,6 +373,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
             }
         }
     }
+
     if (numerator.size() == 1 || denominator.size() == 1)
     {
         if (numerator.size() == 0)
@@ -364,7 +385,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
             return numerator[0];
         }
     }
-
     return shared_from_this();
 }
 
@@ -374,6 +394,7 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
     for (int i=0; (unsigned)i < vec.size(); i++)
     {
         vec[i] = vec[i]->simplify();
+        cout << vec[i]->toString() << endl;
     }
 
     if (vec.size() != 1)
@@ -392,7 +413,6 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
 
         }
     }
-
     return vec;
 }
 string MultExpression::getName()

@@ -23,12 +23,8 @@ tr1::shared_ptr<AbstractNumber> Radical::add(tr1::shared_ptr<AbstractNumber>numb
         }
     }
 
-    else
-    {
-        cout <<"ADDING INTEGER" << endl;
-        SumTerms.push_back(shared_from_this());
-        SumTerms.push_back(number);
-    }
+    SumTerms.push_back(shared_from_this());
+    SumTerms.push_back(number);
 
     tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumTerms));
     return s;
@@ -62,24 +58,26 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 
 }
 
- tr1::shared_ptr<AbstractNumber>  Radical::simplify()
+ tr1::shared_ptr<AbstractNumber> Radical::simplify()
 {
+    value = value->simplify();
+    root = root->simplify();
+
     vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
     int coefficient = 1;
     if (value->getName() == "Integer")
     {
-        int thisValue = (int)(value->toDouble());
         if (root->getName() == "Integer")
         {
-            int rootValue = (int)(root->toDouble());
-            if (rootValue >= 1)
+            if (root->toDouble() >= 1)
             {
+                int thisValue = value->toDouble();
                 for (int i=2; i<=thisValue/2; i++)
                 {
-                    if (thisValue % (int)round(pow(i, rootValue)) == 0)
+                    if (thisValue % (int)round(pow(i, root->toDouble())) == 0)
                     {
                         coefficient*=i;
-                        thisValue = thisValue/(int)pow(i, rootValue);
+                        thisValue = thisValue/(int)pow(i, root->toDouble());
                         i = 1;
                     }
                 }
@@ -97,7 +95,8 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
                 else
                 {
                     SimplifiedTerms.push_back(n1);
-                    tr1::shared_ptr<AbstractNumber>n2(new Radical(n1, this->root));
+                    tr1::shared_ptr<AbstractNumber>ReducedValue(new SmartInteger(thisValue));
+                    tr1::shared_ptr<AbstractNumber>n2(new Radical(ReducedValue, this->root));
                     SimplifiedTerms.push_back(n2);
                 }
             }
@@ -109,7 +108,6 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
     }
 
     tr1::shared_ptr<AbstractNumber> n (new MultExpression(SimplifiedTerms, '+'));
-
     if (SimplifiedTerms.size() == 1)
     {
         return n;
