@@ -51,12 +51,47 @@ AbstractNumber * SmartInteger::multiply(AbstractNumber *number){
         MultipliedTerms.push_back(n);
     }
 
-    AbstractNumber *M = new MultExpression(MultipliedTerms);
+    AbstractNumber *M = new MultExpression(MultipliedTerms, '+');
     return M;
 }
-AbstractNumber * SmartInteger::divide(AbstractNumber *number){
+AbstractNumber * SmartInteger::divide(AbstractNumber *number)
+	{
 
-}
+		if (number -> getName() == "Integer")
+		{
+			if((this->value % number->toDouble()) != 0)
+			{
+
+				vector<AbstractNumber*> numerator;
+				vector<AbstractNumber*> denominator;
+				AbstractNumber *n = new SmartInteger(this->value);
+				AbstractNumber *d = new SmartInteger(number->toDouble());
+				numerator.push_back(n);
+				denominator.push_back(d);
+
+				AbstractNumber *D = new MultExpression(numerator, denominator, '+');
+				return D;
+
+			}
+
+
+			else
+			{
+				vector<AbstractNumber*> DividedTerms;
+
+				AbstractNumber *n = new SmartInteger(this->value / number->toDouble());
+				DividedTerms.push_back(n);
+
+				AbstractNumber *D = new MultExpression(DividedTerms, '+');
+				return D;
+
+
+			}
+
+		}
+		return 0;
+
+	}
 string SmartInteger::toString(){
 	stringstream ss;
 
