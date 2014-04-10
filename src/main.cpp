@@ -11,9 +11,10 @@ using namespace std;
 int main() {
     bool run = true;
     string input;
+
 	while (run)
 	{
-		cin >> input;
+		getline(cin, input);
 		if (input != "q")
 		{
 		    vector <tr1::shared_ptr<AbstractNumber> > s;

@@ -20,10 +20,7 @@ tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number)
 
 }
 string E::toString(){
-	stringstream ss;
-
-	ss << value;
-	return ss.str();
+	return "e";
 }
 
 double E::toDouble()
