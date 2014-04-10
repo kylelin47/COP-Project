@@ -11,11 +11,11 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
     this->value = value;
 }
 
- tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
-
+ tr1::shared_ptr<AbstractNumber> Log::add(tr1::shared_ptr<AbstractNumber>number){
     std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
     SumVector.push_back(shared_from_this());
     SumVector.push_back(number);
+
     tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumVector));
 
     return s;

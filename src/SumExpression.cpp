@@ -57,6 +57,11 @@ char SumExpression::getSign()
 {
 	return '+';
 }
+
+SumExpression::SumExpression()
+{
+    this->noParenthesis = false;
+}
 SumExpression::SumExpression(const string &input) {
 
 	split(expression, makeStringUsable(input), '+' , '-');
@@ -86,15 +91,16 @@ int SumExpression::count(string input, int begin, int end, char symbol)
 	return count;
 }
 
-SumExpression::SumExpression() {
-
-}
-
 SumExpression::~SumExpression() {
 	// TODO Auto-generated destructor stub
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
+
+    if (expression.size() == 1)
+    {
+        return expression[0]->add(number);
+    }
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
     SumTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;

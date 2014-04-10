@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SmartInteger.h"
+#include "Log.h"
 #include "SumExpression.h"
 //#include "AbstractNumber.h"
 
@@ -15,8 +16,24 @@ int main() {
 		cin >> input;
 		if (input != "q")
 		{
-			tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-			cout << num->toString() << endl << endl;
+		    vector <tr1::shared_ptr<AbstractNumber> > s;
+		    tr1::shared_ptr<AbstractNumber> int1(new SmartInteger(2));
+		    tr1::shared_ptr<AbstractNumber> int2(new SmartInteger(5));
+		    tr1::shared_ptr<AbstractNumber> Log1(new Log(int1, int2));
+		    tr1::shared_ptr<AbstractNumber> int3(new SmartInteger(2));
+		    tr1::shared_ptr<AbstractNumber> int4(new SmartInteger(2));
+			s.push_back(int1);
+			s.push_back(int2);
+			s.push_back(int3);
+			s.push_back(Log1);
+			s.push_back(int4);
+
+			tr1::shared_ptr<AbstractNumber> num(new SumExpression(s));
+
+			//cout << num->expression.size() << endl;
+			cout << num->toDouble() << endl << endl;
+			cout << num->toString() << endl;
+			cout << num->simplify()->toString() << endl;
 		}
 		else
 		{
@@ -25,11 +42,11 @@ int main() {
 		}
 
 	}
-    
-    
-    
-    
-    
+
+
+
+
+
 
     /*bool menuLoop = true;
     int input = 0;
