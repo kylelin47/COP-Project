@@ -7,7 +7,6 @@
 
 #ifndef MultExpression_H_
 #define MultExpression_H_
-#include "AbstractNumber.h"
 #include "SmartInteger.h"
 #include <iostream>
 
