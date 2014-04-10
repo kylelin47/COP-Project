@@ -57,6 +57,12 @@ char SumExpression::getSign()
 {
 	return '+';
 }
+
+SumExpression::SumExpression();
+{
+
+}
+
 SumExpression::SumExpression(const string &input) {
 
 	split(expression, makeStringUsable(input), '+' , '-');
@@ -98,7 +104,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
     tr1::shared_ptr<AbstractNumber> tmp;
     for (int i=0; (unsigned)i < SumTerms.size(); i++)
     {
-        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
         if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
         {
             if (SumTerms[i]->getName() != "SumExpression")

@@ -13,6 +13,7 @@ using namespace std;
 
 class SumExpression: public AbstractNumber {
 public:
+    SumExpression();
 	SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression);
 	SumExpression(const string &input);
 	SumExpression(const string &input, bool noParenthesis);
