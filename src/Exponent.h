@@ -15,7 +15,7 @@ class Exponent: public AbstractNumber
         double toDouble();
     	char getSign();
 
-        tr1::shared_ptr<AbstractNumber>base, value;
+        tr1::shared_ptr<AbstractNumber>base, power;
 
 };
 
