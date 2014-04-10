@@ -30,7 +30,7 @@ public:
 	virtual char getSign() = 0;
 
 	tr1::shared_ptr<AbstractNumber>base, root, value;
-	vector< tr1::shared_ptr<AbstractNumber> > expression;
+	vector< tr1::shared_ptr<AbstractNumber> > expression, numerator, denominator;
 
 };
 

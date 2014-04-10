@@ -93,6 +93,10 @@ MultExpression::MultExpression(const string &input) {
 	split(numerator, denominator, input, '*', '/');
 }
 
+MultExpression::MultExpression()
+{
+    this->sign = '+';
+}
 
 MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign) {
 	this->numerator = nums;
@@ -109,12 +113,81 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
+    vector< tr1::shared_ptr<AbstractNumber> > s;
+    double d = 1;
+    double e = 1;
 
+    if (number->getName() == "MultExpression")
+    {
+        cout << number->denominator.size() << endl;
+        cout << number->toString() << endl;
+        for (int i=0; i++; i<number->denominator.size())
+        {
+            d = d * number->denominator[i]->toDouble();
+        }
+        for (int i=0; i++; i<numerator.size())
+        {
+            e = e * numerator[i]->toDouble();
+        }
+        if (d == e)
+        {
+            for (int i=0; i<number->numerator.size(); i++)
+            {
+                s.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(numerator, '+')));
+                s.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(number->numerator, '+')));
+                tr1::shared_ptr<AbstractNumber> SimplifiedSum = SumExpression(s).simplify();
+                tr1::shared_ptr<AbstractNumber> SimpleMult(new MultExpression());
+                SimpleMult->numerator.push_back(SimplifiedSum);
+                SimpleMult->denominator = denominator;
+                return SimpleMult;
+            }
+        }
+    }
+
+    if ( (number->getName() != "SumExpression") && (number->getName() != "MultExpression") )
+    {
+        for (int i=0; i++; i<numerator.size())
+        {
+            if (numerator[i]->getName() == number->getName())
+            {
+                tr1::shared_ptr<AbstractNumber> m(new MultExpression());
+                tr1::shared_ptr<AbstractNumber> s(new SumExpression());
+                s->expression.push_back(shared_from_this()->divide(numerator[i]));
+                s->expression.push_back(number->divide(numerator[i]));
+                m->numerator.push_back(numerator[i]);
+                m->numerator.push_back(s);
+                return m;
+            }
+        }
+    }
+
+
+    s.push_back(shared_from_this());
+    s.push_back(number);
+    return tr1::shared_ptr<AbstractNumber>(new SumExpression(s));
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
+    vector< tr1::shared_ptr<AbstractNumber> > MultTerms = expression;
+    MultTerms.push_back(number);
+    tr1::shared_ptr<AbstractNumber> tmp;
+    for (int i=0; (unsigned)i < MultTerms.size(); i++)
+    {
+        if (MultTerms[i]->getName() == MultTerms[MultTerms.size() - 1]->getName())
+        {
+            if (MultTerms[i]->getName() != "MultExpression")
+            {
+                tmp = MultTerms[i]->multiply(MultTerms[MultTerms.size() - 1]);
 
-	this->numerator.push_back(number);
+                if (tmp->getName() != "MultExpression")
+                {
+                    MultTerms[i] = tmp;
+                    MultTerms.erase(MultTerms.end() - 1);
+                }
+            }
+        }
+    }
+    expression = MultTerms;
 
 	if (this->sign == number->getSign())
 	{
@@ -193,7 +266,7 @@ double MultExpression::toDouble()
 tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
 {
     tr1::shared_ptr<AbstractNumber> tmp;
-    AbstractNumber* tmp2;
+
     vector<tr1::shared_ptr<AbstractNumber> > num;
     vector<tr1::shared_ptr<AbstractNumber> > den;
 
@@ -218,9 +291,17 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
             {
                 num.push_back(numerator[i]);
                 den.push_back(denominator[j]);
-                MultExpression M = MultExpression(num, den);
-                tmp2 = &M;
-                if ((tmp->toString()).compare(tmp2->toString()) != 0) //compare, when true, returns 0
+                if (tmp->toDouble() < 0)
+                {
+                    char sign = '-';
+                }
+                else
+                {
+                    char sign = '+';
+                }
+                MultExpression M = MultExpression(num, den, sign);
+
+                if ((tmp->toString()).compare(M.toString()) != 0) //compare, when true, returns 0
                 {
                     numerator[i] = tmp;
                     denominator.erase(denominator.begin() + j);

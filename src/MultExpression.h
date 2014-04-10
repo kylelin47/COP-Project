@@ -14,11 +14,8 @@ using namespace std;
 
 class MultExpression: public AbstractNumber {
 public:
+    MultExpression();
     MultExpression(const string &input);
-	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > num , vector< tr1::shared_ptr<AbstractNumber> > dem);
-	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > expression);
-	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > expression , vector<tr1::shared_ptr<AbstractNumber> > dem);
-	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > expression);
 	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign);
 	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, char sign);
 	virtual ~MultExpression();
@@ -29,8 +26,7 @@ public:
 	string toString();
 	void split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector< tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2);
 	//vector<string> expression;
-	vector<tr1::shared_ptr<AbstractNumber> > numerator;
-	vector<tr1::shared_ptr<AbstractNumber> > denominator;
+	vector<tr1::shared_ptr<AbstractNumber> > numerator, denominator;
 	char getSign();
 	double toDouble();
 	tr1::shared_ptr<AbstractNumber> simplify();
