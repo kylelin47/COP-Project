@@ -6,7 +6,7 @@
  */
 
 #include "MultExpression.h"
-#include <Algorithm>
+//#include <Algorithm>
 #include "Log.h"
 #include "E.h"
 #include "Pi.h"
@@ -406,7 +406,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	if (input[0] == 'l' && input[1] =='o' && input[2] == 'g' && input[3] == '_' && findOutside(':', input) != string::npos)
 	{
 		tr1::shared_ptr<AbstractNumber> base(new SumExpression( input.substr(4, findOutside(':',input)-4)));
-		cout << "value substring: " << reduceString(input.substr( findOutside(':', input) + 1 , input.size())) << endl;
+		cout << "value substring: " << input.substr( findOutside(':', input) + 1 , input.size()) << endl;
 		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1 , input.size() - findOutside(':', input))));
 
 		cout << input << " is a log" << endl;

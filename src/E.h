@@ -1,6 +1,6 @@
 #ifndef E_H
 #define E_H
-#include "AbstractNumber.h"
+#include "Log.h"
 
 class E: public AbstractNumber {
 public:

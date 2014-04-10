@@ -86,7 +86,9 @@ int SumExpression::count(string input, int begin, int end, char symbol)
 	return count;
 }
 
+SumExpression::SumExpression() {
 
+}
 
 SumExpression::~SumExpression() {
 	// TODO Auto-generated destructor stub

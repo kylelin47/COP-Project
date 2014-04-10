@@ -1,19 +1,38 @@
 #include <iostream>
+#include "SmartInteger.h"
+#include "SumExpression.h"
+//#include "AbstractNumber.h"
+
+
 
 using namespace std;
 
 int main() {
+    bool run = true;
+    string input;
+
+	while (run)
+	{
+		getline(cin, input);
+		if (input != "q")
+		{
+			tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
+			cout << num->toString() << endl << endl;
+		}
+		else
+		{
+			cout << "quitting" << endl;
+			run = false;
+		}
+
+	}
     
-    /*
-    AbstractNumber* num = new SumExpression("e");
-    AbstractNumber* nu2 = new SmartInteger("2");
-    cout << num->multiply(num2)->toString() << endl;
     
     
-    */
     
     
-    bool menuLoop = true;
+
+    /*bool menuLoop = true;
     int input = 0;
 
     while (menuLoop)
@@ -62,7 +81,7 @@ int main() {
                         cout << s.toString() << endl;
                         cout << s.simplify()->toString() << endl;
                         s.expression.clear();
-                        */
+
                     }
                 }
                 break;
@@ -88,5 +107,5 @@ int main() {
                 menuLoop = false;
                 break;
         }
-    }
+    }*/
 }
