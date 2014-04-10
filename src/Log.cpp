@@ -36,10 +36,10 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
-
 	// Changes number to exponent with power of -1 then multiplies inverted number
-    // tr1::shared_ptr<AbstractNumber> r(new Exponent(number, new SmartInteger(-1)));
-    // return multiply(r);
+	//tr1::shared_ptr<AbstractNumber> i(new SmartInteger(-1));
+	//tr1::shared_ptr<AbstractNumber> r(new Exponent(number, i));
+	//return multiply(r);
 }
 string Log::toString(){
 	std::stringstream ss;
@@ -78,7 +78,7 @@ double Log::toDouble()
             tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
             tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
 
-            SimplifiedTerms.push_back(L);
+            SimplifiedTerms.push_back(L);d
         }
     }
     tr1::shared_ptr<AbstractNumber>s(new SumExpression(SimplifiedTerms));
