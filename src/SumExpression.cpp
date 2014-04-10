@@ -44,7 +44,7 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  {
 		  //cout << "Substring:" << s.substr(0 , pos) << endl;
 		  tr1::shared_ptr<AbstractNumber> n (new MultExpression(sign + s.substr(0 , pos)));
-		  tokens.push_back(n);
+		  this->expression.push_back(n);
 
 		  sign = s[pos];
 		  s.erase(0, pos+ 1);
@@ -56,11 +56,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 char SumExpression::getSign()
 {
 	return '+';
-}
-
-SumExpression::SumExpression()
-{
-    this->noParenthesis = false;
 }
 SumExpression::SumExpression(const string &input) {
 
@@ -91,16 +86,15 @@ int SumExpression::count(string input, int begin, int end, char symbol)
 	return count;
 }
 
+SumExpression::SumExpression() {
+
+}
+
 SumExpression::~SumExpression() {
 	// TODO Auto-generated destructor stub
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
-
-    if (expression.size() == 1)
-    {
-        return expression[0]->add(number);
-    }
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
     SumTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
@@ -189,23 +183,30 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 
     for (int i=0; (unsigned)i < expression.size(); i++)
     {
+    	cout << "Bug:"<< expression[i]->toString() << endl;
         expression[i] = expression[i]->simplify();
+        cout << "Bug2:"<< expression[i]->toString() << endl;
     }
     if (expression.size() == 1)
     {
+    	cout << "Size = 1" << endl;
         return expression[0];
     }
 
-    for (int i=0; (unsigned) i < expression.size(); i++)
+    int size = expression.size();
+
+    for (int i=0; (unsigned) i < size; i++)
     {
-        for (int j=i+1; (unsigned) j < expression.size(); j++)
+        for (int j=i+1; (unsigned) j < size; j++)
         {
+
             cout <<"ADDING " + expression[i]->toString() + " & " + expression[j]->toString() << endl;
             expression[i] = expression[i]->add(expression[j]);
             cout <<"ADDING SUCCESS" << endl;
             cout << "ERASING " + expression[j]->toString() <<endl;
             expression.erase(expression.begin() + j);
-            if (expression.size() != 1)
+            size = size - 1;
+            if (size != 1)
             {
                 j = j - 1;
             }
@@ -251,14 +252,14 @@ string SumExpression::makeStringUsable(string input)
 						j = end;
 					}
 					if (j == (end - 1)){
-						cout << "ERROR: parenthesis" << endl; //THROW here
+						throw "ERROR: Uneven Parentheses";
 					}
 				}
 
 			}
 			if (checkPar[i] == ')')
 			{
-				cout << "Parenthesis error" << endl; //THROW here
+				throw "ERROR: Uneven Parentheses";
 			}
 
 
@@ -280,7 +281,7 @@ string SumExpression::makeStringUsable(string input)
 				output[i+1] == '+'  ||
 				output[i+1] == '-'  )) //make sure the split point is not already signed
 		{
-			cout << "ERROR: double operator" << endl;
+			throw "ERROR: Double Operator";
 		}
 	}
 

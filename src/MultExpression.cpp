@@ -303,14 +303,6 @@ int MultExpression::count(string input, int begin, int end, char symbol)
 double MultExpression::toDouble()
 {
     double x = 1;
-    for (int i=0; i<numerator.size(); i++)
-    {
-        x = x * numerator[i]->toDouble();
-    }
-    for (int i=0; i<denominator.size(); i++)
-    {
-        x = x / denominator[j]->toDouble();
-    }
 
 	return x;
 }
@@ -463,7 +455,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	else if (isNumber(input))
 	{
 		cout << input << " is an Integer" << endl;
-		express.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(input)));
+		numerator.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(input)));
 	}
 	else
 	{

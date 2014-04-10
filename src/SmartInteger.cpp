@@ -18,7 +18,6 @@ SmartInteger::SmartInteger(int value) {
 SmartInteger::SmartInteger(const string &input) {
 
 	stringstream ss(input);
-
 	ss >> value;
 
 }
@@ -38,10 +37,6 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
 
     else
     {
-        cout << "NOT ADDING INTEGER" << endl;
-        cout << number->getName() << endl;
-        tr1::shared_ptr<AbstractNumber> n (number->add(shared_from_this()));
-        cout << n->toString() << endl;
         return number->add(shared_from_this());
     }
     tr1::shared_ptr<AbstractNumber>s (new SumExpression(SumTerms));
@@ -104,6 +99,7 @@ string SmartInteger::toString(){
 
 double SmartInteger::toDouble()
 {
+	//cout << value;
 	return (double)value;
 }
 

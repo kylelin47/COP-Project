@@ -11,26 +11,27 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
     this->value = value;
 }
 
- tr1::shared_ptr<AbstractNumber> Log::add(tr1::shared_ptr<AbstractNumber>number){
+ tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
+
     std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
     SumVector.push_back(shared_from_this());
     SumVector.push_back(number);
-
     tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumVector));
 
     return s;
 }
  tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
-	std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	MultVector.push_back(shared_from_this());
-	MultVector.push_back(number);
-	tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector));
-	return r;
+
+    if (number->getName() == "Log")
+    {
+        if (base->toDouble() == number->base->toDouble())
+        {
+            //probably unnecessary
+        }
+    }
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
-	// Changes number to exponent with power of -1 then multiplies inverted number
-	tr1::shared_ptr<AbstractNumber> r(new Exponent(number, new SmartInteger(-1)));
-	return multiply(r);
+
 }
 string Log::toString(){
 	std::stringstream ss;
