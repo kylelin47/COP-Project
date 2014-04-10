@@ -113,7 +113,6 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
-<<<<<<< HEAD
     double d = 1;
     double e = 1;
 
@@ -160,59 +159,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
                         }
                     }
                 }
-||||||| merged common ancestors
-=======
-    vector< tr1::shared_ptr<AbstractNumber> > s;
-    double d = 1;
-    double e = 1;
 
-    if (number->getName() == "MultExpression")
-    {
-        cout << number->denominator.size() << endl;
-        cout << number->toString() << endl;
-        for (int i=0; i++; i<number->denominator.size())
-        {
-            d = d * number->denominator[i]->toDouble();
-        }
-        for (int i=0; i++; i<numerator.size())
-        {
-            e = e * numerator[i]->toDouble();
-        }
-        if (d == e)
-        {
-            for (int i=0; i<number->numerator.size(); i++)
-            {
-                s.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(numerator, '+')));
-                s.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(number->numerator, '+')));
-                tr1::shared_ptr<AbstractNumber> SimplifiedSum = SumExpression(s).simplify();
-                tr1::shared_ptr<AbstractNumber> SimpleMult(new MultExpression());
-                SimpleMult->numerator.push_back(SimplifiedSum);
-                SimpleMult->denominator = denominator;
-                return SimpleMult;
-            }
-        }
-    }
-
-    if ( (number->getName() != "SumExpression") && (number->getName() != "MultExpression") )
-    {
-        for (int i=0; i++; i<numerator.size())
-        {
-            if (numerator[i]->getName() == number->getName())
-            {
-                tr1::shared_ptr<AbstractNumber> m(new MultExpression());
-                tr1::shared_ptr<AbstractNumber> s(new SumExpression());
-                s->expression.push_back(shared_from_this()->divide(numerator[i]));
-                s->expression.push_back(number->divide(numerator[i]));
-                m->numerator.push_back(numerator[i]);
-                m->numerator.push_back(s);
-                return m;
-            }
-        }
-    }
-
->>>>>>> Started on add function for MultExp
-
-<<<<<<< HEAD
                 vector< tr1::shared_ptr<AbstractNumber> > m;
                 m.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(factors, '+')));
 
@@ -254,16 +201,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
     s.push_back(shared_from_this());
     s.push_back(number);
     return tr1::shared_ptr<AbstractNumber>(new SumExpression(s));
-||||||| merged common ancestors
-=======
-    s.push_back(shared_from_this());
-    s.push_back(number);
-    return tr1::shared_ptr<AbstractNumber>(new SumExpression(s));
->>>>>>> Started on add function for MultExp
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-<<<<<<< HEAD
     vector< tr1::shared_ptr<AbstractNumber> > MultTerms = numerator;
     MultTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
@@ -282,19 +222,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             if (MultTerms[i]->getName() != "MultExpression")
             {
                 tmp = MultTerms[i]->multiply(MultTerms[MultTerms.size() - 1]);
-||||||| merged common ancestors
-=======
-    vector< tr1::shared_ptr<AbstractNumber> > MultTerms = expression;
-    MultTerms.push_back(number);
-    tr1::shared_ptr<AbstractNumber> tmp;
-    for (int i=0; (unsigned)i < MultTerms.size(); i++)
-    {
-        if (MultTerms[i]->getName() == MultTerms[MultTerms.size() - 1]->getName())
-        {
-            if (MultTerms[i]->getName() != "MultExpression")
-            {
-                tmp = MultTerms[i]->multiply(MultTerms[MultTerms.size() - 1]);
->>>>>>> Started on add function for MultExp
 
                 if (tmp->getName() != "MultExpression")
                 {
