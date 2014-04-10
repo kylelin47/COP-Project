@@ -1,4 +1,4 @@
-#include "Log.h"
+#include "Exponent.h"
 #include <cmath>
 
 using namespace std;
@@ -40,7 +40,7 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 //
 // Returns:
 // shared_ptr<AbstractNumber> 			resulting sum of addition
- tr1::shared_ptr<AbstractNumber> Log::add(tr1::shared_ptr<AbstractNumber> number){
+ tr1::shared_ptr<AbstractNumber> Exponent::add(tr1::shared_ptr<AbstractNumber> number){
 	// Base/power identical, return as MultExpression (2*number)
 	if(number->getName() == "Exponent"){
 		if(number->base == this-> base &&
@@ -70,7 +70,7 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
  //
  // Returns:
  // shared_ptr<AbstractNumber> 			resulting product of multiplication
- tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber> number){
+ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumber> number){
 	 // Base are identical, return as Exponent (b^(p1+p2))
 	 if(number->getName() == "Exponent")
 		 if(number->base == this->base){
@@ -100,7 +100,7 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 //
 // Returns:
 // shared_ptr<AbstractNumber> 			resulting quotient of division
- tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
+ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber>number){
 	 // If Exponent, reverses power by multiplying by -1 if already exponent
 	 // Redundant, should still work with below statement
 	 /*if(number->getName()=="Exponent"){
@@ -120,7 +120,7 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 //
 // Returns:
 // string 			formatted string
-string Log::toString(){
+string Exponent::toString(){
 	std::stringstream ss;
 
 	ss << base->toString();
@@ -134,7 +134,7 @@ string Log::toString(){
 //
 // Returns:
 // double 			this in double form
-double Log::toDouble()
+double Exponent::toDouble()
 {
 	return pow(base->toDouble(), power->toDouble());
 }
@@ -143,7 +143,7 @@ double Log::toDouble()
 //
 // Returns:
 // shared_ptr<AbstractNumber>		number in simplest form
- tr1::shared_ptr<AbstractNumber>  Log::simplify()
+ tr1::shared_ptr<AbstractNumber>  Exponent::simplify()
 {
 	 // if base = 0, returns integer 0
 	 if(base->toDouble() == 0){
@@ -175,7 +175,7 @@ double Log::toDouble()
 //
 // Returns:
 // string 			"Exponent"
-string Log::getName()
+string Exponent::getName()
 {
 	return "Exponent";
 }
@@ -184,7 +184,7 @@ string Log::getName()
 //
 // Returns:
 // char 			'+'
-char Log::getSign(){
+char Exponent::getSign(){
 	return '+';
 }
 
