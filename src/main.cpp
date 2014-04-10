@@ -3,7 +3,16 @@
 using namespace std;
 
 int main() {
-
+    
+    /*
+    AbstractNumber* num = new SumExpression("e");
+    AbstractNumber* nu2 = new SmartInteger("2");
+    cout << num->multiply(num2)->toString() << endl;
+    
+    
+    */
+    
+    
     bool menuLoop = true;
     int input = 0;
 
