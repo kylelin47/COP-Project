@@ -113,7 +113,6 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
-    vector< tr1::shared_ptr<AbstractNumber> > s;
     double d = 1;
     double e = 1;
 
@@ -131,12 +130,49 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
         }
         if (d == e)
         {
+            vector < tr1::shared_ptr<AbstractNumber> > factors;
             for (int i=0; i<number->numerator.size(); i++)
             {
+                for (int i=0; i<numerator.size(); i++)
+                {
+                    for (int j=0; j<number->numerator.size(); j++)
+                    {
+                        tr1::shared_ptr<AbstractNumber> tmpDivide = numerator[i]->divide(number->numerator[j]);
+                        if (tmpDivide->getName() != "MultExpression")
+                        {
+                            factors.push_back(tmpDivide);
+
+                            numerator[i] = tmpDivide;
+                            number->numerator.erase(number->numerator.begin() + j);
+                            i = i - 1;
+                            j = j - 1;
+                        }
+                        tmpDivide = number->numerator[j]->divide(numerator[i]);
+                        if (tmpDivide->getName() != "MultExpression")
+                        {
+                            factors.push_back(tmpDivide);
+
+                            number->numerator[j] = tmpDivide;
+                            numerator.erase(numerator.begin() + i);
+                            i = i - 1;
+                            j = j - 1;
+                        }
+                    }
+                }
+
+                vector< tr1::shared_ptr<AbstractNumber> > m;
+                m.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(factors, '+')));
+
+                vector< tr1::shared_ptr<AbstractNumber> > s;
                 s.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(numerator, '+')));
                 s.push_back(tr1::shared_ptr<AbstractNumber>(new MultExpression(number->numerator, '+')));
-                tr1::shared_ptr<AbstractNumber> SimplifiedSum = SumExpression(s).simplify();
-                tr1::shared_ptr<AbstractNumber> SimpleMult(new MultExpression());
+                if (s[0]->getName() != "MultExpression")
+                {
+                    s[0] = s[0]->add(s[1]);
+                    s.erase(s.begin() + 1);
+                }
+                tr1::shared_ptr<AbstractNumber> SimplifiedSum(new SumExpression(s));
+                tr1::shared_ptr<AbstractNumber> SimpleMult(new MultExpression(m, '+'));
                 SimpleMult->numerator.push_back(SimplifiedSum);
                 SimpleMult->denominator = denominator;
                 return SimpleMult;
@@ -161,16 +197,24 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
         }
     }
 
-
+    vector< tr1::shared_ptr<AbstractNumber> > s;
     s.push_back(shared_from_this());
     s.push_back(number);
     return tr1::shared_ptr<AbstractNumber>(new SumExpression(s));
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-    vector< tr1::shared_ptr<AbstractNumber> > MultTerms = expression;
+    vector< tr1::shared_ptr<AbstractNumber> > MultTerms = numerator;
     MultTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
+    for (int i=0; (unsigned)i < denominator.size(); i++)
+    {
+        if (denominator[i]->toDouble() == number->toDouble())
+        {
+            denominator.erase(denominator.begin() + i);
+            return shared_from_this();
+        }
+    }
     for (int i=0; (unsigned)i < MultTerms.size(); i++)
     {
         if (MultTerms[i]->getName() == MultTerms[MultTerms.size() - 1]->getName())
