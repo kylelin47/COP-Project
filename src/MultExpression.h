@@ -15,29 +15,31 @@ using namespace std;
 
 class MultExpression: public AbstractNumber {
 public:
+    MultExpression();
     MultExpression(const string &input);
-	MultExpression(vector<AbstractNumber*> expression , vector<AbstractNumber*> dem);
-	MultExpression(vector<AbstractNumber*> expression);
+	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign);
+	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, char sign);
 	virtual ~MultExpression();
-	AbstractNumber * add(AbstractNumber *number);
-	AbstractNumber * multiply(AbstractNumber *number);
-	AbstractNumber * divide(AbstractNumber *number);
+	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
+	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
+	tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
+
 	string toString();
-	void split(vector<AbstractNumber*> &num, vector<AbstractNumber*> &den, const string &text, char sep1, char sep2);
+	void split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector< tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2);
 	//vector<string> expression;
-	vector<AbstractNumber*> numerator;
-	vector<AbstractNumber*> denominator;
+	vector<tr1::shared_ptr<AbstractNumber> > numerator, denominator;
 	char getSign();
 	double toDouble();
-	AbstractNumber* simplify();
+	tr1::shared_ptr<AbstractNumber> simplify();
+    vector <tr1::shared_ptr<AbstractNumber> > simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec);
 	string getName();
-	void appendNumberFromString(string input, vector<AbstractNumber*> &express);
+	void appendNumberFromString(string input, vector< tr1::shared_ptr<AbstractNumber> > &express);
 	int count(string input, int begin, int end, char symbol);
 	bool isNumber(string input);
 	string reduceString(string input);
 	size_t findOutside(char symbol, string input);
 
-	vector <AbstractNumber*> expression;
+	vector <tr1::shared_ptr<AbstractNumber> > expression;
 
 private:
 	char sign;

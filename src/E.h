@@ -4,7 +4,7 @@
 
 class E: public AbstractNumber {
 public:
-	E(const string &input);
+	E();
 	virtual ~E();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
 	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);

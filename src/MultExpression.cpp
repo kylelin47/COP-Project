@@ -93,19 +93,48 @@ MultExpression::MultExpression(const string &input) {
 	split(numerator, denominator, input, '*', '/');
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem) {
+MultExpression::MultExpression(vector<AbstractNumber*> nums , vector<AbstractNumber*> dem, char sign) {
 	this->numerator = nums;
 	this->denominator = dem;
+	this->sign = sign;
 }
 
-MultExpression::MultExpression(vector<AbstractNumber*> nums)
+MultExpression::MultExpression(vector<AbstractNumber*> nums, char sign)
 {
 	this->numerator = nums;
+	this->sign = sign;
 }
 
 AbstractNumber * MultExpression::multiply(AbstractNumber *number)
 {
-	this->numerator.push_back(number);
+	vector<AbstractNumber*> outNumerator = numerator;
+	vector<AbstractNumber*> outDenominator = denominator;
+
+	outNumerator.push_back(number);
+
+	if (this->sign == number->getSign())
+	{
+		return new MultExpression(outNumerator, outDenominator, '+');
+	}
+	else{
+		return new MultExpression(outNumerator, outDenominator, '-');
+	}
+
+}
+
+AbstractNumber * MultExpression::divide(AbstractNumber *number){
+	vector<AbstractNumber*> outNumerator = numerator;
+	vector<AbstractNumber*> outDenominator = denominator;
+
+	outDenominator.push_back(number);
+
+	if (this->sign == number->getSign())
+	{
+		return new MultExpression(outNumerator, outDenominator, '+');
+	}
+	else{
+		return new MultExpression(outNumerator, outDenominator, '-');
+	}
 }
 
 char MultExpression::getSign()
@@ -119,10 +148,6 @@ MultExpression::~MultExpression() {
 }
 
 AbstractNumber * MultExpression::add(AbstractNumber *number){
-
-}
-
-AbstractNumber * MultExpression::divide(AbstractNumber *number){
 
 }
 string MultExpression::toString(){
