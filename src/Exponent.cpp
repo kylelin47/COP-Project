@@ -46,8 +46,8 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 		if(number->base == this-> base &&
 		   number->power == this->power){
 		    vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-		    SumVector.push_back(2);
-		    SumVector.push_back(number);
+		    MultVector.push_back(2);
+		    MultVector.push_back(number);
 		    tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector));
 		}
 	}
@@ -85,8 +85,8 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 	 // Base are different, return as MultExpression (b1^p*b2^p2)
 	 else{
 	    vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	    SumVector.push_back(shared_from_this());
-	    SumVector.push_back(number);
+	    MultVector.push_back(shared_from_this());
+	    MultVector.push_back(number);
 	    tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector));
 	 }
 
@@ -105,8 +105,8 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 	 // Redundant, should still work with below statement
 	 /*if(number->getName()=="Exponent"){
 		 vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-		 SumVector.push_back(SmartInteger(-1));
-		 SumVector.push_back(number);
+		 MultVector.push_back(SmartInteger(-1));
+		 MultVector.push_back(number);
 		 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector));
 	 }*/
 
