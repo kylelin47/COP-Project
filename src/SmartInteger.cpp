@@ -5,7 +5,8 @@
  *      Author: Alex
  */
 
-#include "SmartInteger.h"
+#include "SumExpression.h"
+#include <cmath>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ SmartInteger::SmartInteger(const string &input) {
 }
 
 SmartInteger::~SmartInteger() {
-	this->delete;
+	//this->delete;
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber>number){
@@ -39,7 +40,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
     {
         return number->add(shared_from_this());
     }
-    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumTerms));
+    tr1::shared_ptr<AbstractNumber>s (new SumExpression(SumTerms));
     return s;
 }
 tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractNumber>number){
@@ -56,7 +57,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNumber>number){
-    if (number -> getName() == "Integer")
+    /*if (number -> getName() == "Integer")
     {
         if((this->value % round(number->toDouble())) != 0)
         {
@@ -86,8 +87,8 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
 
         }
 
-    }
-    return 0;
+    }*/
+    //return 0;
 
 }
 string SmartInteger::toString(){

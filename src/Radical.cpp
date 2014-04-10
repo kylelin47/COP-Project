@@ -52,7 +52,7 @@ tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber
         SimplifiedTerms.push_back(shared_from_this());
         SimplifiedTerms.push_back(number);
     }
-    tr1::shared_ptr<AbstractNumber>m(new MultExpression(SimplifiedTerms));
+    tr1::shared_ptr<AbstractNumber>m(new MultExpression(SimplifiedTerms, '+'));
     SimplifiedTerms.clear();
     return m;
 }
@@ -108,7 +108,7 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
         return shared_from_this();
     }
 
-    tr1::shared_ptr<AbstractNumber> n (new MultExpression(SimplifiedTerms));
+    tr1::shared_ptr<AbstractNumber> n (new MultExpression(SimplifiedTerms, '+'));
 
     if (SimplifiedTerms.size() == 1)
     {
