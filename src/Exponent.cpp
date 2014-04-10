@@ -70,28 +70,28 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
  //
  // Returns:
  // shared_ptr<AbstractNumber> 			resulting product of multiplication
- tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumber> number){
-	 // Base are identical, return as Exponent (b^(p1+p2))
-	 if(number->getName() == "Exponent")
-		 if(number->base == this->base){
-			 vector< tr1::shared_ptr<AbstractNumber> > SumVector;
-			 SumVector.push_back(this->power);
-			 SumVector.push_back(number->power);
-			 tr1::shared_ptr<AbstractNumber> s(new SumExpression(SumVector));
-			 tr1::shared_ptr<AbstractNumber> r(new Exponent(this->base,s));
-		 }
- 	 }
-
-	 // Base are different, return as MultExpression (b1^p*b2^p2)
-	 else{
-	    vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	    MultVector.push_back(shared_from_this());
-	    MultVector.push_back(number);
-	    tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector));
-	 }
-
-	 return r;
-}
+ //tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumber> number){
+//	 // Base are identical, return as Exponent (b^(p1+p2))
+//	 if(number->getName() == "Exponent")
+//		 if(number->base == this->base){
+//			 vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+//			 SumVector.push_back(this->power);
+//			 SumVector.push_back(number->power);
+//			 tr1::shared_ptr<AbstractNumber> s(new SumExpression(SumVector));
+//			 tr1::shared_ptr<AbstractNumber> r(new Exponent(this->base,s));
+//		 }
+ //	 }
+//
+//	 // Base are different, return as MultExpression (b1^p*b2^p2)
+//	 else{
+//	    vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+//	    MultVector.push_back(shared_from_this());
+//	    MultVector.push_back(number);
+//	    tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector));
+//	 }
+//
+//	 return r;
+//}
 
 // Divides this by number and returns the product
 //
@@ -100,7 +100,7 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 //
 // Returns:
 // shared_ptr<AbstractNumber> 			resulting quotient of division
- tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber>number){
+ //tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber>number){
 	 // If Exponent, reverses power by multiplying by -1 if already exponent
 	 // Redundant, should still work with below statement
 	 /*if(number->getName()=="Exponent"){
@@ -111,9 +111,9 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 	 }*/
 
 	// Changes number to exponent with power of -1 then multiplies inverted number
-	tr1::shared_ptr<AbstractNumber> r(new Exponent(number, new SmartInteger(-1)));
-	return multiply(r);
-}
+//	tr1::shared_ptr<AbstractNumber> r(new Exponent(number, new SmartInteger(-1)));
+//	return multiply(r);
+//}
 
 // Returns this formatted as a string in the format:
 // base^power (e.g. 2^3)
@@ -157,17 +157,18 @@ double Exponent::toDouble()
 	 }
 	 // if power = 0, returns 1
 	 else if(power->toDouble() == 0){
-		 tr1::shared_ptr<AbstractNumber> r new SmartInteger(1);
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(1));
 		 return r;
 	 }
 	 // if power and base have finite values(i.e. are integers), return integer
 	 else if(base->getName() == "Integer" &&
 			  power->getName() == "Integer"){
-		 tr1::shared_ptr<AbstractNumber> r new SmartInteger((int)toDouble()); // call toDouble and cast as integer
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)toDouble())); // call toDouble and cast as integer
 	 }
 	 // no simplification possible, return as is
 	 else{
-		 return this;
+	 	 tr1::shared_ptr<AbstractNumber> r(this);
+		 return r;
 	 }
 }
 
