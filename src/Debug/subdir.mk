@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../E.cpp \
+../Exponent.cpp \
 ../Log.cpp \
 ../MultExpression.cpp \
 ../Pi.cpp \
@@ -15,6 +16,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./E.o \
+./Exponent.o \
 ./Log.o \
 ./MultExpression.o \
 ./Pi.o \
@@ -25,6 +27,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./E.d \
+./Exponent.d \
 ./Log.d \
 ./MultExpression.d \
 ./Pi.d \

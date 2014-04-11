@@ -10,8 +10,7 @@
 using namespace std;
 
 int main() {
-
-    bool run;
+    bool run = true;
     string input;
 	while (run)
 	{

@@ -158,6 +158,10 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 // string 			formatted string
 string Exponent::toString(){
 	std::stringstream ss;
+	if (sign == '-')
+	{
+		ss << '-';
+	}
 
 	ss << base->toString();
 	ss << "^";
