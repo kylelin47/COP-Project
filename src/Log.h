@@ -2,10 +2,13 @@
 #define LOG_H
 #include "SumExpression.h"
 
+//Test
+
 class Log: public AbstractNumber
 {
     public:
         Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value);
+        Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value, char sign);
         tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
         tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
         tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
@@ -19,6 +22,7 @@ class Log: public AbstractNumber
         tr1::shared_ptr<AbstractNumber>base, value;
     protected:
     private:
+        char sign;
 };
 
 #endif // LOG_H

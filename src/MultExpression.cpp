@@ -270,6 +270,7 @@ MultExpression::~MultExpression() {
 
 string MultExpression::toString(){
 	string output ="";
+	output+=sign;
 		for (int i =0; i < numerator.size(); i++){
 			output += numerator[i]->toString();
 			if (i < numerator.size()-1)
@@ -303,15 +304,6 @@ double MultExpression::toDouble()
 {
     double x = 1;
 
-    for (int i=0; i<numerator.size(); i++)
-    {
-        x = x * numerator[i]->toDouble();
-    }
-    for (int i=0; i<denominator.size(); i++)
-    {
-        x = x / denominator[i]->toDouble();
-    }
-
 	return x;
 }
 
@@ -329,23 +321,12 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     {
         return tr1::shared_ptr<AbstractNumber>(new SmartInteger(toDouble()));
     }
-
-    if (numerator.size() == 1 && denominator.size() == 0)
-    {
-        return numerator[0]->simplify();
-    }
-    if (numerator.size() != 0)
-    {
-        numerator = simplifyVector(numerator);
-    }
-    if (denominator.size() != 0)
-    {
-        denominator = simplifyVector(denominator);
-    }
+    numerator = simplifyVector(numerator);
+    denominator = simplifyVector(denominator);
 
     for (int i=0; i < numerator.size(); i++)
     {
-        for (int j=i; j < denominator.size(); j++)
+        for (int j=i; j < numerator.size(); j++)
         {
             cout <<"TRYING TO DIVIDE" <<endl;
             tmp = numerator[i]->divide(denominator[j]);
@@ -376,7 +357,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
             }
         }
     }
-
     if (numerator.size() == 1 || denominator.size() == 1)
     {
         if (numerator.size() == 0)
@@ -388,6 +368,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
             return numerator[0];
         }
     }
+
     return shared_from_this();
 }
 
@@ -397,7 +378,6 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
     for (int i=0; (unsigned)i < vec.size(); i++)
     {
         vec[i] = vec[i]->simplify();
-        cout << vec[i]->toString() << endl;
     }
 
     if (vec.size() != 1)
@@ -416,6 +396,7 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
 
         }
     }
+
     return vec;
 }
 string MultExpression::getName()
@@ -428,9 +409,9 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	int num;
 	if (input[0] == 'l' && input[1] =='o' && input[2] == 'g' && input[3] == '_' && findOutside(':', input) != string::npos)
 	{
-		tr1::shared_ptr<AbstractNumber> base(new SumExpression( input.substr(4, findOutside(':',input)-4)));
+		tr1::shared_ptr<AbstractNumber> base(new SumExpression( input.substr(4, findOutside(':',input)-4) , false));
 		cout << "value substring: " << input.substr( findOutside(':', input) + 1 , input.size()) << endl;
-		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1 , input.size() - findOutside(':', input))));
+		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1 , input.size() - findOutside(':', input)) , false));
 
 		cout << input << " is a log" << endl;
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Log(base, value)));
@@ -438,24 +419,31 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else if (input[0] == 'l' && input[1] == 'n' && input[2] == ':')
 	{
-		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1 , input.size())));
+		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1 , input.size()), false));
 		tr1::shared_ptr<AbstractNumber> base(new E());
 		cout << input << " is ln" << endl;
+		express.push_back(tr1::shared_ptr<AbstractNumber>(new Log(base, value)));
+	}
+	else if (input[0] == 'l' && input[1] == 'o' && input[2] == 'g' && input[3] == ':')
+	{
+		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1 , input.size()), false));
+		tr1::shared_ptr<AbstractNumber> base(new SmartInteger(10));
+		cout << input << " is a log base 10" << endl;
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Log(base, value)));
 	}
 	else if (input[0] == 's' && input[1] == 'q' && input[2] == 'r' && input[3] == 't' && input[4] == ':')
 	{
 
 		cout << input << " is a square root" << endl;
-		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1, input.size())));
+		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1, input.size()) , false));
 		tr1::shared_ptr<AbstractNumber> root(new SmartInteger("2"));
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Radical(value, root)));
 	}
 	else if(input[findOutside('r', input)+1] == 't' && input[findOutside('r', input)+2] == ':'){
 		cout << input << " is an nth root" << endl;
 
-		tr1::shared_ptr<AbstractNumber> root(new SumExpression(input.substr(0 , findOutside('r', input))));
-		tr1::shared_ptr<AbstractNumber> value(new SumExpression(input.substr(findOutside(':', input)+1, input.size())));
+		tr1::shared_ptr<AbstractNumber> root(new SumExpression(input.substr(0 , findOutside('r', input)) , false));
+		tr1::shared_ptr<AbstractNumber> value(new SumExpression(input.substr(findOutside(':', input)+1, input.size()) , false));
 
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Radical(value, root)));
 	}
@@ -465,7 +453,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 		input.erase(0,1);
 		input.erase(input.size()-1,1);
 
-		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(input)));
+		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(input , false)));
 	}
 	else if (input[0] == 'e' && input.size() == 1)
 	{

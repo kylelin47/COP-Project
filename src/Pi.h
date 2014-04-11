@@ -5,6 +5,7 @@
 class Pi: public AbstractNumber {
 public:
 	Pi();
+	Pi(char sign);
 	virtual ~Pi();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
 	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
@@ -16,6 +17,7 @@ public:
 	char getSign();
 
 private:
+	int sign;
 	double value;
 };
 

@@ -2,7 +2,12 @@
 
 E::E()
 {
-    //ctor
+    this->sign = '+';
+}
+
+E::E(char sign)
+{
+    this->sign = sign;
 }
 
 E::~E()
@@ -20,6 +25,10 @@ tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number)
 
 }
 string E::toString(){
+	if (sign == '-')
+	{
+		return "-e";
+	}
 	return "e";
 }
 
@@ -38,5 +47,5 @@ string E::getName()
 
 char E::getSign()
 {
-	return '+';
+	return sign;
 }

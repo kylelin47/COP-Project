@@ -6,6 +6,7 @@ class Radical: public AbstractNumber
 {
     public:
         Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root);
+        Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root, char sign);
         ~Radical();
          tr1::shared_ptr<AbstractNumber>  root;
          tr1::shared_ptr<AbstractNumber>  value;
@@ -20,6 +21,7 @@ class Radical: public AbstractNumber
 
     protected:
     private:
+        char sign;
 };
 
 #endif // Radical_H
