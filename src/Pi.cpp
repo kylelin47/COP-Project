@@ -56,3 +56,9 @@ tr1::shared_ptr<AbstractNumber> Pi::getValue(string name){
 	throw "tried to get a " + name + " from a pi";
 
 }
+
+tr1::shared_ptr<AbstractNumber> Pi::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new Pi());
+	return output;
+}

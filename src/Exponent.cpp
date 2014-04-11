@@ -265,3 +265,8 @@ tr1::shared_ptr<AbstractNumber> Exponent::getValue(string name){
 	}
 }
 
+tr1::shared_ptr<AbstractNumber> Exponent::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new Exponent(base, power));
+	return output;
+}

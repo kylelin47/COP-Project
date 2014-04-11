@@ -345,3 +345,9 @@ tr1::shared_ptr<AbstractNumber> SumExpression::getValue(string name){
 	throw "tried to get a " + name + " from a SumExpression";
 
 }
+
+tr1::shared_ptr<AbstractNumber> SumExpression::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new SumExpression(expression));
+	return output;
+}

@@ -29,6 +29,8 @@ public:
 	virtual string getName() = 0;
 	virtual char getSign() = 0;
 	virtual tr1::shared_ptr<AbstractNumber> getValue(string name) = 0;
+	virtual tr1::shared_ptr<AbstractNumber> noSign() = 0;
+
 	tr1::shared_ptr<AbstractNumber>base, root, value;
 	vector<tr1::shared_ptr<AbstractNumber> > expression, numerator, denominator;
 

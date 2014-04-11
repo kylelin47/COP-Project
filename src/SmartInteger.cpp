@@ -138,3 +138,9 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::getValue(string name){
 	throw "tried to get a " + name + " from a SmartInteger";
 
 }
+
+tr1::shared_ptr<AbstractNumber> SmartInteger::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new SmartInteger(toDouble()));
+	return output;
+}

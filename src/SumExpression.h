@@ -31,6 +31,7 @@ public:
 	vector<tr1::shared_ptr<AbstractNumber> > getExpression();
 	char getSign();
 	tr1::shared_ptr<AbstractNumber> getValue(string name);
+	tr1::shared_ptr<AbstractNumber> noSign();
 	bool noParenthesis;
 };
 

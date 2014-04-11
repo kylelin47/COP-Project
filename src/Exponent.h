@@ -18,6 +18,7 @@ class Exponent: public AbstractNumber
     	char calcSign(tr1::shared_ptr<AbstractNumber>);
     	char sign;
     	tr1::shared_ptr<AbstractNumber> getValue(string name);
+    	tr1::shared_ptr<AbstractNumber> noSign();
 
         tr1::shared_ptr<AbstractNumber>base, power;
 
