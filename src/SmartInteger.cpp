@@ -55,10 +55,11 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
 
     if (number->getName() == "Integer")
     {
-        tr1::shared_ptr<AbstractNumber>n(new SmartInteger(this->value * number->toDouble()));
-        MultipliedTerms.push_back(n);
+        value = this->value * number->toDouble();
+        return shared_from_this();
     }
-
+    MultipliedTerms.push_back(shared_from_this());
+    MultipliedTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber>M (new MultExpression(MultipliedTerms, '+'));
     return M;
 }
