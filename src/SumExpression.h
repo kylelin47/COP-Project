@@ -28,6 +28,7 @@ public:
 	string makeStringUsable(string input);
 
 	tr1::shared_ptr<AbstractNumber> simplify();
+	vector<tr1::shared_ptr<AbstractNumber> > getExpression();
 	char getSign();
 	bool noParenthesis;
 };

@@ -37,6 +37,8 @@ public:
 	size_t findOutside(char symbol, string input);
 
 	vector <tr1::shared_ptr<AbstractNumber> > expression;
+	vector<tr1::shared_ptr<AbstractNumber> > getNumerator();
+	vector<tr1::shared_ptr<AbstractNumber> > getDenominator();
 
 private:
 	char sign;

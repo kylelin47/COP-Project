@@ -20,7 +20,7 @@ int main() {
 		{
 			try{
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-				cout << num->toString()<< endl << endl;
+				cout << "PARSER STRING: " + num->toString()<< endl << endl;
 				cout << num->simplify()->toString() << endl;
 			}
 			catch(const char* msg)

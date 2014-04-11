@@ -33,7 +33,6 @@ tr1::shared_ptr<AbstractNumber> Radical::add(tr1::shared_ptr<AbstractNumber>numb
 
     else
     {
-        cout <<"ADDING INTEGER" << endl;
         SumTerms.push_back(shared_from_this());
         SumTerms.push_back(number);
     }

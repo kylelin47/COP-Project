@@ -10,13 +10,13 @@
 
 using namespace std;
 
-SmartInteger::SmartInteger(int value, char sign) {
+SmartInteger::SmartInteger(int value, char sign)
+{
     this->value = value;
     this->sign = sign;
 }
 
 SmartInteger::SmartInteger(int value) {
-
     this->value = value;
     this->sign = '+';
 }
@@ -26,7 +26,7 @@ SmartInteger::SmartInteger(const string &input) {
 
 	stringstream ss(input);
 	ss >> value;
-
+    this->sign = '+';
 }
 
 SmartInteger::~SmartInteger() {
@@ -44,7 +44,6 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
 
     else
     {
-        cout << "ADDING LOG" << endl;
         return number->add(shared_from_this());
     }
     tr1::shared_ptr<AbstractNumber>s (new SumExpression(SumTerms));

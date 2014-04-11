@@ -200,7 +200,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
     }
     if (expression.size() == 1)
     {
-    	cout << "Size = 1" << endl;
         return expression[0];
     }
 
@@ -213,7 +212,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 
             cout <<"ADDING " + expression[i]->toString() + " & " + expression[j]->toString() << endl;
             expression[i] = expression[i]->add(expression[j]);
-            cout <<"ADDING SUCCESS" << endl;
             cout << "ERASING " + expression[j]->toString() <<endl;
             expression.erase(expression.begin() + j);
             size = size - 1;
@@ -224,9 +222,9 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
         }
 
     }
-    cout <<"SUMEXPRESSION CREATED" << endl;
     if (expression.size() == 1)
     {
+        cout <<"SUMEXPRESSION CREATED" << endl;
         cout << expression[0]->toString() << endl;
         return expression[0];
     }
@@ -239,7 +237,10 @@ string SumExpression::getName()
 {
 	return "SumExpression";
 }
-
+vector<tr1::shared_ptr<AbstractNumber> > SumExpression::getExpression()
+{
+    return expression;
+}
 string SumExpression::makeStringUsable(string input)
 {
 	string output = input;

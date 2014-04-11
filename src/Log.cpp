@@ -56,6 +56,8 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 }
  tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
 
+    cout << "Multiplying " + this->toString();
+    cout << " and " + number->toString() << endl;
     if (number->getName() == "Log")
     {
         if (base->toDouble() == number->base->toDouble())
