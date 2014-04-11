@@ -114,6 +114,7 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
+    cout << "is this where i am" << endl;
     double d = 1;
     double e = 1;
     if (number->getName() == "MultExpression")
