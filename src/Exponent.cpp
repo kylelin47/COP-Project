@@ -159,8 +159,10 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 string Exponent::toString(){
 	std::stringstream ss;
 
+	ss << "(";
 	ss << base->toString();
 	ss << "^";
+	ss << ")";
 	ss << power->toString();
 	return ss.str();
 }
@@ -201,6 +203,12 @@ double Exponent::toDouble()
 			  power->getName() == "Integer"){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)toDouble())); // call toDouble and cast as integer
 	 	 return r;
+	 }
+	 // if power is log and bases are equal, returns log value
+	 else if(power->getName() == "Logarithm"){
+		 if(power->getValue("base")->toDouble() == base->toDouble()){
+			 return power->getValue("value");
+		 }
 	 }
 	 // no simplification possible, return as is
 	 else{
