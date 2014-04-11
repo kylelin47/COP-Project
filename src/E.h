@@ -15,6 +15,7 @@ public:
 	tr1::shared_ptr<AbstractNumber> simplify();
 	string getName();
 	char getSign();
+	tr1::shared_ptr<AbstractNumber> getValue(string name);
 
 private:
 	double value;

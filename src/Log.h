@@ -14,10 +14,11 @@ class Log: public AbstractNumber
         tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
         string toString();
         double toDouble();
-         tr1::shared_ptr<AbstractNumber>  simplify();
+        tr1::shared_ptr<AbstractNumber>  simplify();
         string getName();
         vector<int> primeFactors(int num);
     	char getSign();
+    	tr1::shared_ptr<AbstractNumber> getValue(string name);
 
         tr1::shared_ptr<AbstractNumber>base, value;
     protected:

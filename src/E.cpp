@@ -15,6 +15,10 @@ E::~E()
     //dtor
 }
 
+tr1::shared_ptr<AbstractNumber> E::getValue(string name){
+	throw "tried to get" + name + "from an E()";
+}
+
 tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 
 }

@@ -162,3 +162,18 @@ string Radical::getName()
 char Radical::getSign(){
 	return sign;
 }
+
+tr1::shared_ptr<AbstractNumber> Radical::getValue(string name){
+	if (name == "root"){
+		return root;
+	}
+	else if ( name == "value")
+	{
+		return value;
+	}
+	else {
+		throw "tried to get a " + name + " from a Radical";
+	}
+
+
+}

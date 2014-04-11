@@ -50,3 +50,9 @@ char Pi::getSign()
 {
 	return sign;
 }
+
+tr1::shared_ptr<AbstractNumber> Pi::getValue(string name){
+
+	throw "tried to get a " + name + " from a pi";
+
+}
