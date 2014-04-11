@@ -64,21 +64,67 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNumber>number){
-    /*if (number -> getName() == "Integer")
+    if (number -> getName() == "Integer")
     {
-        if((this->value % round(number->toDouble())) != 0)
+
+        if((this->value % (int)(number->toDouble())) != 0)
         {
+        	int commonFactor = GCF(this->value, (int)number->toDouble());
+        	if(this->value % commonFactor == 0)
+        	{
+        		vector<tr1::shared_ptr<AbstractNumber> > numerator;
+        		                   vector<tr1::shared_ptr<AbstractNumber> > denominator;
+        		                   tr1::shared_ptr<AbstractNumber> n(new SmartInteger((this->value / commonFactor),'+'));
+        		                   tr1::shared_ptr<AbstractNumber> d(new SmartInteger((number->toDouble() / commonFactor), '+'));
+        		                   numerator.push_back(n);
+        		                   denominator.push_back(d);
+
+        		                   if(this->getSign() == '+' && number->getSign() == '+')
+        		                               {
+        		                                sign = '+';
+        		                               }
+        		                               else if(this->getSign() == '-' && number->getSign() == '-')
+        		                               {
+        		                                sign = '+';
+        		                               }
+        		                               else
+        		                               {
+        		                                sign = '-';
+        		                               }
+
+        		                   tr1::shared_ptr<AbstractNumber> D(new MultExpression(numerator, denominator, sign));
+        		                   return D;
+        	}
+
+        	else
+        	{
             vector<tr1::shared_ptr<AbstractNumber> > numerator;
             vector<tr1::shared_ptr<AbstractNumber> > denominator;
-            tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->value));
-            tr1::shared_ptr<AbstractNumber> d(new SmartInteger(number->toDouble()));
+            tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->value, '+'));
+            tr1::shared_ptr<AbstractNumber> d(new SmartInteger(number->toDouble(), '+'));
+
             numerator.push_back(n);
             denominator.push_back(d);
+            if(this->getSign() == '+' && number->getSign() == '+')
+            {
+             sign = '+';
+            }
+            else if(this->getSign() == '-' && number->getSign() == '-')
+            {
+             sign = '+';
+            }
+            else
+            {
+             sign = '-';
+            }
 
-            tr1::shared_ptr<AbstractNumber> D(new MultExpression(numerator, denominator, '+'));
+
+            tr1::shared_ptr<AbstractNumber> D(new MultExpression(numerator, denominator, sign));
             return D;
+        	}
 
         }
+
 
 
         else
@@ -88,15 +134,45 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
             tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->value / number->toDouble()));
             DividedTerms.push_back(n);
 
-            tr1::shared_ptr<AbstractNumber> D(new MultExpression(DividedTerms, '+'));
+            if(this->getSign() == '+' && number->getSign() == '+')
+                        {
+                         sign = '+';
+                        }
+           else if(this->getSign() == '-' && number->getSign() == '-')
+                        {
+                         sign = '+';
+                        }
+             else
+                  {
+                         sign = '-';
+                        }
+
+            tr1::shared_ptr<AbstractNumber> D(new MultExpression(DividedTerms, sign));
             return D;
-
-
         }
 
-    }*/
-    //return 0;
+    }
+    vector<tr1::shared_ptr<AbstractNumber> > numerator;
+            vector<tr1::shared_ptr<AbstractNumber> > denominator;
+            tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->value));
+            tr1::shared_ptr<AbstractNumber> d(new SmartInteger(number->toDouble()));
+            numerator.push_back(n);
+            denominator.push_back(d);
+            if(this->getSign() == '+' && number->getSign() == '+')
+                        {
+                         sign = '+';
+                        }
+            else if(this->getSign() == '-' && number->getSign() == '-')
+                        {
+                         sign = '+';
+                        }
+            else
+                        {
+                         sign = '-';
+                        }
 
+            tr1::shared_ptr<AbstractNumber> D(new MultExpression(numerator, denominator, sign));
+            return D;
 }
 string SmartInteger::toString(){
 	stringstream ss;
@@ -143,4 +219,21 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::noSign()
 {
 	tr1::shared_ptr<AbstractNumber> output(new SmartInteger(toDouble()));
 	return output;
+}
+int SmartInteger::GCF(int x, int y)
+{
+
+	int  gcd;
+	for(int i=1;i<=x && i<=y ;i++){
+
+
+	     if(x%i==0 && y%i == 0 ){
+
+	      gcd=i;
+
+	   }
+
+	}
+	return gcd;
+
 }
