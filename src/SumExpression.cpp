@@ -97,11 +97,10 @@ SumExpression::~SumExpression() {
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
-    SumTerms.push_back(number);
+    SumTerms.push_back(number->simplify());
     tr1::shared_ptr<AbstractNumber> tmp;
-    for (int i=0; (unsigned)i < SumTerms.size(); i++)
+    for (int i=0; (unsigned)i < SumTerms.size() - 1; i++)
     {
-        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
         if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
         {
             if (SumTerms[i]->getName() != "SumExpression")
@@ -117,7 +116,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
         }
     }
     expression = SumTerms;
-    //delete number;
     return shared_from_this();
 }
 
@@ -197,6 +195,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 
     for (int i=0; (unsigned)i < expression.size(); i++)
     {
+        cout << expression[i]->toString() << endl;
         expression[i] = expression[i]->simplify();
     }
     if (expression.size() == 1)
@@ -226,9 +225,9 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 
     }
     cout <<"SUMEXPRESSION CREATED" << endl;
-
     if (expression.size() == 1)
     {
+        cout << expression[0]->toString() << endl;
         return expression[0];
     }
     else

@@ -44,6 +44,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
 
     else
     {
+        cout << "ADDING LOG" << endl;
         return number->add(shared_from_this());
     }
     tr1::shared_ptr<AbstractNumber>s (new SumExpression(SumTerms));
@@ -51,7 +52,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
 }
 tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractNumber>number){
     vector< tr1::shared_ptr<AbstractNumber> > MultipliedTerms;
-
+    number = number->simplify();
     if (number->getName() == "Integer")
     {
         value = this->value * number->toDouble();
