@@ -19,6 +19,7 @@ class Log: public AbstractNumber
         vector<int> primeFactors(int num);
     	char getSign();
     	tr1::shared_ptr<AbstractNumber> getValue(string name);
+    	tr1::shared_ptr<AbstractNumber> removeNegative(tr1::shared_ptr<AbstractNumber>number);
 
         tr1::shared_ptr<AbstractNumber>base, value;
     protected:

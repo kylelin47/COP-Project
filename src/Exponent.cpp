@@ -1,229 +1,267 @@
-#include "Log.h"
 #include "Exponent.h"
 #include <cmath>
 
-Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value)
+using namespace std;
+
+// Constructor for Exponent
+// Represents an exponent where "b" is base and "p" is power:
+// b^p (b to the power p)
+//
+// Parameters:
+// shared_ptr<AbstractNumber> base		number being raised to a given exponent
+// shared_ptr<AbstractNumber> power		power the number a given number is being raised to
+Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
+				   tr1::shared_ptr<AbstractNumber> power)
 {
-    if (value->toDouble() <= 0)
-    {
-        throw "Can't take log of a negative number";
-    }
+	// No invalid bases or powers
     this->base = base;
-    this->value = value;
+    this->power = power;
     this->sign = '+';
 }
 
-Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value,char sign)
+// Alternate constructor for Exponent
+// Represents an exponent where "b" is base and "p" is power:
+// +/-b^p (b to the power p)
+//
+// Parameters:
+// shared_ptr<AbstractNumber> base		number being raised to a given exponent
+// shared_ptr<AbstractNumber> power		power the number a given number is being raised to
+// char sign							'+'/'-' representation of positive/negative
+Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
+				   tr1::shared_ptr<AbstractNumber> power,
+				   char sign)
 {
-    if (value->toDouble() <= 0)
-    {
-        throw "Can't take log of a negative number";
-    }
+	// No invalid bases or powers
     this->base = base;
-    this->value = value;
+    this->power = power;
     this->sign = sign;
 }
 
- tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
-	if (number->getName() == "Log" && toDouble() == number->toDouble())
-	{
-		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
-		tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
-		tr1::shared_ptr<AbstractNumber> log(new Log(base, value)); // this gets rid of the old sign just in case
-		OutVector.push_back(two);
-		OutVector.push_back(log);
-		if (number->getSign() == getSign())
-		{
-			tr1::shared_ptr<AbstractNumber> output(new MultExpression(OutVector, getSign()));
-			return output;
+// Adds number to this and returns the sum
+//
+// Parameters:
+// shared_ptr<AbstractNumber> number	number being added
+//
+// Returns:
+// shared_ptr<AbstractNumber> 			resulting sum of addition
+ tr1::shared_ptr<AbstractNumber> Exponent::add(tr1::shared_ptr<AbstractNumber> number){
+ 	// Checks for cancellation
+ 	if(this->toDouble() == number->toDouble() &&
+ 	   this->getSign() != number->getSign()){
+ 		tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
+
+ 	    return r;
+ 	}
+ 	// Checks for duplication/simplification
+ 	else if(this->toDouble() == number->toDouble() &&
+ 			this->getSign() == number->getSign()){
+ 		vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+		tr1::shared_ptr<AbstractNumber> i(new SmartInteger(2));
+		MultVector.push_back(i);
+		MultVector.push_back(shared_from_this());
+		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
+
+	    return r;
+  	}
+ 	// Duplication necessary for simplification
+ 	// Assuming number is in simplest form
+ 	
+ 	// No simplification possible
+	else{	
+		vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+		SumVector.push_back(shared_from_this());
+		SumVector.push_back(number);
+		tr1::shared_ptr<AbstractNumber> r(new SumExpression(SumVector));
+
+	    return r;
+	}
+
+}
+
+ // Multiplies number by this and returns the product
+ //
+ // Parameters:
+ // shared_ptr<AbstractNumber> number	number being multiplied
+ //
+ // Returns:
+ // shared_ptr<AbstractNumber> 			resulting product of multiplication
+tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumber> number){
+	// Checks for simplification if both exponents
+	if(number->getName() == "Exponent"){
+		if(number->getValue("base") == base){
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(number->getValue("power")), this->calcSign(number)));
+
+		    return r;
+		}
+	}
+	
+	// Checks for simplification if number = base
+	// Adds 1 to exponent
+	else if(number->toDouble() == base->toDouble()){
+		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1));
+		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
+	    return r;
+	}
+	
+	else{
+		vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+		MultVector.push_back(shared_from_this());
+		MultVector.push_back(number);
+		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
+
+		return r;
+	}
+}
+
+// Divides this by number and returns the product
+//
+// Parameters:
+// shared_ptr<AbstractNumber> number	divisor
+//
+// Returns:
+// shared_ptr<AbstractNumber> 			resulting quotient of division
+tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber>number){
+	// Reverses sign if exponent and multiplies
+	if(number->getName()=="Exponent"){
+		if(number->getSign()=='-'){
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(number->getValue("base"), number->getValue("power")));
+			return multiply(r);
 		}
 		else{
-			tr1::shared_ptr<AbstractNumber> output(new SmartInteger(0));
-			return output;
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(number->getValue("base"), number->getValue("power"),'-'));
+			return multiply(r);
 		}
-
-
-
 	}
-	else {
-		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
-		OutVector.push_back(shared_from_this());
-		OutVector.push_back(number);
-		tr1::shared_ptr<AbstractNumber>output(new SumExpression(OutVector));
-
-		return output;
+	
+	// Subtracts 1 from power if base = number
+	else if(number->toDouble() == base->toDouble()){
+		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1,'-'));
+		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
+		return r;
 	}
-
+	
+	else{
+	 	tr1::shared_ptr<AbstractNumber> t(this);
+		vector< tr1::shared_ptr<AbstractNumber> > NumVector;
+		NumVector.push_back(shared_from_this());
+		vector< tr1::shared_ptr<AbstractNumber> > DenVector;
+		DenVector.push_back(shared_from_this());
+		tr1::shared_ptr<AbstractNumber> r(new MultExpression(NumVector, DenVector, this->calcSign(number)));
+		return r;
+	}
 }
- tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
-	 char sign;
-	 if (getSign() == number->getSign())
-	 {
-		 sign = '+';
-	 }
-	 else
-	 {
-		 sign = '-';
-	 }
 
-	 if (number->getName() == "Log" &&  toDouble() == number->toDouble())
-	 {
-		 tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
-		 tr1::shared_ptr<AbstractNumber> output(new Exponent(shared_from_this(), two, sign));
-		 return output;
-	 }
-	 else if (number->getName() == "Exponent" && number->getValue("base")->toDouble() == toDouble() )
-	 {
-		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
-		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-		 SumVector.push_back(one);
-		 SumVector.push_back(number->getValue("power"));
-		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-		 tr1::shared_ptr<AbstractNumber> output(new Exponent(shared_from_this(), power, sign));
-		 return output;
-	 }
-	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	 MultVector.push_back(shared_from_this());
-	 MultVector.push_back(number);
-	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
-	 return r;
-}
- tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
-
-}
-string Log::toString(){
+// Returns this formatted as a string in the format:
+// base^power (e.g. 2^3)
+//
+// Returns:
+// string 			formatted string
+string Exponent::toString(){
 	std::stringstream ss;
-
 	if (sign == '-')
 	{
-		ss << "-";
+		ss << '-';
 	}
-	ss << "log_";
+
 	ss << base->toString();
-	ss << ":";
-	ss << value->toString();
+	ss << "^";
+	ss << power->toString();
 	return ss.str();
 }
 
-double Log::toDouble()
+
+// Returns this as a double
+//
+// Returns:
+// double 			this in double form
+double Exponent::toDouble()
 {
-	return log(value->toDouble())/log(base->toDouble());
+	return pow(base->toDouble(), power->toDouble());
 }
 
- tr1::shared_ptr<AbstractNumber>  Log::simplify()
+// Reduces this to simplest form
+//
+// Returns:
+// shared_ptr<AbstractNumber>		number in simplest form
+ tr1::shared_ptr<AbstractNumber>  Exponent::simplify()
 {
-    base = base->simplify();
-    value = value->simplify();
-    if (abs(remainder(toDouble(), 1)) < pow(10, -6))
-    {
-        tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));
-        return n;
-    }
-
-    vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
-    int numOnes = 0;
-    if (value->getName() == "Integer")
-    {
-        vector<int> factors = primeFactors((int)(value->toDouble()));
-        for (int i=0; (unsigned)i < factors.size(); i++)
-        {
-            if (base->toDouble() == factors[i])
-            {
-                numOnes++;
-            }
-            else
-            {
-                if (factors[i] == factors[i + 1])
-                {
-                    int sameFactor = 2;
-                    for (int k=i+2; k<factors.size(); k++)
-                    {
-                        if (factors[k] == factors[i])
-                        {
-                            sameFactor++;
-                        }
-                        else
-                        {
-                            break;
-                        }
-
-                    }
-                    tr1::shared_ptr<AbstractNumber>Coefficient(new SmartInteger(sameFactor));
-                    tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
-                    tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
-                    vector<tr1::shared_ptr<AbstractNumber> > M;
-                    M.push_back(Coefficient);
-                    M.push_back(L);
-                    tr1::shared_ptr<AbstractNumber>Mult(new MultExpression(M, '+'));
-                    SimplifiedTerms.push_back(Mult);
-                    i = i + sameFactor - 1;
-                }
-                else
-                {
-                    tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
-                    tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
-
-                    SimplifiedTerms.push_back(L);
-                }
-
-            }
-
-        }
-    }
-    else
-    {
-        return shared_from_this();
-    }
-    if (numOnes != 0)
-    {
-        SimplifiedTerms.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(numOnes)));
-    }
-    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SimplifiedTerms));
-
-    return s;
+	 // if base = 0, returns integer 0
+	 if(base->toDouble() == 0){
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
+		 return r;
+	 }
+	 // if base = 1, returns integer 1
+	 else if(base->toDouble() == 1){
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(1));
+		 return r;
+	 }
+	 // if power = 0, returns 1
+	 else if(power->toDouble() == 0){
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(1));
+		 return r;
+	 }
+	 // if power and base have finite values(i.e. are integers), return integer
+	 else if(base->getName() == "Integer" &&
+			  power->getName() == "Integer"){
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)toDouble())); // call toDouble and cast as integer
+	 	 return r;
+	 }
+	 // no simplification possible, return as is
+	 else{
+	 	 tr1::shared_ptr<AbstractNumber> r(this);
+		 return r;
+	 }
 }
 
-vector<int> Log::primeFactors(int num)
+// Returns string identifying number type
+//
+// Returns:
+// string 			"Exponent"
+string Exponent::getName()
 {
-    vector<int> factors;
-    for (int i=2; i<=num; i++)
-    {
-        if (num%i == 0)
-        {
-            factors.push_back(i);
-            num = num/i;
-            i = 1;
-        }
-    }
-
-    if (factors.size() == 0)
-    {
-        factors.push_back(num);
-    }
-
-    return factors;
+	return "Exponent";
 }
 
-string Log::getName()
-{
-	return "Log";
-}
-
-char Log::getSign(){
+// Returns char identifying sign
+//
+// Returns:
+// char 			'+' or '-'
+char Exponent::getSign(){
 	return sign;
 }
 
-tr1::shared_ptr<AbstractNumber> Log::getValue(string name){
-	if (name == "base") {
-		return this->base;
+// Returns char identifying sign resulting from multiplication or division of two numbers
+//
+// Returns:
+// char 			'+' or '-'
+char Exponent::calcSign(tr1::shared_ptr<AbstractNumber> number){
+	if(sign == number->getSign()){
+		return sign;
 	}
-	else if (name == "value")
+	else{
+		return '-';
+	}
+}
+
+// Takes in a string representing a variable name and returns the given variable
+//
+// Paramters
+// string name					name of the variable to be returned
+//
+// Returns:
+// shared_ptr<AbstractNumber>	value of variable
+tr1::shared_ptr<AbstractNumber> Exponent::getValue(string name){
+	if (name == "base") {
+		return base;
+	}
+	else if (name == "power")
 	{
-		return this->value;
+		return power;
 	}
 	else
 	{
-		cout << "ERROR";
-		throw "tried to get a " + name + " from a log";
+		cout << "tried to get a " + name + " from an exponent" << endl;
+		throw "tried to get a " + name + " from an exponent";
 	}
 }
+

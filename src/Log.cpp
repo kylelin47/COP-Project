@@ -1,5 +1,8 @@
 #include "Log.h"
 #include "Exponent.h"
+#include "Radical.h"
+#include "E.h"
+#include "Pi.h"
 #include <cmath>
 
 Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value)
@@ -65,11 +68,17 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 {
 		 sign = '-';
 	 }
+	 tr1::shared_ptr<AbstractNumber> copy(new Log(base, value, '+'));
+	 cout << "copy: " << copy->toString()<< endl;
+	 tr1::shared_ptr<AbstractNumber> num(removeNegative(number));
+
+	 cout << "num: " << num->toString()<< endl;
+
 
 	 if (number->getName() == "Log" &&  toDouble() == number->toDouble())
 	 {
 		 tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
-		 tr1::shared_ptr<AbstractNumber> output(new Exponent(shared_from_this(), two, sign));
+		 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, two, sign));
 		 return output;
 	 }
 	 else if (number->getName() == "Exponent" && number->getValue("base")->toDouble() == toDouble() )
@@ -79,17 +88,62 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 SumVector.push_back(one);
 		 SumVector.push_back(number->getValue("power"));
 		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-		 tr1::shared_ptr<AbstractNumber> output(new Exponent(shared_from_this(), power, sign));
+		 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, power, sign));
 		 return output;
 	 }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	 MultVector.push_back(shared_from_this());
-	 MultVector.push_back(number);
-	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
+	 MultVector.push_back(copy);
+	 MultVector.push_back(num);
+
+	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
 	 return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
+	 char sign;
+	 if (getSign() == number->getSign())
+	 {
+		 sign = '+';
+	 }
+	 else
+	 {
+		 sign = '-';
+	 }
+	 tr1::shared_ptr<AbstractNumber> copy(new Log(base, value, '+'));
+	 //cout << "copy: " << copy->toString()<< endl;
+	 tr1::shared_ptr<AbstractNumber> num(removeNegative(number));
 
+	 //cout << "num: " << num->toString()<< endl;
+
+
+	 if (number->getName() == "Log" &&  toDouble() == number->toDouble())
+	 {
+		 tr1::shared_ptr<AbstractNumber> output(new SmartInteger(1));
+		 return output;
+	 }
+	 else if (number->getName() == "Exponent" && number->getValue("base")->toDouble() == toDouble() )
+	 {
+		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
+		 std::vector< tr1::shared_ptr<AbstractNumber> > den;
+		 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(1,'-'));
+		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1,'-'));
+		 SumVector.push_back(number->getValue("power"));
+		 SumVector.push_back(negetive_one);
+		 numer.push_back(one);
+		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+		 tr1::shared_ptr<AbstractNumber> exponential(new Exponent(copy, power));
+		 den.push_back(exponential);
+		 tr1::shared_ptr<AbstractNumber> output(new MultExpression(numer, den, sign));
+
+		 return output;
+	 }
+	 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
+	 std::vector< tr1::shared_ptr<AbstractNumber> > den;
+	 numer.push_back(copy);
+	 den.push_back(num);
+
+	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(numer, den, sign));
+	 return r;
 }
 string Log::toString(){
 	std::stringstream ss;
@@ -226,4 +280,51 @@ tr1::shared_ptr<AbstractNumber> Log::getValue(string name){
 		cout << "ERROR";
 		throw "tried to get a " + name + " from a log";
 	}
+}
+
+tr1::shared_ptr<AbstractNumber> Log::removeNegative(tr1::shared_ptr<AbstractNumber>number){
+		//cout << number->toString() << " is a " << number->getName() << endl;
+	//*******************************************************
+		 //Copy and paste this to git rid of negetives
+		 //****************************************************
+		 if (number->getName() == "Log")
+		 {
+			 tr1::shared_ptr<AbstractNumber> num(new Log(number->getValue("base"), number->getValue("value"), '+'));
+			 return num;
+		 }
+		 else if (number->getName() == "Exponent")
+		 {
+			 tr1::shared_ptr<AbstractNumber> num(new Exponent(number->getValue("base"), number->getValue("power"), '+'));
+			 return num;
+		 }
+		 else if (number->getName() == "Radical")
+		 {
+		 	tr1::shared_ptr<AbstractNumber> num(new Radical(number->getValue("root"), number->getValue("value"), '+'));
+		 	return num;
+		 }
+		 else if (number->getName() == "E")
+		 {
+			tr1::shared_ptr<AbstractNumber> num(new E());
+			return num;
+		 }
+		 else if (number->getName() == "Pi")
+		 {
+			tr1::shared_ptr<AbstractNumber> num(new Pi());
+			return num;
+		 }
+		 else if (number->getName() == "Integer")
+		 {
+			 tr1::shared_ptr<AbstractNumber> num(new SmartInteger(number->toDouble()));
+			 return num;
+		 }
+		 else
+		 {
+			 tr1::shared_ptr<AbstractNumber> num(number);
+			 return num;
+		 }
+
+
+		 //*************************************************
+		 //end
+		 //**********************************************
 }
