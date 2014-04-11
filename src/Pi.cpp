@@ -2,7 +2,12 @@
 
 Pi::Pi()
 {
-    //ctor
+    this->sign = '+';
+}
+
+Pi::Pi(char sign)
+{
+    this->sign = sign;
 }
 
 Pi::~Pi()
@@ -20,6 +25,10 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 
 }
 string Pi::toString(){
+	if (sign == '-')
+	{
+		return "-pi";
+	}
 	return "pi";
 }
 
@@ -39,5 +48,5 @@ string Pi::getName()
 
 char Pi::getSign()
 {
-	return '+';
+	return sign;
 }

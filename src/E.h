@@ -5,6 +5,7 @@
 class E: public AbstractNumber {
 public:
 	E();
+	E(char sign);
 	virtual ~E();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
 	tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number);
@@ -17,6 +18,7 @@ public:
 
 private:
 	double value;
+	char sign;
 };
 
 #endif // E_H

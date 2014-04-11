@@ -10,19 +10,18 @@
 using namespace std;
 
 int main() {
-	/*
-	tr1::shared_ptr<AbstractNumber> base ( new SmartInteger(4));
-	tr1::shared_ptr<AbstractNumber> value ( new SmartInteger(4));
 
-	tr1::shared_ptr<AbstractNumber> log1 ( new Log(base,value, '-'));
-	tr1::shared_ptr<AbstractNumber> log2 ( new Log(base,value, '-'));
+	tr1::shared_ptr<AbstractNumber> base ( new SmartInteger(4));
+	tr1::shared_ptr<AbstractNumber> value ( new SmartInteger(5));
+
+	tr1::shared_ptr<AbstractNumber> log1 ( new Log(base,value));
+	tr1::shared_ptr<AbstractNumber> log2 ( new Log(value,base));
 
 	cout << "working" << endl;
 
 	cout << log1->add(log2)->toString() << endl;
 
-	*/
-
+	/*
 	bool run = true;
     string input;
 

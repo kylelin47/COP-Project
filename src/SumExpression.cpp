@@ -149,8 +149,15 @@ string SumExpression::toString(){
 	}
 
 	for (int i =0; i < expression.size(); i++){
-		//output += expression[i]->getSign();
-		output += expression[i]->toString();
+		if (expression[i]->getName() != "MultExpression" && expression[i]->getSign() == '+')
+		{
+			output += expression[i]->getSign();
+			output += expression[i]->toString();
+		}
+		else
+		{
+			output += expression[i]->toString();
+		}
 
 	}
 	if (!noParenthesis && output[1] == '+')
