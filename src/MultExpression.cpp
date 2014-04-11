@@ -311,7 +311,10 @@ double MultExpression::toDouble()
     {
         x = x / denominator[i]->toDouble();
     }
-
+    if (sign == '-')
+    {
+        return -x;
+    }
 	return x;
 }
 

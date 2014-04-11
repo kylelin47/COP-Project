@@ -11,7 +11,6 @@
 using namespace std;
 
 SmartInteger::SmartInteger(int value, char sign) {
-
     this->value = value;
     this->sign = sign;
 }
@@ -114,6 +113,10 @@ double SmartInteger::toDouble()
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::simplify()
 {
+    if (sign == '-')
+    {
+        value = -value;
+    }
 	return shared_from_this();
 }
 string SmartInteger::getName()

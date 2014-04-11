@@ -84,8 +84,6 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
             if (root->toDouble() >= 1)
             {
                 int thisValue = value->toDouble();
-                cout << "THISVALUE: ";
-                cout << thisValue << endl;
                 for (int i=2; i<=thisValue/2; i++)
                 {
                     if (thisValue % (int)round(pow(i, root->toDouble())) == 0)
@@ -95,10 +93,6 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
                         i = 1;
                     }
                 }
-                cout << "COEFFICIENT: ";
-                cout << coefficient << endl;
-                cout << "VALUE: ";
-                cout << thisValue << endl;
                 tr1::shared_ptr<AbstractNumber>n1(new SmartInteger(coefficient));
                 if (coefficient == 1)
                 {
@@ -132,7 +126,6 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
     }
     else
     {
-        cout << n->toString() << endl;;
         return n->simplify();
     }
 }
