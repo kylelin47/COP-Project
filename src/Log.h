@@ -2,6 +2,8 @@
 #define LOG_H
 #include "SumExpression.h"
 
+//Test
+
 class Log: public AbstractNumber
 {
     public:

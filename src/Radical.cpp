@@ -4,6 +4,14 @@ Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<Abstr
 {
     this->value = value;
     this->root = root;
+    this->sign = '+';
+}
+
+Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root, char sign)
+{
+    this->value = value;
+    this->root = root;
+    this->sign = sign;
 }
 
 Radical::~Radical()
@@ -123,6 +131,10 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 string Radical::toString()
 {
     stringstream ss;
+    if (sign == '-')
+    {
+    	ss << '-';
+    }
     if (root->toDouble() == 2)
     {
         ss << "sqrt:";
@@ -147,5 +159,5 @@ string Radical::getName()
 }
 
 char Radical::getSign(){
-	return '+';
+	return sign;
 }
