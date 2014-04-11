@@ -101,12 +101,6 @@ MultExpression::MultExpression()
     this->sign = '+';
 }
 
-MultExpression::MultExpression(tr1::shared_ptr<AbstractNumber> numerator, tr1::shared_ptr<AbstractNumber> denominator, char sign)
-{
-    this->numerator.push_back(numerator);
-    this->denominator.push_back(denominator);
-    this->sign = sign;
-}
 MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign) {
 	numerator = nums;
 	denominator = dem;
@@ -539,4 +533,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::getValue(string name){
 
 	throw "tried to get a " + name + " from a MultExpression";
 
+}
+tr1::shared_ptr<AbstractNumber> MultExpression::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new MultExpression(numerator, denominator, '+'));
+	return output;
 }

@@ -203,3 +203,9 @@ char E::getSign()
 {
 	return sign;
 }
+
+tr1::shared_ptr<AbstractNumber> E::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new E());
+	return output;
+}

@@ -177,3 +177,9 @@ tr1::shared_ptr<AbstractNumber> Radical::getValue(string name){
 
 
 }
+
+tr1::shared_ptr<AbstractNumber> Radical::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new Radical(root, value));
+	return output;
+}

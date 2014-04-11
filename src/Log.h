@@ -20,6 +20,7 @@ class Log: public AbstractNumber
     	char getSign();
     	tr1::shared_ptr<AbstractNumber> getValue(string name);
     	tr1::shared_ptr<AbstractNumber> removeNegative(tr1::shared_ptr<AbstractNumber>number);
+    	tr1::shared_ptr<AbstractNumber> noSign();
 
         tr1::shared_ptr<AbstractNumber>base, value;
     protected:

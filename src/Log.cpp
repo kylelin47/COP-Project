@@ -110,7 +110,7 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 }
 	 tr1::shared_ptr<AbstractNumber> copy(new Log(base, value, '+'));
 	 //cout << "copy: " << copy->toString()<< endl;
-	 tr1::shared_ptr<AbstractNumber> num(removeNegative(number));
+	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
 
 	 //cout << "num: " << num->toString()<< endl;
 
@@ -327,4 +327,10 @@ tr1::shared_ptr<AbstractNumber> Log::removeNegative(tr1::shared_ptr<AbstractNumb
 		 //*************************************************
 		 //end
 		 //**********************************************
+}
+
+tr1::shared_ptr<AbstractNumber> Log::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new Log(base, value));
+	return output;
 }
