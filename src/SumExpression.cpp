@@ -61,6 +61,7 @@ SumExpression::SumExpression(const string &input) {
 
 	split(expression, makeStringUsable(input), '+' , '-');
 	this->noParenthesis = false;
+	int number;
 }
 
 SumExpression::SumExpression::SumExpression(const string &input, bool noParenthesis) {
@@ -98,8 +99,9 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
     SumTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
-    for (int i=0; (unsigned)i < SumTerms.size() - 1; i++)
+    for (int i=0; (unsigned)i < SumTerms.size(); i++)
     {
+        cout << SumTerms[SumTerms.size() - 1]->toString() << endl;
         if (SumTerms[i]->getName() == SumTerms[SumTerms.size() - 1]->getName())
         {
             if (SumTerms[i]->getName() != "SumExpression")
@@ -115,7 +117,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
         }
     }
     expression = SumTerms;
-
+    //delete number;
     return shared_from_this();
 }
 
@@ -147,7 +149,7 @@ string SumExpression::toString(){
 	}
 
 	for (int i =0; i < expression.size(); i++){
-		output += expression[i]->getSign();
+		//output += expression[i]->getSign();
 		output += expression[i]->toString();
 
 	}
@@ -157,7 +159,13 @@ string SumExpression::toString(){
 	}
 	if (output[0] == '+')
 	{
-		output.erase(0,1);
+		if (output[1] == '+')
+		{
+				output.erase(0,2);
+		}
+		else {
+			output.erase(0,1);
+		}
 	}
 	if (!noParenthesis)
 	{
@@ -294,7 +302,7 @@ string SumExpression::makeStringUsable(string input)
 		}
 	}
 
-	end - output.size();
+	end = output.size();
 
 	for (size_t i = 1; i < end; i++) //luckly none the places we want to split at share any charactors
 	{
@@ -312,6 +320,14 @@ string SumExpression::makeStringUsable(string input)
 
 
 
+	}
+	for (size_t i = 0; i < end - 1; i++)
+	{
+		if (output[i] == ')' && (output[i+1] != '*' && output[i+1] != '/' && output[i+1] != '+' && output[i+1] != '-' && output[i+1] != ':'))
+		{
+			output.insert(i+1, "*");
+			end++;
+		}
 	}
 	//cout << "Usable string: "<< output << endl << endl;
 	return output;

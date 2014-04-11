@@ -9,16 +9,50 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
     }
     this->base = base;
     this->value = value;
+    this->sign = '+';
+}
+
+Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value,char sign)
+{
+    if (value->toDouble() <= 0)
+    {
+        throw "Can't take log of a negative number";
+    }
+    this->base = base;
+    this->value = value;
+    this->sign = sign;
 }
 
  tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
+	if (number->getName() == "Log" && toDouble() == number->toDouble())
+	{
+		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
+		tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
+		tr1::shared_ptr<AbstractNumber> log(new Log(base, value)); // this gets rid of the old sign just in case
+		OutVector.push_back(two);
+		OutVector.push_back(log);
+		if (number->getSign() == getSign())
+		{
+			tr1::shared_ptr<AbstractNumber> output(new MultExpression(OutVector, getSign()));
+			return output;
+		}
+		else{
+			tr1::shared_ptr<AbstractNumber> output(new SmartInteger(0));
+			return output;
+		}
 
-    std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
-    SumVector.push_back(shared_from_this());
-    SumVector.push_back(number);
-    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumVector));
 
-    return s;
+
+	}
+	else {
+		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
+		OutVector.push_back(shared_from_this());
+		OutVector.push_back(number);
+		tr1::shared_ptr<AbstractNumber>output(new SumExpression(OutVector));
+
+		return output;
+	}
+
 }
  tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
 
@@ -29,21 +63,17 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
             //probably unnecessary
         }
     }
-	std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	MultVector.push_back(shared_from_this());
-	MultVector.push_back(number);
-	tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
-	return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
-	// Changes number to exponent with power of -1 then multiplies inverted number
-	//tr1::shared_ptr<AbstractNumber> i(new SmartInteger(-1));
-	//tr1::shared_ptr<AbstractNumber> r(new Exponent(number, i));
-	//return multiply(r);
+
 }
 string Log::toString(){
 	std::stringstream ss;
 
+	if (sign == '-')
+	{
+		ss << "-";
+	}
 	ss << "log_";
 	ss << base->toString();
 	ss << ":";
@@ -56,11 +86,8 @@ double Log::toDouble()
 	return log(value->toDouble())/log(base->toDouble());
 }
 
- tr1::shared_ptr<AbstractNumber> Log::simplify()
+ tr1::shared_ptr<AbstractNumber>  Log::simplify()
 {
-    base = base->simplify();
-    value = value->simplify();
-
     if (abs(remainder(toDouble(), 1)) < pow(10, -6))
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));
@@ -78,7 +105,7 @@ double Log::toDouble()
             tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
             tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
 
-            SimplifiedTerms.push_back(L);d
+            SimplifiedTerms.push_back(L);
         }
     }
     tr1::shared_ptr<AbstractNumber>s(new SumExpression(SimplifiedTerms));
@@ -113,6 +140,6 @@ string Log::getName()
 }
 
 char Log::getSign(){
-	return '+';
+	return sign;
 }
 

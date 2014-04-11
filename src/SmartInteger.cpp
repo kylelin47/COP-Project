@@ -10,10 +10,18 @@
 
 using namespace std;
 
+SmartInteger::SmartInteger(int value, char sign) {
+
+    this->value = value;
+    this->sign = sign;
+}
+
 SmartInteger::SmartInteger(int value) {
 
     this->value = value;
+    this->sign = '+';
 }
+
 
 SmartInteger::SmartInteger(const string &input) {
 
@@ -50,11 +58,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger(this->value * number->toDouble()));
         MultipliedTerms.push_back(n);
     }
-    else
-    {
-        MultipliedTerms.push_back(shared_from_this());
-        MultipliedTerms.push_back(number);
-    }
+
     tr1::shared_ptr<AbstractNumber>M (new MultExpression(MultipliedTerms, '+'));
     return M;
 }
@@ -118,5 +122,5 @@ string SmartInteger::getName()
 
 char SmartInteger::getSign()
 {
-	return '+';
+	return sign;
 }
