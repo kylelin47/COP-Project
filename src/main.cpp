@@ -32,7 +32,7 @@ int main() {
 		{
 			try{
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-				cout << num->toString()<< endl << endl;
+				cout << num->simplify()->toString()<< endl << endl;
 			}
 			catch(const char* msg)
 			{

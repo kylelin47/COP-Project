@@ -99,15 +99,15 @@ MultExpression::MultExpression()
 }
 
 MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign) {
-	this->numerator = nums;
-	this->denominator = dem;
+	numerator = nums;
+	denominator = dem;
 	this->sign = sign;
 }
 
 
 MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, char sign)
 {
-	this->numerator = nums;
+	numerator = nums;
 	this->sign = sign;
 }
 
@@ -115,10 +115,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 {
     double d = 1;
     double e = 1;
-
     if (number->getName() == "MultExpression")
     {
-        cout << number->denominator.size() << endl;
+        cout << number->numerator.size() << endl;
         cout << number->toString() << endl;
         for (int i=0; i++; i<number->denominator.size())
         {
@@ -310,6 +309,9 @@ double MultExpression::toDouble()
 
 tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
 {
+    cout <<"SIMPLIFYING MULT EXPRESSION" << endl;
+    cout <<"DENOMINATOR SIZE: ";
+    cout << denominator.size() << endl;
     tr1::shared_ptr<AbstractNumber> tmp;
 
     vector<tr1::shared_ptr<AbstractNumber> > num;
@@ -326,6 +328,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     {
         for (int j=i; j < numerator.size(); j++)
         {
+            cout <<"TRYING TO DIVIDE" <<endl;
             tmp = numerator[i]->divide(denominator[j]);
             if (tmp->getName() != "MultExpression")
             {
