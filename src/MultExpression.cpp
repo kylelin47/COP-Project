@@ -355,6 +355,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         {
             cout <<"TRYING TO DIVIDE" <<endl;
             tmp = numerator[i]->divide(denominator[j]);
+            cout << tmp->toString() << endl;
             if (tmp->getName() != "MultExpression")
             {
                 numerator[i] = tmp;
@@ -402,11 +403,14 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
 {
     for (int i=0; (unsigned)i < vec.size(); i++)
     {
+        cout << vec[i]->getName() << endl;
         vec[i] = vec[i]->simplify();
     }
 
     while (vec.size() > 1)
     {
+        cout << "Multiplying: " + vec[0]->toString();
+        cout << " and " + vec[1]->toString() << endl;
         vec[0] = vec[0]->multiply(vec[1]);
         vec.erase(vec.begin() + 1);
     }

@@ -26,7 +26,7 @@ SmartInteger::SmartInteger(const string &input) {
 
 	stringstream ss(input);
 	ss >> value;
-
+    this->sign = '+';
 }
 
 SmartInteger::~SmartInteger() {
@@ -58,7 +58,11 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
         value = this->value * number->toDouble();
         return shared_from_this();
     }
-
+    else
+    {
+        return number->multiply(shared_from_this());
+    }
+    /*
     if(this->getSign() == '+' && number->getSign() == '+')
        {
             sign = '+';
@@ -75,6 +79,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
     MultipliedTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber>M (new MultExpression(MultipliedTerms, sign));
     return M;
+    */
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNumber>number){
