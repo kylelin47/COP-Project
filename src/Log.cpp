@@ -68,18 +68,62 @@ double Log::toDouble()
     }
 
     vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
-
+    int numOnes = 0;
     if (value->getName() == "Integer")
     {
-
         vector<int> factors = primeFactors((int)(value->toDouble()));
         for (int i=0; (unsigned)i < factors.size(); i++)
         {
-            tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
-            tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+            if (base->toDouble() == factors[i])
+            {
+                numOnes++;
+            }
+            else
+            {
+                if (factors[i] == factors[i + 1])
+                {
+                    int sameFactor = 2;
+                    for (int k=i+2; k<factors.size(); k++)
+                    {
+                        if (factors[k] == factors[i])
+                        {
+                            sameFactor++;
+                        }
+                        else
+                        {
+                            break;
+                        }
 
-            SimplifiedTerms.push_back(L);
+                    }
+                    tr1::shared_ptr<AbstractNumber>Coefficient(new SmartInteger(sameFactor));
+                    tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
+                    tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+                    vector<tr1::shared_ptr<AbstractNumber> > M;
+                    M.push_back(Coefficient);
+                    M.push_back(L);
+                    tr1::shared_ptr<AbstractNumber>Mult(new MultExpression(M, '+'));
+                    SimplifiedTerms.push_back(Mult);
+                    i = i + sameFactor - 1;
+                }
+                else
+                {
+                    tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
+                    tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+
+                    SimplifiedTerms.push_back(L);
+                }
+
+            }
+
         }
+    }
+    else
+    {
+        return shared_from_this();
+    }
+    if (numOnes != 0)
+    {
+        SimplifiedTerms.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(numOnes)));
     }
     tr1::shared_ptr<AbstractNumber>s(new SumExpression(SimplifiedTerms));
 

@@ -10,8 +10,6 @@
 #include "SmartInteger.h"
 #include <iostream>
 
-using namespace std;
-
 class MultExpression: public AbstractNumber {
 public:
     MultExpression();
@@ -30,7 +28,7 @@ public:
 	char getSign();
 	double toDouble();
 	tr1::shared_ptr<AbstractNumber> simplify();
-    vector <tr1::shared_ptr<AbstractNumber> > simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec);
+    vector<tr1::shared_ptr<AbstractNumber> > simplifyVector(vector<tr1::shared_ptr<AbstractNumber> > vec);
 	string getName();
 	void appendNumberFromString(string input, vector< tr1::shared_ptr<AbstractNumber> > &express);
 	int count(string input, int begin, int end, char symbol);

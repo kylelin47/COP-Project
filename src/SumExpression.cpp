@@ -182,9 +182,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 
     for (int i=0; (unsigned)i < expression.size(); i++)
     {
-    	cout << "Bug:"<< expression[i]->toString() << endl;
         expression[i] = expression[i]->simplify();
-        cout << "Bug2:"<< expression[i]->toString() << endl;
     }
     if (expression.size() == 1)
     {
