@@ -15,6 +15,7 @@ class Exponent: public AbstractNumber
         string toString();
         double toDouble();
     	char getSign();
+    	char calcSign(tr1::shared_ptr<AbstractNumber>);
     	char sign;
     	tr1::shared_ptr<AbstractNumber> getValue(string name);
 

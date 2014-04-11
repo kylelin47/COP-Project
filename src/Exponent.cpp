@@ -49,14 +49,19 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
  	if(this->toDouble() == number->toDouble() &&
  	   this->getSign() != number->getSign()){
  		tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
+
+ 	    return r;
  	}
  	// Checks for duplication/simplification
- 	else if(this->toDouble() == number->toDouble &&
+ 	else if(this->toDouble() == number->toDouble() &&
  			this->getSign() == number->getSign()){
  		vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-		MultVector.push_back(new SmartInteger(2));
+		tr1::shared_ptr<AbstractNumber> i(new SmartInteger(2));
+		MultVector.push_back(i);
 		MultVector.push_back(shared_from_this());
 		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
+
+	    return r;
   	}
  	// Duplication necessary for simplification
  	// Assuming number is in simplest form
@@ -67,9 +72,10 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 		SumVector.push_back(shared_from_this());
 		SumVector.push_back(number);
 		tr1::shared_ptr<AbstractNumber> r(new SumExpression(SumVector));
+
+	    return r;
 	}
 
-    return r;
 }
 
  // Multiplies number by this and returns the product
@@ -83,14 +89,18 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 	// Checks for simplification if both exponents
 	if(number->getName() == "Exponent"){
 		if(number->getValue("base") == base){
-			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(number->getValue("power")), calcSign(number));
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(number->getValue("power")), this->calcSign(number)));
+
+		    return r;
 		}
 	}
 	
 	// Checks for simplification if number = base
 	// Adds 1 to exponent
 	else if(number->toDouble() == base->toDouble()){
-		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(new SmartInteger(1)), calcSign(number)));
+		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1));
+		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
+	    return r;
 	}
 	
 	else{
@@ -98,9 +108,9 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 		MultVector.push_back(shared_from_this());
 		MultVector.push_back(number);
 		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
+
+		return r;
 	}
-	
-	return r;
 }
 
 // Divides this by number and returns the product
@@ -125,14 +135,20 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 	
 	// Subtracts 1 from power if base = number
 	else if(number->toDouble() == base->toDouble()){
-		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(new SmartInteger(1,'-')), calcSign(number)));
+		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1,'-'));
+		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
+		return r;
 	}
 	
 	else{
-		tr1::shared_ptr<AbstractNumber> r(new MultExpression(this, number, calcSign()));
+	 	tr1::shared_ptr<AbstractNumber> t(this);
+		vector< tr1::shared_ptr<AbstractNumber> > NumVector;
+		NumVector.push_back(shared_from_this());
+		vector< tr1::shared_ptr<AbstractNumber> > DenVector;
+		DenVector.push_back(shared_from_this());
+		tr1::shared_ptr<AbstractNumber> r(new MultExpression(NumVector, DenVector, this->calcSign(number)));
+		return r;
 	}
-	
-	return r;
 }
 
 // Returns this formatted as a string in the format:
