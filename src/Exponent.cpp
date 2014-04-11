@@ -113,6 +113,7 @@ double Exponent::toDouble()
 	 else if(base->getName() == "Integer" &&
 			  power->getName() == "Integer"){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)toDouble())); // call toDouble and cast as integer
+	 	 return r;
 	 }
 	 // no simplification possible, return as is
 	 else{

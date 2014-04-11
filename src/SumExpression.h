@@ -9,8 +9,6 @@
 #define SUMEXPRESSION_H_
 #include "MultExpression.h"
 
-using namespace std;
-
 class SumExpression: public AbstractNumber {
 public:
     SumExpression();
@@ -23,7 +21,7 @@ public:
 	tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number);
 	string toString();
 	void split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2);
-	vector< tr1::shared_ptr<AbstractNumber> > expression;
+	vector<tr1::shared_ptr<AbstractNumber> > expression;
 	double toDouble();
 	string getName();
 	int count(string input, int begin, int end, char symbol);

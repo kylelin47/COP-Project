@@ -11,16 +11,30 @@ using namespace std;
 
 int main() {
 
-	tr1::shared_ptr<AbstractNumber> base ( new SmartInteger(4));
-	tr1::shared_ptr<AbstractNumber> value ( new SmartInteger(5));
+    bool run;
+    string input;
+	while (run)
+	{
+		getline(cin, input);
+		if (input != "q")
+		{
+			try{
+				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
+				cout << num->toString()<< endl << endl;
+				cout << num->simplify()->toString() << endl;
+			}
+			catch(const char* msg)
+			{
+				cout << msg << endl;
+			}
+		}
+		else
+		{
+			cout << "quitting" << endl;
+			run = false;
+		}
 
-	tr1::shared_ptr<AbstractNumber> log1 ( new Log(base,value));
-	tr1::shared_ptr<AbstractNumber> log2 ( new Log(value,base));
-
-	cout << "working" << endl;
-
-	cout << log1->add(log2)->toString() << endl;
-
+	}
 	/*
 	bool run = true;
     string input;
@@ -32,7 +46,7 @@ int main() {
 		{
 			try{
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-				cout << num->toString()<< endl << endl;
+				cout << num->simplify()->toString()<< endl << endl;
 			}
 			catch(const char* msg)
 			{
@@ -47,11 +61,11 @@ int main() {
 
 	}
 
-    
-    
-    
-    
-    
+
+
+
+
+
 
     /*bool menuLoop = true;
     int input = 0;

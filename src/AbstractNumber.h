@@ -20,6 +20,7 @@ using namespace std;
 
 class AbstractNumber: public tr1::enable_shared_from_this<AbstractNumber> {
 public:
+    typedef tr1::shared_ptr<vector< tr1::shared_ptr<AbstractNumber> > > vec_ptr;
 	virtual tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number) = 0;
 	virtual tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>number) = 0;
 	virtual tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>number) = 0;
@@ -30,7 +31,7 @@ public:
 	virtual char getSign() = 0;
 
 	tr1::shared_ptr<AbstractNumber>base, root, value;
-	vector< tr1::shared_ptr<AbstractNumber> > expression, numerator, denominator;
+	vector<tr1::shared_ptr<AbstractNumber> > expression, numerator, denominator;
 
 };
 
