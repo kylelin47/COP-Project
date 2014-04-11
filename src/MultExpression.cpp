@@ -303,6 +303,14 @@ int MultExpression::count(string input, int begin, int end, char symbol)
 double MultExpression::toDouble()
 {
     double x = 1;
+    for (int i=0; i<numerator.size(); i++)
+    {
+        x = x * numerator[i]->toDouble();
+    }
+    for (int i=0; i<denominator.size(); i++)
+    {
+        x = x / denominator[i]->toDouble();
+    }
 
 	return x;
 }
@@ -326,7 +334,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
 
     for (int i=0; i < numerator.size(); i++)
     {
-        for (int j=i; j < numerator.size(); j++)
+        for (int j=i; j < denominator.size(); j++)
         {
             cout <<"TRYING TO DIVIDE" <<endl;
             tmp = numerator[i]->divide(denominator[j]);
