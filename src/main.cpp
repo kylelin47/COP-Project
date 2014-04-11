@@ -11,7 +11,9 @@ using namespace std;
 
 int main() {
 
-    bool run;
+
+
+    bool run = true;
     string input;
 	while (run)
 	{
@@ -21,7 +23,7 @@ int main() {
 			try{
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
 				cout << num->toString()<< endl << endl;
-				cout << num->simplify()->toString() << endl;
+				//cout << num->simplify()->toString() << endl;
 			}
 			catch(const char* msg)
 			{

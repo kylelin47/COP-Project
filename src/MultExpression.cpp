@@ -79,6 +79,8 @@ void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector
 					  appendNumberFromString(substring, numerator);
 				  }
 			  else {
+
+				  cout << "adding " << substring << " to the denominator" << endl;
 					 appendNumberFromString(substring, denominator);
 				  }
 
@@ -276,19 +278,19 @@ string MultExpression::toString(){
 	{
 		output+='-';
 	}
-		for (int i =0; i < numerator.size(); i++){
-			output += numerator[i]->toString();
-			if (i < numerator.size()-1)
-			{
-				output += "*";
-			}
+	for (int i =0; i < numerator.size(); i++){
+		output += numerator[i]->toString();
+		if (i < numerator.size()-1)
+		{
+			output += "*";
 		}
-		for (int i = 0; i < denominator.size(); i++){
-			output += "/";
-			output += denominator[i]->toString();
+	}
+	for (int i = 0; i < denominator.size(); i++){
+		output += "/";
+		output += denominator[i]->toString();
 
-		}
-		return output;
+	}
+	return output;
 }
 
 int MultExpression::count(string input, int begin, int end, char symbol)
@@ -463,12 +465,14 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Radical(value, root)));
 	}
-	else if (input[findOutside('^', input)] != string::npos)
+	else if (findOutside('^', input) != string::npos)
 	{
+		cout << findOutside('^', input) << endl;
 		cout << input << " is a exponent" << endl;
 		tr1::shared_ptr<AbstractNumber> base(new SumExpression(input.substr(0 , findOutside('^', input)) , false));
+		cout << "step two \n";
 		tr1::shared_ptr<AbstractNumber> value(new SumExpression(input.substr(findOutside('^', input)+1, input.size()) , false));
-
+		cout << "step two \n";
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Exponent(base, value)));
 
 	}
@@ -491,7 +495,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	else if (isNumber(input))
 	{
 		cout << input << " is an Integer" << endl;
-		numerator.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(input)));
+		express.push_back(tr1::shared_ptr<AbstractNumber>(new SmartInteger(input)));
 	}
 	else
 	{
