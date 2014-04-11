@@ -65,7 +65,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
        }
        else if(this->getSign() == '-' && number->getSign() == '-')
        {
-            sign = "+";
+            sign = '+';
        }
        else
        {
@@ -85,8 +85,8 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
         {
             vector<tr1::shared_ptr<AbstractNumber> > numerator;
             vector<tr1::shared_ptr<AbstractNumber> > denominator;
-            tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->value), '+');
-            tr1::shared_ptr<AbstractNumber> d(new SmartInteger(number->toDouble()), '+');
+            tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->value, '+'));
+            tr1::shared_ptr<AbstractNumber> d(new SmartInteger(number->toDouble(), '+'));
 
             numerator.push_back(n);
             denominator.push_back(d);
@@ -96,7 +96,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
             }
             else if(this->getSign() == '-' && number->getSign() == '-')
             {
-            	sign = "+";
+            	sign = '+';
             }
             else
             {
@@ -113,8 +113,8 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
         {
             vector<tr1::shared_ptr<AbstractNumber> > numerator;
                    vector<tr1::shared_ptr<AbstractNumber> > denominator;
-                   tr1::shared_ptr<AbstractNumber> n(new SmartInteger((this->value / GCF(this->value, (int)number->toDouble()))), '+');
-                   tr1::shared_ptr<AbstractNumber> d(new SmartInteger((number->toDouble() / GCF(this->value, (int)number->toDouble()))), '+');
+                   tr1::shared_ptr<AbstractNumber> n(new SmartInteger((this->value / GCF(this->value, (int)number->toDouble())),'+'));
+                   tr1::shared_ptr<AbstractNumber> d(new SmartInteger((number->toDouble() / GCF(this->value, (int)number->toDouble())), '+'));
                    numerator.push_back(n);
                    denominator.push_back(d);
 
@@ -124,7 +124,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
                                }
                                else if(this->getSign() == '-' && number->getSign() == '-')
                                {
-                               	sign = "+";
+                               	sign = '+';
                                }
                                else
                                {
@@ -148,7 +148,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
                         }
            else if(this->getSign() == '-' && number->getSign() == '-')
                         {
-                        	sign = "+";
+                        	sign = '+';
                         }
              else
                  	 	{
@@ -172,7 +172,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
                         }
             else if(this->getSign() == '-' && number->getSign() == '-')
                         {
-                        	sign = "+";
+                        	sign = '+';
                         }
             else
                         {
