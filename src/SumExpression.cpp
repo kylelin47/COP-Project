@@ -149,7 +149,7 @@ string SumExpression::toString(){
 	}
 
 	for (int i =0; i < expression.size(); i++){
-		if (expression[i]->getName() != "MultExpression" && expression[i]->getSign() == '+')
+		if (expression[i]->getSign() == '+')
 		{
 			output += expression[i]->getSign();
 			output += expression[i]->toString();
@@ -286,9 +286,11 @@ string SumExpression::makeStringUsable(string input)
 		if ((	output[i] == '*' || //l for log
 				output[i] == '/' || //p for pi
 				output[i] == '+' || //e is e
+				output[i] == '^' || //e is e
 				output[i] == '-' ) //a for ans
 				&& (
-				output[i+1] == '*' ||
+				output[i+1] == '^'  ||
+				output[i+1] == '*'  ||
 				output[i+1] == '/'  ||
 				output[i+1] == '+'  ||
 				output[i+1] == '-'  )) //make sure the split point is not already signed
@@ -316,7 +318,7 @@ string SumExpression::makeStringUsable(string input)
 				output[i] == 'p' || //p for pi
 				output[i] == 'e' || //e is e
 				output[i] == 'a' ) //a for ans
-				&& output[i-1] != '*' && output[i-1] != '/' && output[i-1] != '+' && output[i-1] != '-' && output[i-1] != '(' && output[i-1] != ':' && output[i-1] != '_') //make sure the split point is not already signed
+				&& output[i-1] != '*' && output[i-1] != '/' && output[i-1] != '+' && output[i-1] != '-' && output[i-1] != '(' && output[i-1] != ':' && output[i-1] != '_' && output[i-1] != '^') //make sure the split point is not already signed
 		{
 			output.insert(i,"*");
 			i++;
@@ -328,7 +330,7 @@ string SumExpression::makeStringUsable(string input)
 	}
 	for (size_t i = 0; i < end - 1; i++)
 	{
-		if (output[i] == ')' && (output[i+1] != '*' && output[i+1] != '/' && output[i+1] != '+' && output[i+1] != '-' && output[i+1] != ':'))
+		if (output[i] == ')' && (output[i+1] != '*' && output[i+1] != '/' && output[i+1] != '+' && output[i+1] != '-' && output[i+1] != ':' && output[i+1] != '^'))
 		{
 			output.insert(i+1, "*");
 			end++;
@@ -336,4 +338,10 @@ string SumExpression::makeStringUsable(string input)
 	}
 	//cout << "Usable string: "<< output << endl << endl;
 	return output;
+}
+
+tr1::shared_ptr<AbstractNumber> SumExpression::getValue(string name){
+
+	throw "tried to get a " + name + " from a SumExpression";
+
 }

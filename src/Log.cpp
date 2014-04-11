@@ -1,4 +1,5 @@
 #include "Log.h"
+#include "Exponent.h"
 #include <cmath>
 
 Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value)
@@ -55,19 +56,39 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 
 }
  tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
+	 char sign;
+	 if (getSign() == number->getSign())
+	 {
+		 sign = '+';
+	 }
+	 else
+	 {
+		 sign = '-';
+	 }
 
-    if (number->getName() == "Log")
-    {
-        if (base->toDouble() == number->base->toDouble())
-        {
-            //probably unnecessary
-        }
-    }
-    std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-	MultVector.push_back(shared_from_this());
-	MultVector.push_back(number);
-	tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
-	return r;
+
+
+	 if (number->getName() == "Log" &&  toDouble() == number->toDouble())
+	 {
+		 tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
+		 tr1::shared_ptr<AbstractNumber> output(new Exponent(shared_from_this(), two, sign));
+		 return output;
+	 }
+	 else if (number->getName() == "Exponent" && number->getValue("base")->toDouble() == toDouble() )
+	 {
+		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+		 SumVector.push_back(one);
+		 SumVector.push_back(number->getValue("power"));
+		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+		 tr1::shared_ptr<AbstractNumber> output(new Exponent(shared_from_this(), power, sign));
+		 return output;
+	 }
+	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+	 MultVector.push_back(shared_from_this());
+	 MultVector.push_back(number);
+	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
+	 return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
 
@@ -194,3 +215,17 @@ char Log::getSign(){
 	return sign;
 }
 
+tr1::shared_ptr<AbstractNumber> Log::getValue(string name){
+	if (name == "base") {
+		return this->base;
+	}
+	else if (name == "value")
+	{
+		return this->value;
+	}
+	else
+	{
+		cout << "ERROR";
+		throw "tried to get a " + name + " from a log";
+	}
+}

@@ -35,6 +35,7 @@ public:
 	bool isNumber(string input);
 	string reduceString(string input);
 	size_t findOutside(char symbol, string input);
+	tr1::shared_ptr<AbstractNumber> getValue(string name);
 
 	vector <tr1::shared_ptr<AbstractNumber> > expression;
 

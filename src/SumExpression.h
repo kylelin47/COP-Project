@@ -29,6 +29,7 @@ public:
 
 	tr1::shared_ptr<AbstractNumber> simplify();
 	char getSign();
+	tr1::shared_ptr<AbstractNumber> getValue(string name);
 	bool noParenthesis;
 };
 

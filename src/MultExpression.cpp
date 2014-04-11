@@ -12,6 +12,7 @@
 #include "Pi.h"
 #include "Radical.h"
 #include "SumExpression.h"
+#include "Exponent.h"
 #define SMART_INTEGER 1
 #define SMART_POWER 2
 #define SMART_LOG 4
@@ -270,7 +271,10 @@ MultExpression::~MultExpression() {
 
 string MultExpression::toString(){
 	string output ="";
-	output+=sign;
+	if (getSign() == '-')
+	{
+		output+='-';
+	}
 		for (int i =0; i < numerator.size(); i++){
 			output += numerator[i]->toString();
 			if (i < numerator.size()-1)
@@ -458,6 +462,15 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Radical(value, root)));
 	}
+	else if (input[findOutside('^', input)] != string::npos)
+	{
+		cout << input << " is a exponent" << endl;
+		tr1::shared_ptr<AbstractNumber> base(new SumExpression(input.substr(0 , findOutside('^', input)) , false));
+		tr1::shared_ptr<AbstractNumber> value(new SumExpression(input.substr(findOutside('^', input)+1, input.size()) , false));
+
+		express.push_back(tr1::shared_ptr<AbstractNumber>(new Exponent(base, value)));
+
+	}
 	else if (input[0] == '(' && input[input.size()-1] ==')')
 	{
 		cout << input << " is a SumExpression" << endl;
@@ -513,4 +526,10 @@ size_t MultExpression::findOutside(char symbol , string input)
 		}
 	}
 	return string::npos;
+}
+
+tr1::shared_ptr<AbstractNumber> MultExpression::getValue(string name){
+
+	throw "tried to get a " + name + " from a MultExpression";
+
 }

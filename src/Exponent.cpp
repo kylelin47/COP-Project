@@ -16,6 +16,17 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 	// No invalid bases or powers
     this->base = base;
     this->power = power;
+    this->sign = '+';
+}
+
+Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
+				   tr1::shared_ptr<AbstractNumber> power,
+				   char sign)
+{
+	// No invalid bases or powers
+    this->base = base;
+    this->power = power;
+    this->sign = sign;
 }
 
 // Adds number to this and returns the sum
@@ -136,6 +147,20 @@ string Exponent::getName()
 // Returns:
 // char 			'+'
 char Exponent::getSign(){
-	return '+';
+	return sign;
+}
+
+tr1::shared_ptr<AbstractNumber> Exponent::getValue(string name){
+	if (name == "base") {
+		return base;
+	}
+	else if (name == "power")
+	{
+		return power;
+	}
+	else
+	{
+		throw "tried to get a " + name + " from a exponent";
+	}
 }
 

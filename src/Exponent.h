@@ -6,6 +6,7 @@ class Exponent: public AbstractNumber
 {
     public:
         Exponent(tr1::shared_ptr<AbstractNumber>, tr1::shared_ptr<AbstractNumber>);
+        Exponent(tr1::shared_ptr<AbstractNumber>, tr1::shared_ptr<AbstractNumber>, char sign);
         tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>);
         tr1::shared_ptr<AbstractNumber> multiply(tr1::shared_ptr<AbstractNumber>);
         tr1::shared_ptr<AbstractNumber> divide(tr1::shared_ptr<AbstractNumber>);
@@ -14,6 +15,8 @@ class Exponent: public AbstractNumber
         string toString();
         double toDouble();
     	char getSign();
+    	char sign;
+    	tr1::shared_ptr<AbstractNumber> getValue(string name);
 
         tr1::shared_ptr<AbstractNumber>base, power;
 
