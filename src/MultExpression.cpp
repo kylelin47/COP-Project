@@ -26,6 +26,8 @@ using namespace std;
 
 //Testing to see if this works
 
+extern string history;
+
 void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector<tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2) {
 
 	  //This chunk pulls out the string from the MultExpression without the * or /
@@ -495,6 +497,15 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 		cout << "step two \n";
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Exponent(base, value)));
 
+	}
+	else if (input[0] == 'a' && input[1] == 'n' && input[2] == 's' && input.size() == 3)
+	{
+		cout << "found and ANSWER" << endl;
+		if (history == "")
+		{
+			throw "No previous answer found";
+		}
+		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(history)));
 	}
 	else if (input[0] == '(' && input[input.size()-1] ==')')
 	{

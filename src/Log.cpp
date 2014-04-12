@@ -11,6 +11,10 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
     {
         throw "Can't take log of a negative number";
     }
+    if (base->toDouble() == 1 || base->toDouble() <= 0)
+    {
+    	throw "Invalid log base";
+    }
     this->base = base;
     this->value = value;
     this->sign = '+';
@@ -21,6 +25,10 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
     if (value->toDouble() <= 0)
     {
         throw "Can't take log of a negative number";
+    }
+    if (base->toDouble() == 1 || base->toDouble() <= 0)
+    {
+    	throw "Invalid log base";
     }
     this->base = base;
     this->value = value;
@@ -67,12 +75,12 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 {
 		 sign = '-';
 	 }
-	 tr1::shared_ptr<AbstractNumber> copy(new Log(base, value, '+'));
+	 tr1::shared_ptr<AbstractNumber> copy(noSign());
 	 cout << "copy: " << copy->toString()<< endl;
-	 tr1::shared_ptr<AbstractNumber> num(removeNegative(number));
+	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
 
 	 cout << "num: " << num->toString()<< endl;
-
+	 cout << toDouble() << " - " << num->toDouble() << endl;
 
 	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
@@ -80,7 +88,7 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, two, sign));
 		 return output;
 	 }
-	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble() < 0.000001) )
+	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
 	 {
 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
@@ -119,13 +127,13 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 tr1::shared_ptr<AbstractNumber> output(new SmartInteger(1));
 		 return output;
 	 }
-	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble() < 0.000001) )
+	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
 	 {
 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
 		 std::vector< tr1::shared_ptr<AbstractNumber> > den;
 		 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(1,'-'));
-		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1,'-'));
+		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 		 SumVector.push_back(number->getValue("power"));
 		 SumVector.push_back(negetive_one);
 		 numer.push_back(one);
@@ -160,6 +168,10 @@ string Log::toString(){
 
 double Log::toDouble()
 {
+	if (sign == '-')
+	{
+		return -1*log(value->toDouble())/log(base->toDouble());
+	}
 	return log(value->toDouble())/log(base->toDouble());
 }
 

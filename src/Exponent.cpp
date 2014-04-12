@@ -182,6 +182,10 @@ string Exponent::toString(){
 // double 			this in double form
 double Exponent::toDouble()
 {
+	if (sign == '-')
+	{
+		return -1*pow(base->toDouble(), power->toDouble());
+	}
 	return pow(base->toDouble(), power->toDouble());
 }
 

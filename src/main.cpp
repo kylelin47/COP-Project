@@ -4,39 +4,21 @@
 #include "Log.h"
 #include "Exponent.h"
 #include <exception>
+#include "History.h"
 //#include "AbstractNumber.h"
 
-
+string history;
 
 using namespace std;
 
 int main() {
-
-    bool run = true;
-    string input;
-	while (run)
-	{
-		getline(cin, input);
-		if (input != "q")
-		{
-			try{
-				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-				cout << "PARSER STRING: " + num->toString()<< endl << endl;
-				cout << num->simplify()->toString() << endl;
-			}
-			catch(const char* msg)
-			{
-				cout << msg << endl;
-			}
-		}
-		else
-		{
-			cout << "quitting" << endl;
-			run = false;
-		}
-
-	}
-	/*
+    /*
+	tr1::shared_ptr<AbstractNumber> num1(new SmartInteger(144, '-'));
+	tr1::shared_ptr<AbstractNumber> num2(new SmartInteger(60));
+	tr1::shared_ptr<AbstractNumber> log1(new Log(num1,num2, '-'));
+	tr1::shared_ptr<AbstractNumber> log2(new Exponent(log1,num2, '-'));
+	cout << num1->multiply(log1)->toString() << endl;
+	/*/
 	bool run = true;
     string input;
 
@@ -46,8 +28,11 @@ int main() {
 		if (input != "q")
 		{
 			try{
+
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-				cout << num->simplify()->toString()<< endl << endl;
+				cout << num->toString()<< endl << endl;
+				history = num->toString();
+
 			}
 			catch(const char* msg)
 			{

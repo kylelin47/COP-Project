@@ -48,11 +48,20 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
     return s;
 }
 tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractNumber>number){
-
-    number = number->simplify();
+	char sign;
+	if(getSign() == number->getSign())
+	{
+		sign = '+';
+	}
+	else{
+		sign = '-';
+	}
+	tr1::shared_ptr<AbstractNumber> copy(noSign());
+	tr1::shared_ptr<AbstractNumber> that(number->noSign());
+    //number = number->simplify();
     if (number->getName() == "Integer")
     {
-        value = this->value * number->toDouble();
+        value = this->value * number->toDouble(); //this may be bad, check here if we are having issues
         return shared_from_this();
     }
     else if (number->getName() == "SumExpression" || number->getName() == "MultExpression")
@@ -60,9 +69,9 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
         return number->multiply(shared_from_this());
     }
     vector<tr1::shared_ptr<AbstractNumber> > M;
-    M.push_back(number);
-    M.push_back(shared_from_this());
-    tr1::shared_ptr<AbstractNumber> ans(new MultExpression(M, '+'));
+    M.push_back(that);
+    M.push_back(copy);
+    tr1::shared_ptr<AbstractNumber> ans(new MultExpression(M, sign));
     return ans;
 }
 
@@ -190,6 +199,10 @@ string SmartInteger::toString(){
 double SmartInteger::toDouble()
 {
 	//cout << value;
+	if (sign == '-')
+	{
+			return -1*(double)value;
+	}
 	return (double)value;
 }
 

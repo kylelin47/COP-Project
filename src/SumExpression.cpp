@@ -8,7 +8,10 @@
 
 using namespace std;
 
+extern string history;
+
 void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
+	cout << history << endl;
   size_t pos = 0;
   size_t skipUntil = 0;
   string s = text;
@@ -67,6 +70,7 @@ SumExpression::SumExpression(tr1::shared_ptr<AbstractNumber> number1, tr1::share
 {
     expression.push_back(number1);
     expression.push_back(number2);
+    this->noParenthesis = false;
 }
 SumExpression::SumExpression::SumExpression(const string &input, bool noParenthesis) {
 	split(expression, makeStringUsable(input), '+' , '-');
@@ -75,7 +79,7 @@ SumExpression::SumExpression::SumExpression(const string &input, bool noParenthe
 
 SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > &expression) {
     this->expression = expression;
-	this->noParenthesis = noParenthesis;
+	this->noParenthesis = false;
 }
 
 int SumExpression::count(string input, int begin, int end, char symbol)
