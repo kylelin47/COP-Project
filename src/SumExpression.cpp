@@ -8,7 +8,10 @@
 
 using namespace std;
 
+extern string history;
+
 void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
+	cout << history << endl;
   size_t pos = 0;
   size_t skipUntil = 0;
   string s = text;
@@ -63,7 +66,12 @@ SumExpression::SumExpression(const string &input) {
 	this->noParenthesis = false;
 	int number;
 }
-
+SumExpression::SumExpression(tr1::shared_ptr<AbstractNumber> number1, tr1::shared_ptr<AbstractNumber> number2)
+{
+    expression.push_back(number1);
+    expression.push_back(number2);
+    this->noParenthesis = false;
+}
 SumExpression::SumExpression::SumExpression(const string &input, bool noParenthesis) {
 	split(expression, makeStringUsable(input), '+' , '-');
 	this->noParenthesis = noParenthesis;
@@ -71,7 +79,7 @@ SumExpression::SumExpression::SumExpression(const string &input, bool noParenthe
 
 SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > &expression) {
     this->expression = expression;
-	this->noParenthesis = noParenthesis;
+	this->noParenthesis = false;
 }
 
 int SumExpression::count(string input, int begin, int end, char symbol)
@@ -96,6 +104,7 @@ SumExpression::~SumExpression() {
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
+    cout << "ADDING SUM TERMS" << endl;
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
     SumTerms.push_back(number->simplify());
     tr1::shared_ptr<AbstractNumber> tmp;
@@ -191,55 +200,46 @@ double SumExpression::toDouble()
 
 tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 {
-    tr1::shared_ptr<AbstractNumber>tmp;
-
-    for (int i=0; (unsigned)i < expression.size(); i++)
+    expression = simplifyVector(expression);
+    if (expression[0]->getName() == "SumExpression")
     {
-        cout << expression[i]->toString() << endl;
-        expression[i] = expression[i]->simplify();
-    }
-    if (expression.size() == 1)
-    {
-    	cout << "Size = 1" << endl;
-        return expression[0];
-    }
-
-    int size = expression.size();
-
-    for (int i=0; (unsigned) i < size; i++)
-    {
-        for (int j=i+1; (unsigned) j < size; j++)
+        tr1::shared_ptr<SumExpression> tmp = tr1::static_pointer_cast<SumExpression>(expression[0]);
+        vector <tr1::shared_ptr<AbstractNumber> > tmpExp = tmp->getExpression();
+        if (tmpExp.size() == 1 && tmpExp[0]->getName() != "SumExpression")
         {
-
-            cout <<"ADDING " + expression[i]->toString() + " & " + expression[j]->toString() << endl;
-            expression[i] = expression[i]->add(expression[j]);
-            cout <<"ADDING SUCCESS" << endl;
-            cout << "ERASING " + expression[j]->toString() <<endl;
-            expression.erase(expression.begin() + j);
-            size = size - 1;
-            if (size != 1)
-            {
-                j = j - 1;
-            }
+            return tmpExp[0];
         }
-
-    }
-    cout <<"SUMEXPRESSION CREATED" << endl;
-    if (expression.size() == 1)
-    {
-        cout << expression[0]->toString() << endl;
-        return expression[0];
     }
     else
     {
-        return shared_from_this();
+        return expression[0];
     }
+    return expression[0];
+}
+
+vector<tr1::shared_ptr<AbstractNumber> > SumExpression::simplifyVector(vector<tr1::shared_ptr<AbstractNumber> > vec)
+{
+    for (int i=0; (unsigned)i < vec.size(); i++)
+    {
+        vec[i] = vec[i]->simplify();
+    }
+
+    while (vec.size() > 1)
+    {
+        vec[0] = vec[0]->add(vec[1]);
+        vec.erase(vec.begin() + 1);
+    }
+
+    return vec;
 }
 string SumExpression::getName()
 {
 	return "SumExpression";
 }
-
+vector<tr1::shared_ptr<AbstractNumber> > SumExpression::getExpression()
+{
+    return expression;
+}
 string SumExpression::makeStringUsable(string input)
 {
 	string output = input;
@@ -343,4 +343,10 @@ tr1::shared_ptr<AbstractNumber> SumExpression::getValue(string name){
 
 	throw "tried to get a " + name + " from a SumExpression";
 
+}
+
+tr1::shared_ptr<AbstractNumber> SumExpression::noSign()
+{
+	tr1::shared_ptr<AbstractNumber> output(new SumExpression(expression));
+	return output;
 }

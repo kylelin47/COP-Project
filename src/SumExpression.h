@@ -12,6 +12,7 @@
 class SumExpression: public AbstractNumber {
 public:
     SumExpression();
+    SumExpression(tr1::shared_ptr<AbstractNumber> number1, tr1::shared_ptr<AbstractNumber> number2);
 	SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression);
 	SumExpression(const string &input);
 	SumExpression(const string &input, bool noParenthesis);
@@ -28,8 +29,11 @@ public:
 	string makeStringUsable(string input);
 
 	tr1::shared_ptr<AbstractNumber> simplify();
+	vector<tr1::shared_ptr<AbstractNumber> > simplifyVector(vector<tr1::shared_ptr<AbstractNumber> > vec);
+	vector<tr1::shared_ptr<AbstractNumber> > getExpression();
 	char getSign();
 	tr1::shared_ptr<AbstractNumber> getValue(string name);
+	tr1::shared_ptr<AbstractNumber> noSign();
 	bool noParenthesis;
 };
 

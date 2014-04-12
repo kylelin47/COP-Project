@@ -14,6 +14,7 @@ class MultExpression: public AbstractNumber {
 public:
     MultExpression();
     MultExpression(const string &input);
+    MultExpression(tr1::shared_ptr<AbstractNumber> numerator, tr1::shared_ptr<AbstractNumber> denominator, char sign);
 	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums , vector<tr1::shared_ptr<AbstractNumber> > dem, char sign);
 	MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, char sign);
 	virtual ~MultExpression();
@@ -38,6 +39,9 @@ public:
 	tr1::shared_ptr<AbstractNumber> getValue(string name);
 
 	vector <tr1::shared_ptr<AbstractNumber> > expression;
+	vector<tr1::shared_ptr<AbstractNumber> > getNumerator();
+	vector<tr1::shared_ptr<AbstractNumber> > getDenominator();
+	tr1::shared_ptr<AbstractNumber> noSign();
 
 private:
 	char sign;

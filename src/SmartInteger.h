@@ -26,6 +26,8 @@ public:
 	string getName();
 	char getSign();
 	tr1::shared_ptr<AbstractNumber> getValue(string name);
+	tr1::shared_ptr<AbstractNumber> noSign();
+	int GCF(int x, int y);
 
 
 private:

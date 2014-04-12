@@ -1,7 +1,8 @@
 #ifndef Radical_H
 #define Radical_H
 #include "SumExpression.h"
-#include "math.h"
+#include "Exponent.h"
+#include <cmath>
 class Radical: public AbstractNumber
 {
     public:
@@ -19,6 +20,7 @@ class Radical: public AbstractNumber
         string getName();
         char getSign();
         tr1::shared_ptr<AbstractNumber> getValue(string name);
+        tr1::shared_ptr<AbstractNumber> noSign();
 
     protected:
     private:
