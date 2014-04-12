@@ -126,6 +126,12 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    cout << "MULTEXPRESSION ADDING: " + number->getName();
+    cout << " " + number->toString() << endl;
+
+>>>>>>> 1b61d9658a785b9d1f8dd71c613699737bebb866
 =======
     cout << "MULTEXPRESSION ADDING: " + number->getName();
     cout << " " + number->toString() << endl;
@@ -149,7 +155,11 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
             d = d * number->denominator[i]->toDouble();
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         for (int i=0; i++; i<numerator.size())
+=======
+        for (int i=0; i<denominator.size(); i++)
+>>>>>>> 1b61d9658a785b9d1f8dd71c613699737bebb866
 =======
         for (int i=0; i<denominator.size(); i++)
 >>>>>>> 1b61d9658a785b9d1f8dd71c613699737bebb866
