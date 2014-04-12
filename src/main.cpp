@@ -2,6 +2,7 @@
 #include "SmartInteger.h"
 #include "SumExpression.h"
 #include "Log.h"
+#include "Exponent.h"
 #include <exception>
 //#include "AbstractNumber.h"
 
@@ -10,7 +11,12 @@
 using namespace std;
 
 int main() {
-
+	tr1::shared_ptr<AbstractNumber> num1(new SmartInteger(1));
+	tr1::shared_ptr<AbstractNumber> num2(new SmartInteger(2));
+	tr1::shared_ptr<AbstractNumber> log1(new Log(num1,num2));
+	tr1::shared_ptr<AbstractNumber> log2(new Exponent(log1,num2));
+	cout << log1->multiply(log2)->toString() << endl;
+	/*
     bool run;
     string input;
 	while (run)
@@ -21,7 +27,7 @@ int main() {
 			try{
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
 				cout << num->toString()<< endl << endl;
-				cout << num->simplify()->toString() << endl;
+				//cout << num->simplify()->toString() << endl;
 			}
 			catch(const char* msg)
 			{
@@ -30,7 +36,7 @@ int main() {
 		}
 		else
 		{
-			cout << "quitting" << endl;
+			cout << "Quitting" << endl;
 			run = false;
 		}
 
