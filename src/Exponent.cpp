@@ -65,9 +65,9 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
   	}
  	// Duplication necessary for simplification
  	// Assuming number is in simplest form
- 	
+
  	// No simplification possible
-	else{	
+	else{
 		vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		SumVector.push_back(shared_from_this());
 		SumVector.push_back(number);
@@ -94,7 +94,7 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 		    return r;
 		}
 	}
-	
+
 	// Checks for simplification if number = base
 	// Adds 1 to exponent
 	else if(number->toDouble() == base->toDouble()){
@@ -102,7 +102,7 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
 	    return r;
 	}
-	
+
 	else{
 		vector< tr1::shared_ptr<AbstractNumber> > MultVector;
 		MultVector.push_back(shared_from_this());
@@ -132,14 +132,14 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 			return multiply(r);
 		}
 	}
-	
+
 	// Subtracts 1 from power if base = number
 	else if(number->toDouble() == base->toDouble()){
 		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1,'-'));
 		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
 		return r;
 	}
-	
+
 	else{
 	 	tr1::shared_ptr<AbstractNumber> t(this);
 		vector< tr1::shared_ptr<AbstractNumber> > NumVector;
@@ -208,8 +208,7 @@ double Exponent::toDouble()
 	 }
 	 // no simplification possible, return as is
 	 else{
-	 	 tr1::shared_ptr<AbstractNumber> r(this);
-		 return r;
+		 return shared_from_this();
 	 }
 }
 

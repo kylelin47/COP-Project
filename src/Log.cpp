@@ -30,7 +30,6 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
  tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
 	if (number->getName() == "Log" && abs(toDouble() - number->toDouble()) < 0.000001)
 	{
-	    cout << "DOIN WORK" << endl;
 		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
 		tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 		tr1::shared_ptr<AbstractNumber> log(new Log(base, value)); // this gets rid of the old sign just in case

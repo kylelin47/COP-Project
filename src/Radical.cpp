@@ -46,7 +46,14 @@ tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber
     vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
     if (number->getName() == "Radical")
     {
-        if (number->root->toDouble() == this->root->toDouble())
+        if (abs(toDouble() - number->toDouble()) < 0.000001)
+        {
+            tr1::shared_ptr<AbstractNumber> int_2(new SmartInteger(2));
+            tr1::shared_ptr<AbstractNumber> exp(new Exponent(shared_from_this(), int_2));
+            return exp;
+        }
+        tr1::shared_ptr<Radical> tmpRad = tr1::static_pointer_cast<Radical>(number);
+        if (tmpRad->root->toDouble() == this->root->toDouble())
         {
             tr1::shared_ptr<AbstractNumber> newValue = this->value->multiply(number->value);
             tr1::shared_ptr<AbstractNumber> n(new Radical(newValue->expression[0], this->root));

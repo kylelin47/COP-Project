@@ -203,7 +203,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
         vector <tr1::shared_ptr<AbstractNumber> > tmpExp = tmp->getExpression();
         if (tmpExp.size() == 1 && tmpExp[0]->getName() != "SumExpression")
         {
-            cout << tmpExp[0]->getName() << endl;
             return tmpExp[0];
         }
     }

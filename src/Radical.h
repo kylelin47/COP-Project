@@ -1,7 +1,8 @@
 #ifndef Radical_H
 #define Radical_H
 #include "SumExpression.h"
-#include "math.h"
+#include "Exponent.h"
+#include <cmath>
 class Radical: public AbstractNumber
 {
     public:

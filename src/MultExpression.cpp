@@ -234,7 +234,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
                 if (tmp->getName() != "MultExpression")
                 {
                     MultTerms[i] = tmp;
-                    cout << "MultTerms[i]: " + MultTerms[i]->toString() << endl;
                     MultTerms.erase(MultTerms.end() - 1);
                 }
             }
@@ -290,6 +289,7 @@ string MultExpression::toString(){
 	{
 		output+='-';
 	}
+
 	for (int i =0; i < numerator.size(); i++){
 		output += numerator[i]->toString();
 		if (i < numerator.size()-1)
@@ -344,62 +344,64 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     cout << denominator.size() << endl;
     tr1::shared_ptr<AbstractNumber> tmp;
 
-    vector<tr1::shared_ptr<AbstractNumber> > num;
-    vector<tr1::shared_ptr<AbstractNumber> > den;
-
     if (toDouble() == round(toDouble()))
     {
         return tr1::shared_ptr<AbstractNumber>(new SmartInteger(toDouble()));
     }
     numerator = simplifyVector(numerator);
     denominator = simplifyVector(denominator);
-
-    for (int i=0; i < numerator.size(); i++)
+    if (denominator.size() != 0)
     {
-        for (int j=i; j < denominator.size(); j++)
+        tmp = numerator[0]->divide(denominator[0]);
+        if (tmp->getName() != "MultExpression")
         {
-            cout <<"TRYING TO DIVIDE" <<endl;
-            tmp = numerator[i]->divide(denominator[j]);
-            cout << tmp->toString() << endl;
-            if (tmp->getName() != "MultExpression")
+            numerator[0] = tmp;
+            denominator.erase(denominator.begin());
+        }
+        else
+        {
+            if (tmp->toDouble() < 0)
             {
-                numerator[i] = tmp;
-                denominator.erase(denominator.begin() + j);
+                char sign = '-';
             }
             else
             {
-                tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(tmp);
-                num.push_back(numerator[i]);
-                den.push_back(denominator[j]);
-                if (tmp->toDouble() < 0)
+                char sign = '+';
+            }
+            tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(tmp);
+            vector <tr1::shared_ptr<AbstractNumber> > tmpNumerator = tmpMult->getNumerator();
+            vector <tr1::shared_ptr<AbstractNumber> > tmpDenominator = tmpMult->getDenominator();
+            for (int i=0; i<tmpNumerator.size(); i++)
+            {
+                for (int j=0; j<tmpDenominator.size(); j++)
                 {
-                    char sign = '-';
+                    tmp = tmpNumerator[i]->divide(tmpDenominator[j]);
+                    tmpMult = tr1::static_pointer_cast<MultExpression>(tmp);
+                    vector <tr1::shared_ptr<AbstractNumber> > tmpNumerator2 = tmpMult->getNumerator();
+                    vector <tr1::shared_ptr<AbstractNumber> > tmpDenominator2 = tmpMult->getDenominator();
+                    if (tmpNumerator[i]->toDouble() != tmpNumerator2[0]->toDouble())
+                    {
+                        tmpNumerator[i] = tmp;
+                        tmpDenominator.erase(tmpDenominator.begin() + j);
+                    }
                 }
-                else
-                {
-                    char sign = '+';
-                }
-                vector <tr1::shared_ptr<AbstractNumber> > tmpNumerator = tmpMult->getNumerator();
-                if (tmpNumerator[0]->toDouble() != numerator[i]->toDouble())
-                {
-                    numerator[i] = tmp;
-                    denominator.erase(denominator.begin() + j);
-                }
+
+            }
+            numerator = tmpNumerator;
+            denominator = tmpDenominator;
+        }
+        if (numerator.size() == 1 || denominator.size() == 1)
+        {
+            if (numerator.size() == 0)
+            {
+                return denominator[0];
+            }
+            if (denominator.size() == 0)
+            {
+                return numerator[0];
             }
         }
     }
-    if (numerator.size() == 1 || denominator.size() == 1)
-    {
-        if (numerator.size() == 0)
-        {
-            return denominator[0];
-        }
-        if (denominator.size() == 0)
-        {
-            return numerator[0];
-        }
-    }
-    cout << "PROPER" << endl;
     return shared_from_this();
 }
 
