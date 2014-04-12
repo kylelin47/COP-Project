@@ -3,6 +3,7 @@
 #include "SumExpression.h"
 #include "Log.h"
 #include "Exponent.h"
+#include "Radical.h"
 #include <exception>
 #include "History.h"
 //#include "AbstractNumber.h"
@@ -12,13 +13,13 @@ string history;
 using namespace std;
 
 int main() {
-    /*
-	tr1::shared_ptr<AbstractNumber> num1(new SmartInteger(144, '-'));
-	tr1::shared_ptr<AbstractNumber> num2(new SmartInteger(60));
-	tr1::shared_ptr<AbstractNumber> log1(new Log(num1,num2, '-'));
-	tr1::shared_ptr<AbstractNumber> log2(new Exponent(log1,num2, '-'));
+
+	tr1::shared_ptr<AbstractNumber> num1(new SmartInteger(3));
+	tr1::shared_ptr<AbstractNumber> num2(new SmartInteger(4));
+	tr1::shared_ptr<AbstractNumber> log1(new Radical(num1,num2, '-'));
+	tr1::shared_ptr<AbstractNumber> log2(new Exponent(log1,num2, '+'));
 	cout << num1->multiply(log1)->toString() << endl;
-	/*/
+	/*
 	bool run = true;
     string input;
 
