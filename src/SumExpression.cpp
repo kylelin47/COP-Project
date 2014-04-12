@@ -17,7 +17,11 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   string s = text;
   string sign = "";
   s += '+';
-
+  if (text[0] == '+' || text[0] == '-')
+  {
+	  sign = text[0];
+	  s.erase(0,1);
+  }
   if (s[0] == '(' && s[s.size()-1] == ')')
   	{
   		cout << "Before reduce: " << s << endl;
