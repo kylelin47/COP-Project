@@ -183,13 +183,23 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
                     }
                 }
             }
-            tr1::shared_ptr<AbstractNumber> m(new MultExpression(numberNumerator, '+'));
-            tr1::shared_ptr<AbstractNumber> m2(new MultExpression(numerator, '+'));
+            numberNumerator = simplifyVector(numberNumerator);
+            numerator = simplifyVector(numerator);
             vector< tr1::shared_ptr<AbstractNumber> > sumFinal;
-            sumFinal.push_back(m);
-            sumFinal.push_back(m2);
-            tr1::shared_ptr<AbstractNumber> sumFinalExp(new SumExpression(sumFinal));
-            mFinal.push_back(sumFinalExp);
+            sumFinal.push_back(numberNumerator[0]);
+            sumFinal.push_back(numerator[0]);
+            double test = sumFinal[0]->toDouble() + sumFinal[1]->toDouble();
+            if (test == round(test))
+            {
+                tr1::shared_ptr<AbstractNumber> int1(new SmartInteger((int)test));
+                mFinal.push_back(int1);
+            }
+            else
+            {
+                tr1::shared_ptr<AbstractNumber> sumFinalExp(new SumExpression(sumFinal));
+                mFinal.push_back(sumFinalExp);
+            }
+
 
             tr1::shared_ptr<AbstractNumber> mFinalP(new MultExpression(mFinal, denominator, '+'));
 
