@@ -103,7 +103,10 @@ tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>numbe
 
 	else
 	{
-		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(number, shared_from_this(),'+'));
+	    vector<tr1::shared_ptr<AbstractNumber> > M;
+	    M.push_back(number);
+	    M.push_back(shared_from_this());
+		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
 		return ans3;
 	}
 

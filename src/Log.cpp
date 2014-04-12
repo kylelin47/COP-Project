@@ -28,8 +28,9 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 }
 
  tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
-	if (number->getName() == "Log" && toDouble() == number->toDouble())
+	if (number->getName() == "Log" && abs(toDouble() - number->toDouble()) < 0.000001)
 	{
+	    cout << "DOIN WORK" << endl;
 		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
 		tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 		tr1::shared_ptr<AbstractNumber> log(new Log(base, value)); // this gets rid of the old sign just in case
@@ -53,7 +54,6 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		OutVector.push_back(shared_from_this());
 		OutVector.push_back(number);
 		tr1::shared_ptr<AbstractNumber>output(new SumExpression(OutVector));
-
 		return output;
 	}
 
@@ -75,13 +75,13 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 cout << "num: " << num->toString()<< endl;
 
 
-	 if (number->getName() == "Log" &&  toDouble() == number->toDouble())
+	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
 		 tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 		 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, two, sign));
 		 return output;
 	 }
-	 else if (number->getName() == "Exponent" && number->getValue("base")->toDouble() == toDouble() )
+	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble() < 0.000001) )
 	 {
 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
@@ -115,12 +115,12 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 //cout << "num: " << num->toString()<< endl;
 
 
-	 if (number->getName() == "Log" &&  toDouble() == number->toDouble())
+	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
 		 tr1::shared_ptr<AbstractNumber> output(new SmartInteger(1));
 		 return output;
 	 }
-	 else if (number->getName() == "Exponent" && number->getValue("base")->toDouble() == toDouble() )
+	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble() < 0.000001) )
 	 {
 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
@@ -168,7 +168,7 @@ double Log::toDouble()
 {
     base = base->simplify();
     value = value->simplify();
-    if (abs(remainder(toDouble(), 1)) < pow(10, -6))
+    if (toDouble() == round(toDouble()))
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));
         return n;

@@ -107,11 +107,18 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 		}
 	}
 
-	else
+	else if (number -> getName() == "SumExpression" || number -> getName() == "MultExpression")
 	{
-		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(number, shared_from_this(), '+'));
-		return ans3;
+        return number->multiply(shared_from_this());
 	}
+	else
+    {
+        vector<tr1::shared_ptr<AbstractNumber> > M;
+	    M.push_back(number);
+	    M.push_back(shared_from_this());
+		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+		return ans3;
+    }
 
 }
 

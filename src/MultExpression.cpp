@@ -127,8 +127,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
     double e = 1;
     if (number->getName() == "MultExpression")
     {
-        cout << number->numerator.size() << endl;
-        cout << number->toString() << endl;
         for (int i=0; i++; i<number->denominator.size())
         {
             d = d * number->denominator[i]->toDouble();
@@ -362,6 +360,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         {
             cout <<"TRYING TO DIVIDE" <<endl;
             tmp = numerator[i]->divide(denominator[j]);
+            cout << tmp->toString() << endl;
             if (tmp->getName() != "MultExpression")
             {
                 numerator[i] = tmp;
@@ -400,7 +399,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
             return numerator[0];
         }
     }
-
+    cout << "PROPER" << endl;
     return shared_from_this();
 }
 
