@@ -63,7 +63,13 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 
 	    return r;
   	}
- 	// Duplication necessary for simplification
+
+    //Can't tell if they add or not
+ 	else if(number->getName() == "SumExpression" ||
+            number->getName() == "MultExpression"){
+ 	    return number->add(shared_from_this());
+ 	}
+    // Duplication necessary for simplification
  	// Assuming number is in simplest form
 
  	// No simplification possible
@@ -123,12 +129,13 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber>number){
 	// Reverses sign if exponent and multiplies
 	if(number->getName()=="Exponent"){
-		if(number->getSign()=='-'){
-			tr1::shared_ptr<AbstractNumber> r(new Exponent(number->getValue("base"), number->getValue("power")));
+        tr1::shared_ptr<Exponent> givenNumber = tr1::static_pointer_cast<Exponent>(number);
+		if(givenNumber->getSign()=='-'){
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(givenNumber->getValue("base"), givenNumber->getValue("power")));
 			return multiply(r);
 		}
 		else{
-			tr1::shared_ptr<AbstractNumber> r(new Exponent(number->getValue("base"), number->getValue("power"),'-'));
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(givenNumber->getValue("base"), givenNumber->getValue("power"),'-'));
 			return multiply(r);
 		}
 	}
@@ -145,7 +152,7 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 		vector< tr1::shared_ptr<AbstractNumber> > NumVector;
 		NumVector.push_back(shared_from_this());
 		vector< tr1::shared_ptr<AbstractNumber> > DenVector;
-		DenVector.push_back(shared_from_this());
+		DenVector.push_back(number);
 		tr1::shared_ptr<AbstractNumber> r(new MultExpression(NumVector, DenVector, this->calcSign(number)));
 		return r;
 	}
@@ -162,7 +169,7 @@ string Exponent::toString(){
 	{
 		ss << '-';
 	}
-	ss << "(";
+    ss << "(";
 	ss << base->toString();
 	ss << ")^";
 	ss << power->toString();
@@ -189,6 +196,8 @@ double Exponent::toDouble()
 // shared_ptr<AbstractNumber>		number in simplest form
  tr1::shared_ptr<AbstractNumber>  Exponent::simplify()
 {
+    base = base->simplify();
+    power = power->simplify();
 	 // if base = 0, returns integer 0
 	 if(base->toDouble() == 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
@@ -203,6 +212,10 @@ double Exponent::toDouble()
 	 else if(power->toDouble() == 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(1));
 		 return r;
+	 }
+	 //if power = 1, return base
+	 else if (power->toDouble() == 1){
+	     return base;
 	 }
 	 // if power and base have finite values(i.e. are integers), return integer
 	 else if(base->getName() == "Integer" &&
