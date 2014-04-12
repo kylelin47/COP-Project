@@ -196,7 +196,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
         {
             cout << "NUMERATOR SIZE: ";
             cout << numerator.size() << endl;
-            if (numerator[i]->toDouble() == number->toDouble())
+            if (abs(numerator[i]->toDouble() - number->toDouble()) < 0.00001)
             {
                 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
                 for(int j=0; j<numerator.size(); j++)

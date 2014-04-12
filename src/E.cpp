@@ -49,6 +49,11 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 
 		}
 
+        else if (number -> getName() == "MultExpression" || number -> getName() == "SumExpression")
+        {
+            return number->add(shared_from_this());
+        }
+
 		else
 		{
 			vector<tr1::shared_ptr<AbstractNumber> > N;
@@ -56,8 +61,6 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 			N.push_back(zero);
 			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '+'));
 			return output1;
-
-
 		}
 
 	}
