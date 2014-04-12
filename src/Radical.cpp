@@ -21,59 +21,131 @@ Radical::~Radical()
 
 tr1::shared_ptr<AbstractNumber> Radical::add(tr1::shared_ptr<AbstractNumber>number)
 {
-    vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
+	if (number->getName() == "Radical" && abs(toDouble() - number->toDouble()) < 0.000001)
+		{
+			std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
+			tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
+			tr1::shared_ptr<AbstractNumber> clone(noSign()); // this gets rid of the old sign just in case
+			OutVector.push_back(two);
+			OutVector.push_back(clone);
+			if (number->getSign() == getSign())
+			{
+				tr1::shared_ptr<AbstractNumber> output(new MultExpression(OutVector, getSign()));
+				return output;
+			}
+			else{
+				tr1::shared_ptr<AbstractNumber> output(new SmartInteger(0));
+				return output;
+			}
 
-    if (number->getName() == "Radical")
-    {
-        if (number->value == value && number->root == value)
-        {
-            //do stuff
-        }
-    }
 
-    else
-    {
-        SumTerms.push_back(shared_from_this());
-        SumTerms.push_back(number);
-    }
 
-    tr1::shared_ptr<AbstractNumber>s(new SumExpression(SumTerms));
-    return s;
+		}
+		else {
+			std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
+			OutVector.push_back(shared_from_this());
+			OutVector.push_back(number);
+			tr1::shared_ptr<AbstractNumber>output(new SumExpression(OutVector));
+			return output;
+		}
 }
 
 tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-    vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
-    if (number->getName() == "Radical")
-    {
-        if (abs(toDouble() - number->toDouble()) < 0.000001)
-        {
-            tr1::shared_ptr<AbstractNumber> int_2(new SmartInteger(2));
-            tr1::shared_ptr<AbstractNumber> exp(new Exponent(shared_from_this(), int_2));
-            return exp;
-        }
-        tr1::shared_ptr<Radical> tmpRad = tr1::static_pointer_cast<Radical>(number);
-        if (tmpRad->root->toDouble() == this->root->toDouble())
-        {
-            tr1::shared_ptr<AbstractNumber> newValue = this->value->multiply(number->value);
-            tr1::shared_ptr<AbstractNumber> n(new Radical(newValue->expression[0], this->root));
-            SimplifiedTerms.push_back(n);
-        }
-    }
-    if (number->getName() == "Integer")
-    {
+	 char sign;
+	 if (getSign() == number->getSign())
+	 {
+		 sign = '+';
+	 }
+	 else
+	 {
+		 sign = '-';
+	 }
+	 tr1::shared_ptr<AbstractNumber> copy(noSign());
+	 //cout << "copy: " << copy->toString()<< endl;
+	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
 
-        SimplifiedTerms.push_back(shared_from_this());
-        SimplifiedTerms.push_back(number);
-    }
-    tr1::shared_ptr<AbstractNumber>m(new MultExpression(SimplifiedTerms, '+'));
-    SimplifiedTerms.clear();
-    return m;
+	 //cout << "num: " << num->toString()<< endl;
+	 //cout << root->toDouble() << " - " << num->getValue("root")->toDouble() << endl;
+
+	 if (number->getName() == "Radical"){
+		 if (  abs(root->toDouble() - num->getValue("root")->toDouble()) < 0.000001)
+		 {
+			 tr1::shared_ptr<AbstractNumber> output(new Radical(value->multiply(num->getValue("value")), root, sign));
+			 return output;
+		 }
+	 }
+	 else if (number->getName() == "Exponent") {
+		 if ( abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
+		 {
+			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+			 SumVector.push_back(one);
+			 SumVector.push_back(number->getValue("power"));
+			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, power, sign));
+			 return output;
+		 }
+	 }
+
+
+	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+	 MultVector.push_back(copy);
+	 MultVector.push_back(num);
+
+	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
+	 return r;
 }
 
 tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>number)
 {
+	char sign;
+		 if (getSign() == number->getSign())
+		 {
+			 sign = '+';
+		 }
+		 else
+		 {
+			 sign = '-';
+		 }
+		 tr1::shared_ptr<AbstractNumber> copy(noSign());
+		 //cout << "copy: " << copy->toString()<< endl;
+		 tr1::shared_ptr<AbstractNumber> num(number->noSign());
 
+		 //cout << "num: " << num->toString()<< endl;
+		 //cout << root->toDouble() << " - " << num->getValue("root")->toDouble() << endl;
+
+		 if (number->getName() == "Radical"){
+			 if (  abs(root->toDouble() - num->getValue("root")->toDouble()) < 0.000001)
+			 {
+				 tr1::shared_ptr<AbstractNumber> output(new Radical(value->divide(num->getValue("value")), root, sign));
+				 return output;
+			 }
+		 }
+		 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
+		 	 {
+		 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+		 		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
+		 		 std::vector< tr1::shared_ptr<AbstractNumber> > den;
+		 		 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(1,'-'));
+		 		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+		 		 SumVector.push_back(number->getValue("power"));
+		 		 SumVector.push_back(negetive_one);
+		 		 numer.push_back(one);
+		 		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+		 		 tr1::shared_ptr<AbstractNumber> exponential(new Exponent(copy, power));
+		 		 den.push_back(exponential);
+		 		 tr1::shared_ptr<AbstractNumber> output(new MultExpression(numer, den, sign));
+
+		 		 return output;
+		 	 }
+		 	 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
+		 	 std::vector< tr1::shared_ptr<AbstractNumber> > den;
+		 	 numer.push_back(copy);
+		 	 den.push_back(num);
+
+		 	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(numer, den, sign));
+		 	 return r;
 }
 
  tr1::shared_ptr<AbstractNumber>  Radical::simplify()
@@ -187,6 +259,6 @@ tr1::shared_ptr<AbstractNumber> Radical::getValue(string name){
 
 tr1::shared_ptr<AbstractNumber> Radical::noSign()
 {
-	tr1::shared_ptr<AbstractNumber> output(new Radical(root, value));
+	tr1::shared_ptr<AbstractNumber> output(new Radical(value, root));
 	return output;
 }

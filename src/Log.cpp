@@ -88,15 +88,17 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, two, sign));
 		 return output;
 	 }
-	 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
-	 {
-		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
-		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-		 SumVector.push_back(one);
-		 SumVector.push_back(number->getValue("power"));
-		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-		 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, power, sign));
-		 return output;
+	 else if (number->getName() == "Exponent") {
+		 if (abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
+		 {
+			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+			 SumVector.push_back(one);
+			 SumVector.push_back(number->getValue("power"));
+			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, power, sign));
+			 return output;
+		 }
 	 }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
 	 MultVector.push_back(copy);
