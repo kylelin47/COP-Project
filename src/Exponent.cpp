@@ -63,7 +63,13 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 
 	    return r;
   	}
- 	// Duplication necessary for simplification
+
+    //Can't tell if they add or not
+ 	else if(number->getName() == "SumExpression" ||
+            number->getName() == "MultExpression"){
+ 	    return number->add(shared_from_this());
+ 	}
+    // Duplication necessary for simplification
  	// Assuming number is in simplest form
 
  	// No simplification possible
@@ -185,6 +191,8 @@ double Exponent::toDouble()
 // shared_ptr<AbstractNumber>		number in simplest form
  tr1::shared_ptr<AbstractNumber>  Exponent::simplify()
 {
+    base = base->simplify();
+    power = power->simplify();
 	 // if base = 0, returns integer 0
 	 if(base->toDouble() == 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
@@ -199,6 +207,10 @@ double Exponent::toDouble()
 	 else if(power->toDouble() == 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(1));
 		 return r;
+	 }
+	 //if power = 1, return base
+	 else if (power->toDouble() == 1){
+	     return base;
 	 }
 	 // if power and base have finite values(i.e. are integers), return integer
 	 else if(base->getName() == "Integer" &&

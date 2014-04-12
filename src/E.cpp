@@ -61,6 +61,10 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 		}
 
 	}
+	else if (number -> getName() == "MultExpression" || number -> getName() == "SumExpression")
+    {
+        return number->add(shared_from_this());
+    }
 
 	else
 	{
@@ -75,8 +79,8 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 }
 
 tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>number){
-
-		if(number -> getName() == "E")
+    number = number->simplify();
+    if(number -> getName() == "E")
 	{
 
 		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
