@@ -138,7 +138,9 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 			return multiply(r);
 		}
 		else{
-			tr1::shared_ptr<AbstractNumber> r(new Exponent(givenNumber->getValue("base"), givenNumber->getValue("power"),'-'));
+            tr1::shared_ptr<AbstractNumber> nOne(new SmartInteger(-1));
+            tr1::shared_ptr<AbstractNumber> newPower = givenNumber->getValue("power")->multiply(nOne);
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(givenNumber->getValue("base"), newPower, givenNumber->getSign()));
 			return multiply(r);
 		}
 	}
