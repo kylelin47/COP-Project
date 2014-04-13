@@ -199,7 +199,17 @@ double Exponent::toDouble()
  tr1::shared_ptr<AbstractNumber>  Exponent::simplify()
 {
     base = base->simplify();
+
+	// simplifies exponents with logarithmic power
+	 if(power->getName() == "Log"){
+		 cout << "1";
+		 if(power->getValue("base")->toDouble() == base->toDouble()){
+			 cout << "2";
+			 return power->getValue("value");
+		 }
+	 }
     power = power->simplify();
+
 	 // if base = 0, returns integer 0
 	 if(base->toDouble() == 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
@@ -228,13 +238,18 @@ double Exponent::toDouble()
 	 // simplifies radicals
 	 else if(base->getName() == "Radical"){
 		 if(fmod(power->toDouble(),base->getValue("root")->toDouble()) == 0){
-			 tr1::shared_ptr<AbstractNumber> r(new Exponent(base->getValue("value"), power->divide(base->getValue("root")), sign)); // call toDouble and cast as integer
-			 return r->simplify();
+			 tr1::shared_ptr<AbstractNumber> r(new Exponent(base->getValue("value"), power->divide(base->getValue("root")), sign));
+			 return r;
 		 }
+	 }
+	 // simplifies exponents of exponents
+	 else if(base->getName() == "Exponent"){
+		 tr1::shared_ptr<AbstractNumber> r(new Exponent(base->getValue("base"), power->multiply(base->getValue("power")), sign));
+		 return r;
 	 }
 	 // no simplification possible, return as is
 	return shared_from_this();
-	 
+
 }
 
 // Returns string identifying number type
