@@ -12,17 +12,13 @@ using namespace std;
 
 SmartInteger::SmartInteger(int value, char sign)
 {
-
-	this->value = value;
-	this->sign = sign;
-
+    this->value = value;
+    this->sign = sign;
 }
 
 SmartInteger::SmartInteger(int value) {
-
-	this->value = value;
-	this->sign = '+';
-
+    this->value = value;
+    this->sign = '+';
 }
 
 
@@ -157,24 +153,11 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
 }
 string SmartInteger::toString(){
 	stringstream ss;
-	if (sign == '-' && value < 0)
-	{
-		ss<< -value;
-	}
-	else if (sign == '+' && value < 0)
+	if (sign == '-')
 	{
 		ss << '-';
-		ss<< -value;
 	}
-	else if (sign == '-' && value > 0)
-	{
-		ss << '-';
-		ss << value;
-	}
-	else
-	{
-		ss << value;
-	}
+	ss << value;
 	return ss.str();
 }
 
@@ -190,14 +173,11 @@ double SmartInteger::toDouble()
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::simplify()
 {
-	int outValue = value;
     if (sign == '-')
     {
-        outValue = -value;
-
+        value = -value;
     }
-    tr1::shared_ptr<AbstractNumber> output(new SmartInteger(outValue));
-	return output;
+	return shared_from_this();
 }
 string SmartInteger::getName()
 {

@@ -11,12 +11,7 @@ using namespace std;
 extern string history;
 
 void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
-   if (text.size() == 0)
-	{
-	  cout << "Check1" << endl;
-	  throw "ERROR: Empty expression entered.";
-	}
-
+	cout << history << endl;
   size_t pos = 0;
   size_t skipUntil = 0;
   string s = text;
@@ -35,12 +30,7 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   	}
   	cout << "Reduced String: " << s << endl;
 
-    if (text.size() == 0)
-    {
-      cout << "Check1" << endl;
-  	  throw "ERROR: Empty expression entered.";
-    }
-    cout << "Check2" << endl;
+
   while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {
 	  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
 	  {
@@ -50,12 +40,12 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 		  pos = s.find(sep2, skipUntil);
 	  }
 
-	  cout << "Working Substring: " << s.substr(0,pos) << endl;
+	  //cout << "Working Substring: " << s.substr(0,pos) << endl;
 
 	  if (count(s.substr(0 , pos), 0, pos, '(') > count(s.substr(0 , pos), 0, pos, ')'))
 	  {
 		  skipUntil = pos + 1;
-		  cout << "Skipping until " << skipUntil << endl;
+		  //cout << "Skipping until " << skipUntil << endl;
 	  }
 	  else if (s[pos-1] == ':' || s[pos-1] == '^' || s[pos-1] == '_')
 	  {
@@ -63,7 +53,7 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  }
 	  else
 	  {
-		  cout << "Substring:" << s.substr(0 , pos) << endl;
+		  //cout << "Substring:" << s.substr(0 , pos) << endl;
 		  tr1::shared_ptr<AbstractNumber> n (new MultExpression(sign + s.substr(0 , pos)));
 		  this->expression.push_back(n);
 
@@ -95,7 +85,7 @@ SumExpression::SumExpression::SumExpression(const string &input, bool noParenthe
 	this->noParenthesis = noParenthesis;
 }
 
-SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > &expression) {
+SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > expression) {
     this->expression = expression;
 	this->noParenthesis = false;
 }
@@ -122,14 +112,19 @@ SumExpression::~SumExpression() {
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
+    number = number->simplify();
     cout << "ADDING SUM TERMS: " + toString();
     cout << "and " + number->toString() << endl;
+    vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
     if (expression.size() == 1 && expression[0]->getName() == "SumExpression")
     {
         tr1::shared_ptr<SumExpression> realYou = tr1::static_pointer_cast<SumExpression>(number);
-        expression = realYou->getExpression();
+        SumTerms = realYou->getExpression();
     }
-    vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
+    else
+    {
+        SumTerms = expression;
+    }
     SumTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
     cout << "Size: ";
@@ -165,7 +160,10 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
             {
                 cout << "MULTIPLYING: " + expression[i]->toString();
                 cout << " and " + sumNumExp[j]->toString() << endl;
-                finalExp.push_back(expression[i]->multiply(sumNumExp[j]));
+                tr1::shared_ptr<AbstractNumber> tmp = expression[i]->multiply(sumNumExp[j]);
+                finalExp.push_back(tmp);
+                cout << "RESULT: " + tmp->toString() << endl;
+                cout << "EXPRESSION[i]: " + expression[i]->toString() << endl;
             }
         }
         finalExp = simplifyVector(finalExp);
@@ -289,7 +287,10 @@ string SumExpression::makeStringUsable(string input)
 	size_t end = input.size();
 	string checkPar = output;
 
+	//make sure the parenthesis are in check
 	end = output.size();
+	//compare parten
+
 	for (size_t i = 0; i < end; i++) //luckly none the places we want to split at share any charactors
 		{
 			if (checkPar[i] == '(') //make sure the split point is not already signed
@@ -303,34 +304,23 @@ string SumExpression::makeStringUsable(string input)
 						j = end;
 					}
 					if (j == (end - 1)){
-						throw "ERROR: Uneven Parentheses at " + input ;
+						throw "ERROR: Uneven Parentheses";
 					}
 				}
 
 			}
 			if (checkPar[i] == ')')
 			{
-				throw "ERROR: Uneven Parentheses at " + input ;
+				throw "ERROR: Uneven Parentheses";
 			}
 
 
 
 		}
 
-	for (size_t i = 0; i < end-1; i++)
-	{
-			if (output[i] == ' ')
-			{
-				output.erase(i,1);
-				--i;
-				--end;
-			}
-	}
+
 	end = output.size();
-	if (output[end-1] == ':' || output[end-1] == '^' || output[end-1] == '_')
-	{
-		throw "ERROR: " + input + " is an invalid expression." ;
-	}
+
 	for (size_t i = 0; i < end-1; i++)
 	{
 		if ((	output[i] == '*' || //l for log
@@ -345,19 +335,19 @@ string SumExpression::makeStringUsable(string input)
 				output[i+1] == '+'  ||
 				output[i+1] == '-'  )) //make sure the split point is not already signed
 		{
-			throw "ERROR: Double Operator at " + input;
+			throw "ERROR: Double Operator";
 		}
 	}
+
 	for (size_t i = 0; i < end-1; i++)
+	{
+		if (output[i] == ' ')
 		{
-			if ((	output[i] == '_' && output[i+1] == ':' ))
-
-			{
-				throw "ERROR: " + input + " is an unfilled log";
-			}
+			output.erase(i,1);
+			--i;
+			--end;
 		}
-
-
+	}
 
 	end = output.size();
 

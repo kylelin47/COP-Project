@@ -78,7 +78,7 @@ void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector
 
 		  nextValue = s[pos];
 		  s.erase(0, pos+ 1);
-		  
+
 	}
 }
 
@@ -115,9 +115,9 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
-    //cout << "MULTEXPRESSION ADDING: " + number->getName();
-    //cout << " " + number->toString();
-    //cout << " and " + toString() << endl;
+    cout << "MULTEXPRESSION ADDING: " + number->getName();
+    cout << " " + number->toString();
+    cout << " and " + toString() << endl;
     if(numerator.size() == 1)
     {
         if (numerator[0]->getName() == "MultExpression")
@@ -269,16 +269,18 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     if (number->getName() == "MultExpression")
     {
         tr1::shared_ptr<MultExpression> numMult = tr1::static_pointer_cast<MultExpression>(number);
-        vector<tr1::shared_ptr<AbstractNumber> > numNumerator = numMult->getNumerator();
-        vector<tr1::shared_ptr<AbstractNumber> > numDenominator = numMult->getDenominator();
+        vector<tr1::shared_ptr<AbstractNumber> > numNumerator(numMult->getNumerator());
+        vector<tr1::shared_ptr<AbstractNumber> > numDenominator(numMult->getDenominator());
+
         for (int i=0; i<numerator.size(); i++)
             numNumerator.push_back(numNumerator[i]);
         for (int i=0; i<denominator.size(); i++)
             numDenominator.push_back(numDenominator[i]);
         numNumerator = simplifyVector(numNumerator);
         numDenominator = simplifyVector(numDenominator);
-        tr1::shared_ptr<AbstractNumber> output(new MultExpression( numNumerator, numDenominator, sign));
-        return output;
+        tr1::shared_ptr<AbstractNumber> me(new MultExpression(numNumerator, numDenominator, sign));
+
+        return me;
     }
     vector< tr1::shared_ptr<AbstractNumber> > MultTerms = numerator;
     MultTerms.push_back(number->simplify());
@@ -433,17 +435,9 @@ MultExpression::~MultExpression() {
 string MultExpression::toString(){
 	string output ="";
 	bool hasZero = false;
-	tr1::shared_ptr<AbstractNumber> temp(numerator[0]);
 	if (getSign() == '-')
 	{
 		output+='-';
-	}
-	for (int i =0; i < numerator.size(); i++){
-		if (numerator[i]->getName() == "Integer")
-		{
-			numerator[0] = numerator[i];
-			numerator[i] = temp;
-		}
 	}
 
 	for (int i =0; i < numerator.size(); i++){
@@ -452,14 +446,11 @@ string MultExpression::toString(){
             hasZero = true;
             break;
         }
-        if (numerator[i]->toDouble() != 1)
-        {
-			output += numerator[i]->toString();
-			if (i < numerator.size()-1)
-			{
-				output += "*";
-			}
-        }
+		output += numerator[i]->toString();
+		if (i < numerator.size()-1)
+		{
+			output += "*";
+		}
 	}
 	for (int i = 0; i < denominator.size(); i++){
 		output += "/";
@@ -629,8 +620,9 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 		cout << input << " is a log base 10" << endl;
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Log(base, value)));
 	}
-	else if (input[0] == 's' && input[1] == 'q' && input[2] == 'r' && input[3] == 't' && input[4] == ':' && input.size() >5)
+	else if (input[0] == 's' && input[1] == 'q' && input[2] == 'r' && input[3] == 't' && input[4] == ':')
 	{
+
 		cout << input << " is a square root" << endl;
 		tr1::shared_ptr<AbstractNumber> value(new SumExpression( input.substr( findOutside(':', input) + 1, input.size()) , false));
 		tr1::shared_ptr<AbstractNumber> root(new SmartInteger("2"));
@@ -660,7 +652,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 		cout << "found and ANSWER" << endl;
 		if (history == "")
 		{
-			throw "ERROR: No previous answer found";
+			throw "No previous answer found";
 		}
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(history)));
 	}
@@ -687,7 +679,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else
 	{
-		throw "ERROR: " + input + " is not a valid expression.";
+		cout << input << " is not a valid expression" << endl; // THROW here
 	}
 }
 
