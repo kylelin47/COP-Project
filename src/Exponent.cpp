@@ -233,9 +233,8 @@ double Exponent::toDouble()
 		 }
 	 }
 	 // no simplification possible, return as is
-	 else{
-		 return shared_from_this();
-	 }
+	return shared_from_this();
+	 
 }
 
 // Returns string identifying number type
