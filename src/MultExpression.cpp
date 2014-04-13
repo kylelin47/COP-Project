@@ -286,16 +286,15 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             }
         }
     }
-    expression = MultTerms;
-
+    tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
 	if (this->sign == number->getSign())
 	{
-	    sign = '+';
-		return shared_from_this();
+	    tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
+		return finalMult;
 	}
 	else{
-        sign = '-';
-		return shared_from_this();
+        tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '-'));
+		return finalMult;
 	}
 
 }
@@ -450,15 +449,15 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
         cout << "SIMPLIFYING: " + vec[i]->toString() << endl;
         vec[i] = vec[i]->simplify();
         cout << "RESULT: " + vec[i]->toString() << endl;
-
     }
 
     while (vec.size() > 1)
     {
-        cout << "MULTIPLYING: " + vec[0]->getName();
-        cout << " and " + vec[1]->getName() << endl;
+        cout << "MULTIPLYING: " + vec[0]->toString();
+        cout << " and " + vec[1]->toString() << endl;
         vec[0] = vec[0]->multiply(vec[1]);
         cout << "FINAL SIMPLIFICATION: " + vec[0]->toString() << endl;
+        cout << vec[0]->toDouble() << endl;
         vec.erase(vec.begin() + 1);
     }
     if (sign == '-' && vec.size() > 0)
