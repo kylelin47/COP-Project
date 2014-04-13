@@ -112,14 +112,19 @@ SumExpression::~SumExpression() {
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
+    number = number->simplify();
     cout << "ADDING SUM TERMS: " + toString();
     cout << "and " + number->toString() << endl;
+    vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
     if (expression.size() == 1 && expression[0]->getName() == "SumExpression")
     {
         tr1::shared_ptr<SumExpression> realYou = tr1::static_pointer_cast<SumExpression>(number);
-        expression = realYou->getExpression();
+        SumTerms = realYou->getExpression();
     }
-    vector< tr1::shared_ptr<AbstractNumber> > SumTerms = expression;
+    else
+    {
+        SumTerms = expression;
+    }
     SumTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
     cout << "Size: ";

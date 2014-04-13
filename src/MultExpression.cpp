@@ -269,15 +269,17 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     if (number->getName() == "MultExpression")
     {
         tr1::shared_ptr<MultExpression> numMult = tr1::static_pointer_cast<MultExpression>(number);
-        vector<tr1::shared_ptr<AbstractNumber> > numNumerator = numMult->getNumerator();
-        vector<tr1::shared_ptr<AbstractNumber> > numDenominator = numMult->getDenominator();
-        for (int i=0; i<numNumerator.size(); i++)
-            numerator.push_back(numNumerator[i]);
-        for (int i=0; i<numDenominator.size(); i++)
-            denominator.push_back(numDenominator[i]);
-        numerator = simplifyVector(numerator);
-        denominator = simplifyVector(denominator);
-        tr1::shared_ptr<AbstractNumber> me(new MultExpression(numerator, denominator, sign));
+        vector<tr1::shared_ptr<AbstractNumber> > numNumerator(numMult->getNumerator());
+        vector<tr1::shared_ptr<AbstractNumber> > numDenominator(numMult->getDenominator());
+
+        for (int i=0; i<numerator.size(); i++)
+            numNumerator.push_back(numNumerator[i]);
+        for (int i=0; i<denominator.size(); i++)
+            numDenominator.push_back(numDenominator[i]);
+        numNumerator = simplifyVector(numNumerator);
+        numDenominator = simplifyVector(numDenominator);
+        tr1::shared_ptr<AbstractNumber> me(new MultExpression(numNumerator, numDenominator, sign));
+
         return me;
     }
     vector< tr1::shared_ptr<AbstractNumber> > MultTerms = numerator;
