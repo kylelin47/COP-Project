@@ -13,13 +13,13 @@ string history;
 using namespace std;
 
 int main() {
-
+	/*
 	tr1::shared_ptr<AbstractNumber> num1(new SmartInteger(3));
 	tr1::shared_ptr<AbstractNumber> num2(new SmartInteger(4));
 	tr1::shared_ptr<AbstractNumber> log1(new Radical(num1,num2, '-'));
 	tr1::shared_ptr<AbstractNumber> log2(new Exponent(log1,num2, '+'));
 	cout << num1->multiply(log1)->toString() << endl;
-	/*
+	/*/
 	bool run = true;
     string input;
 
@@ -31,11 +31,11 @@ int main() {
 			try{
 
 				tr1::shared_ptr<AbstractNumber> num(new SumExpression(input,true));
-				cout << num->toString()<< endl << endl;
+				cout << num->simplify()->toString()<< endl << endl;
 				history = num->toString();
 
 			}
-			catch(const char* msg)
+			catch(string &msg)
 			{
 				cout << msg << endl;
 			}

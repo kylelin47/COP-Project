@@ -33,8 +33,7 @@ tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > M;
 			tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 			M.push_back(two);
-			tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-			M.push_back(me);
+			M.push_back(shared_from_this());
 			tr1::shared_ptr<AbstractNumber> output(new MultExpression(M, '+'));
 			return output;
 		}
@@ -44,8 +43,7 @@ tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > N;
 			tr1::shared_ptr<AbstractNumber> twoN(new SmartInteger(-2));
 			N.push_back(twoN);
-			tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-			N.push_back(me);
+			N.push_back(shared_from_this());
 			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '-'));
 			return output1;
 
@@ -68,8 +66,7 @@ tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 	{
 		vector<tr1::shared_ptr<AbstractNumber> > N;
 		N.push_back(number);
-        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-		N.push_back(me);
+		N.push_back(shared_from_this());
 		tr1::shared_ptr<AbstractNumber> output1(new SumExpression(N));
 		return output1;
 
@@ -89,8 +86,7 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 //		vector<tr1::shared_ptr<AbstractNumber> > A;
 		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
 //		A.push_back(exp);
-        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-		tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp));
+		tr1::shared_ptr<AbstractNumber> ans(new Exponent(shared_from_this(), exp));
 		return ans;
 
 
@@ -105,11 +101,12 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 		{
 			tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
 			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
-			tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
+
+			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(shared_from_this(), exp -> add(exp2)));
 			return ans2;
 		}
 	}
+
 
 	else if (number -> getName() == "SumExpression" || number -> getName() == "MultExpression")
 	{
@@ -119,8 +116,7 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
     {
         vector<tr1::shared_ptr<AbstractNumber> > M;
 	    M.push_back(number);
-        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-	    M.push_back(me);
+	    M.push_back(shared_from_this());
 		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
 		return ans3;
     }
@@ -165,8 +161,7 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 				tr1::shared_ptr<AbstractNumber> num(new SmartInteger(1));
 				tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
 				tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(-1));
-                tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
+				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(shared_from_this(), exp -> add(exp2)));
 				tr1::shared_ptr<AbstractNumber> output2(new MultExpression(num, ans2, newSign));
 				return output2;
 			}
@@ -186,8 +181,8 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 			{
 				newSign = '-';
 			}
-            tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-			tr1::shared_ptr<AbstractNumber> output2(new MultExpression(me, number, newSign));
+
+			tr1::shared_ptr<AbstractNumber> output2(new MultExpression(shared_from_this(), number, newSign));
 			return output2;
 
 		}

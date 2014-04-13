@@ -181,12 +181,12 @@ double Log::toDouble()
 {
     base = base->simplify();
     value = value->simplify();
-    if (abs(toDouble() - round(toDouble())) < 0.00001)
+    if (abs(toDouble() - round(toDouble())) < 0.000001)
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));
         return n;
     }
-    if (abs(1/toDouble() - round(1/toDouble())) < 0.000001)
+    if (1/toDouble() == round(1/toDouble()))
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger(1));
         tr1::shared_ptr<AbstractNumber>n2(new SmartInteger((int)round(1/toDouble())));
