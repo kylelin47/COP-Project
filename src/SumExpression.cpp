@@ -142,8 +142,10 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<AbstractNumber>number){
-    /*if (number->getName() == "SumExpression")
+    if (number->getName() == "SumExpression")
     {
+        cout << "INITIAL MULTIPLY: " + number->toString();
+        cout << " and " + toString() << endl;
         tr1::shared_ptr<SumExpression> sumNum = tr1::static_pointer_cast<SumExpression>(number);
         vector<tr1::shared_ptr<AbstractNumber> > sumNumExp = sumNum->getExpression();
         vector<tr1::shared_ptr<AbstractNumber> > finalExp;
@@ -151,6 +153,8 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
         {
             for (int j=0; j<sumNumExp.size(); j++)
             {
+                cout << "MULTIPLYING: " + expression[i]->toString();
+                cout << " and " + sumNumExp[j]->toString() << endl;
                 finalExp.push_back(expression[i]->multiply(sumNumExp[j]));
             }
         }
@@ -158,7 +162,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
         cout << "FINAL EXPRESSION: " + finalExp[0]->toString() << endl;
         tr1::shared_ptr<AbstractNumber> finalSum(new SumExpression(finalExp));
         return finalSum;
-    }*/
+    }
 	vector<tr1::shared_ptr<AbstractNumber> > output = expression;
 	for (int i = 0; i < output.size(); i++)
 	{

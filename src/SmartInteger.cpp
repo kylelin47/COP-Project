@@ -61,8 +61,8 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::multiply(tr1::shared_ptr<AbstractN
     //number = number->simplify();
     if (number->getName() == "Integer")
     {
-        value = this->value * number->toDouble(); //this may be bad, check here if we are having issues
-        return shared_from_this();
+        tr1::shared_ptr<AbstractNumber> newValue(new SmartInteger(this->value * number->toDouble())); //this may be bad, check here if we are having issues
+        return newValue;
     }
     else if (number->getName() == "SumExpression" || number->getName() == "MultExpression")
     {
