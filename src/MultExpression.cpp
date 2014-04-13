@@ -435,6 +435,18 @@ MultExpression::~MultExpression() {
 string MultExpression::toString(){
 	string output ="";
 	bool hasZero = false;
+	tr1::shared_ptr<AbstractNumber> temp(numerator[0]);
+  	if (getSign() == '-')
+  	{
+  		output+='-';
+  	}
+ 	for (int i =0; i < numerator.size(); i++){
+ 		if (numerator[i]->getName() == "Integer")
+ 		{
+ 			numerator[0] = numerator[i];
+ 			numerator[i] = temp;
+ 		}
+ 	}
 	if (getSign() == '-')
 	{
 		output+='-';
@@ -446,11 +458,14 @@ string MultExpression::toString(){
             hasZero = true;
             break;
         }
-		output += numerator[i]->toString();
-		if (i < numerator.size()-1)
-		{
-			output += "*";
-		}
+        if (numerator[i]->toDouble() != 1)
+       {
+ 			output += numerator[i]->toString();
+ 			if (i < numerator.size()-1)
+ 			{
+ 				output += "*";
+ 			}
+         }
 	}
 	for (int i = 0; i < denominator.size(); i++){
 		output += "/";
