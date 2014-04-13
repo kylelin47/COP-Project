@@ -90,9 +90,6 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
 		sign = '-';
 	   }
 
-
-	cout << value << endl;
-	cout << number->noSign()->toDouble() << endl;
     if (number -> getName() == "Integer")
     {
 

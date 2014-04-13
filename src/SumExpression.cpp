@@ -133,7 +133,18 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<AbstractNumber>number){
-
+    if (number->getName() == "SumExpression")
+    {
+        tr1::shared_ptr<SumExpression> sumNum = tr1::static_pointer_cast<SumExpression>(number);
+        vector<tr1::shared_ptr<AbstractNumber> > sumNumExp = sumNum->getExpression();
+        for (int i=0; i<expression.size(); i++)
+        {
+            for (int j=0; j<sumNumExp.size(); j++)
+            {
+                expression[i] = expression[i]->multiply(sumNumExp[j]);
+            }
+        }
+    }
 	vector<tr1::shared_ptr<AbstractNumber> > output = expression;
 	for (int i = 0; i < output.size(); i++)
 	{

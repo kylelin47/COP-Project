@@ -429,12 +429,18 @@ MultExpression::~MultExpression() {
 
 string MultExpression::toString(){
 	string output ="";
+	bool hasZero = false;
 	if (getSign() == '-')
 	{
 		output+='-';
 	}
 
 	for (int i =0; i < numerator.size(); i++){
+        if (numerator[i]->toDouble() == 0)
+        {
+            hasZero = true;
+            break;
+        }
 		output += numerator[i]->toString();
 		if (i < numerator.size()-1)
 		{
@@ -444,8 +450,9 @@ string MultExpression::toString(){
 	for (int i = 0; i < denominator.size(); i++){
 		output += "/";
 		output += denominator[i]->toString();
-
 	}
+	if (hasZero)
+        output = '0';
 	return output;
 }
 
@@ -487,7 +494,14 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     cout <<"SIGN: ";
     cout << sign << endl;
     tr1::shared_ptr<AbstractNumber> tmp;
-
+    if (denominator.size() > 0)
+    {
+        for (int i=0; i < denominator.size(); i++)
+        {
+            if (denominator[i]->toDouble() == 0)
+                throw "Can't divide by zero.";
+        }
+    }
     if (toDouble() == round(toDouble()))
     {
         return tr1::shared_ptr<AbstractNumber>(new SmartInteger(toDouble()));
@@ -504,7 +518,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     {
         cout << denominator[0]->toString() << endl;
         tmp = numerator[0]->divide(denominator[0]);
-        cout << tmp->toString() << endl;
+
         if (tmp->getName() != "MultExpression")
         {
             numerator[0] = tmp;
