@@ -22,6 +22,8 @@ class Radical: public AbstractNumber
         tr1::shared_ptr<AbstractNumber> getValue(string name);
         tr1::shared_ptr<AbstractNumber> noSign();
 
+        void checkValidity(tr1::shared_ptr<AbstractNumber> value, tr1::shared_ptr<AbstractNumber> root);
+
     protected:
     private:
         char sign;

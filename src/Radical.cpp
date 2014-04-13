@@ -5,6 +5,7 @@ Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<Abstr
     this->value = value;
     this->root = root;
     this->sign = '+';
+    checkValidity(value, root);
 }
 
 Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root, char sign)
@@ -12,6 +13,7 @@ Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<Abstr
     this->value = value;
     this->root = root;
     this->sign = sign;
+    checkValidity(value, root);
 }
 
 Radical::~Radical()
@@ -171,12 +173,13 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
                         i = 1;
                     }
                 }
-                tr1::shared_ptr<AbstractNumber>n1(new SmartInteger(coefficient));
                 if (coefficient == 1)
                 {
                     return shared_from_this();
                 }
-
+                if (value->toDouble() < 0)
+                    coefficient = coefficient * -1;
+                tr1::shared_ptr<AbstractNumber>n1(new SmartInteger(coefficient));
                 if (thisValue == 1)
                 {
                     return n1;
@@ -261,4 +264,11 @@ tr1::shared_ptr<AbstractNumber> Radical::noSign()
 {
 	tr1::shared_ptr<AbstractNumber> output(new Radical(value, root));
 	return output;
+}
+void Radical::checkValidity(tr1::shared_ptr<AbstractNumber> value, tr1::shared_ptr<AbstractNumber> root)
+{
+    if (root->toDouble() == 0)
+    {
+        throw "Roots can't be 0.\nSource: 0rt:";
+    }
 }

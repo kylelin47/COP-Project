@@ -234,7 +234,7 @@ double Exponent::toDouble()
 	 // if power and base have finite values(i.e. are integers), return integer
 	 else if(base->getName() == "Integer" &&
 			  power->getName() == "Integer"){
-		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)toDouble())); // call toDouble and cast as integer
+		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)round(toDouble()))); // call toDouble and cast as integer
 	 	 return r;
 	 }
 	 // simplifies radicals
