@@ -10,7 +10,7 @@ using namespace std;
 
 extern string history;
 
-vvoid SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
+void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
    if (text.size() == 0)
 	{
 	  cout << "Check1" << endl;

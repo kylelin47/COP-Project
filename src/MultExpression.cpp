@@ -122,7 +122,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
     {
         if (numerator[0]->getName() == "MultExpression")
         {
-            tr1::shared_ptr<MultExpression> realYou = tr1::static_pointer_cast<MultExpression>(number);
+            tr1::shared_ptr<MultExpression> realYou = tr1::static_pointer_cast<MultExpression>(numerator[0]);
             numerator = realYou->getNumerator();
         }
         else if (denominator.size() == 0)
