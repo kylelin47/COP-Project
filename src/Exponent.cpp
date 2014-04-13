@@ -95,13 +95,17 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumber> number){
 	// Checks for simplification if both exponents
 	number = number->simplify();
+
 	if(number->getName() == "Exponent"){
         tr1::shared_ptr<Exponent> givenNumber = tr1::static_pointer_cast<Exponent>(number);
 		if(abs(givenNumber->getValue("base")->toDouble() - base->toDouble()) < 0.000001){
 			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(givenNumber->getValue("power")), this->calcSign(number)));
-
 		    return r;
 		}
+        else{
+            tr1::shared_ptr<AbstractNumber> r(new MultExpression(shared_from_this(), number, this->calcSign(number)));
+            return r;
+        }
 	}
 
 	// Checks for simplification if number = base
@@ -204,9 +208,7 @@ double Exponent::toDouble()
 
 	// simplifies exponents with logarithmic power
 	 if(power->getName() == "Log"){
-		 cout << "1";
 		 if(power->getValue("base")->toDouble() == base->toDouble()){
-			 cout << "2";
 			 return power->getValue("value");
 		 }
 	 }
