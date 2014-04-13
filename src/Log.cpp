@@ -186,7 +186,13 @@ double Log::toDouble()
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger((int)round(toDouble())));
         return n;
     }
-
+    if (1/toDouble() == round(1/toDouble()))
+    {
+        tr1::shared_ptr<AbstractNumber>n(new SmartInteger(1));
+        tr1::shared_ptr<AbstractNumber>n2(new SmartInteger((int)round(1/toDouble())));
+        tr1::shared_ptr<AbstractNumber>nF(new MultExpression(n, n2, '+'));
+        return nF;
+    }
     vector< tr1::shared_ptr<AbstractNumber> > SimplifiedTerms;
     int numOnes = 0;
     if (value->getName() == "Integer")

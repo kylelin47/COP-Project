@@ -161,7 +161,7 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
         {
             if (root->toDouble() >= 1)
             {
-                int thisValue = value->toDouble();
+                int thisValue = abs(value->toDouble());
                 for (int i=2; i<=thisValue/2; i++)
                 {
                     if (thisValue % (int)round(pow(i, root->toDouble())) == 0)
