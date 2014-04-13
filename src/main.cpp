@@ -111,7 +111,7 @@ int main() {
                     {
 
 
-                    	getline(cin, input2);
+
 
                     				try{
                     					tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
