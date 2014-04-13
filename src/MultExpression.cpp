@@ -122,7 +122,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
     {
         if (numerator[0]->getName() == "MultExpression")
         {
-            tr1::shared_ptr<MultExpression> realYou = tr1::static_pointer_cast<MultExpression>(number);
+        	tr1::shared_ptr<MultExpression> realYou = tr1::static_pointer_cast<MultExpression>(numerator[0]);
             numerator = realYou->getNumerator();
         }
         else if (denominator.size() == 0)
@@ -433,32 +433,51 @@ MultExpression::~MultExpression() {
 }
 
 string MultExpression::toString(){
+	cout << "Starting to String: " << endl;
 	string output ="";
 	bool hasZero = false;
 	tr1::shared_ptr<AbstractNumber> temp(numerator[0]);
+	int swap =0 ;
   	if (getSign() == '-')
   	{
   		output+='-';
   	}
- 	for (int i =0; i < numerator.size(); i++){
- 		if (numerator[i]->getName() == "Integer")
- 		{
- 			numerator[0] = numerator[i];
- 			numerator[i] = temp;
- 		}
- 	}
 	if (getSign() == '-')
 	{
 		output+='-';
 	}
+	for (int i = 0; i < numerator.size(); i++) //find the integer to swap
+	{
+		if (numerator[i]->getName() == "Integer")
+		{
 
+			swap = i;
+			cout << "swap: " << swap << endl;
+		}
+	}
 	for (int i =0; i < numerator.size(); i++){
         if (numerator[i]->toDouble() == 0)
         {
             hasZero = true;
             break;
         }
-        if (numerator[i]->toDouble() != 1)
+        /*if (i = 0)
+        {
+        	 output += numerator[swap]->toString();
+        	 if (i < numerator.size()-1)
+        	 {
+        	 	output += "*";
+        	 }
+        }
+        else if(i = swap)
+        {
+        	 output += numerator[0]->toString();
+			 if (i < numerator.size()-1)
+			 {
+				output += "*";
+			 }
+        }(*/
+       if (numerator[i]->toDouble() != 1 || numerator.size() == 1)
        {
  			output += numerator[i]->toString();
  			if (i < numerator.size()-1)

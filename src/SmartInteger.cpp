@@ -206,7 +206,22 @@ string SmartInteger::getName()
 
 char SmartInteger::getSign()
 {
-	return sign;
+	if (sign == '-' && value < 0)
+	{
+		return '+';
+	}
+	else if (sign == '+' && value < 0)
+	{
+		return '-';
+	}
+	else if (sign == '-' && value > 0)
+	{
+		return '-';
+	}
+	else
+	{
+		return '+';
+	}
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::getValue(string name){
