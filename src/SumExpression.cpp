@@ -47,6 +47,10 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 		  skipUntil = pos + 1;
 		  //cout << "Skipping until " << skipUntil << endl;
 	  }
+	  else if (s[pos-1] == ':' || s[pos-1] == '^' || s[pos-1] == '_')
+	  {
+		  skipUntil = pos+1;
+	  }
 	  else
 	  {
 		  //cout << "Substring:" << s.substr(0 , pos) << endl;

@@ -29,8 +29,8 @@ using namespace std;
 extern string history;
 
 void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector<tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2) {
-
-	  //This chunk pulls out the string from the MultExpression without the * or /
+	  cout << "TotalMultExpression Input: " << text  << endl;
+	  //This chunk pulls out the string from the  without the * or /
 	  int hasSign;
 	  char nextValue = '*';
 	  size_t skipUntil=0;
@@ -46,11 +46,11 @@ void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector
 	  string s = text;
 	  s += '*';
 
-	  while (s.find(sep1, skipUntil) != string::npos || s.find(sep2, skipUntil) != string::npos) {
+	  while (findOutside(sep1, s) != string::npos || findOutside(sep2, s) != string::npos) {
 		  hasSign = 1;
-		  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
+		  if (findOutside(sep1, s) < findOutside(sep2, s))
 		  {
-			  pos = s.find(sep1, skipUntil);
+			  pos = findOutside(sep1, s);
 
 			  if (s.substr(0 , pos)[0] != '+' && s.substr(0 , pos)[0] != '-' && s.substr(0 , pos)[0] != '*' && s.substr(0 , pos)[0] != '/' ){ //May want to try with skipUntil instead of zero, not sure at the moment
 					hasSign = 0;
@@ -58,37 +58,27 @@ void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector
 
 		  }
 		  else {
-			  pos = s.find(sep2, skipUntil);
+			  pos = findOutside(sep2, s);
 			  if (s.substr(0 , pos)[0] != '+' && s.substr(0 , pos)[0] != '-' && s.substr(0 , pos)[0] != '*' && s.substr(0 , pos)[0] != '/' ){
 			  					hasSign = 0;
 			  			  }
 		  }
 
-
 		  //Creates an AbstractNumber in the numerator or denominator vector
 		  substring = s.substr(hasSign, pos-hasSign);
 
-		  if (count(substring, 0, pos, '(') > count(substring, 0, pos, ')'))
-		  {
-		  		  skipUntil = pos+1;
-		  		  //cout << "SkippingMult:" << skipUntil << endl;
-		  }
-		  else
-		  {
-			  //cout << "MultSubstring: " << substring << endl;
+		  if (nextValue == '*'){
+				  appendNumberFromString(substring, numerator);
+			  }
+		  else {
 
-			  if (nextValue == '*'){
-					  appendNumberFromString(substring, numerator);
-				  }
-			  else {
+			  cout << "adding " << substring << " to the denominator" << endl;
+				 appendNumberFromString(substring, denominator);
+			  }
 
-				  cout << "adding " << substring << " to the denominator" << endl;
-					 appendNumberFromString(substring, denominator);
-				  }
-
-			  nextValue = s[pos];
-			  s.erase(0, pos+ 1);
-		  }
+		  nextValue = s[pos];
+		  s.erase(0, pos+ 1);
+		  
 	}
 }
 
