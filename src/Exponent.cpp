@@ -151,7 +151,6 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 	}
 
 	else{
-	 	tr1::shared_ptr<AbstractNumber> t(this);
 		vector< tr1::shared_ptr<AbstractNumber> > NumVector;
 		NumVector.push_back(shared_from_this());
 		vector< tr1::shared_ptr<AbstractNumber> > DenVector;
