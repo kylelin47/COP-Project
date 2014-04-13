@@ -78,7 +78,7 @@ void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector
 
 		  nextValue = s[pos];
 		  s.erase(0, pos+ 1);
-		  
+
 	}
 }
 
@@ -277,7 +277,8 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             denominator.push_back(numDenominator[i]);
         numerator = simplifyVector(numerator);
         denominator = simplifyVector(denominator);
-        return shared_from_this();
+        tr1::shared_ptr<AbstractNumber> me(new MultExpression(numerator, denominator, sign));
+        return me;
     }
     vector< tr1::shared_ptr<AbstractNumber> > MultTerms = numerator;
     MultTerms.push_back(number->simplify());

@@ -33,6 +33,7 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > M;
 			tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 			M.push_back(two);
+
 			M.push_back(shared_from_this());
 			tr1::shared_ptr<AbstractNumber> output(new MultExpression(M, '+'));
 			return output;

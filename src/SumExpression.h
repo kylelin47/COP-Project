@@ -13,7 +13,7 @@ class SumExpression: public AbstractNumber {
 public:
     SumExpression();
     SumExpression(tr1::shared_ptr<AbstractNumber> number1, tr1::shared_ptr<AbstractNumber> number2);
-	SumExpression(vector< tr1::shared_ptr<AbstractNumber> > &expression);
+	SumExpression(vector< tr1::shared_ptr<AbstractNumber> > expression);
 	SumExpression(const string &input);
 	SumExpression(const string &input, bool noParenthesis);
 	virtual ~SumExpression();

@@ -85,7 +85,7 @@ SumExpression::SumExpression::SumExpression(const string &input, bool noParenthe
 	this->noParenthesis = noParenthesis;
 }
 
-SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > &expression) {
+SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > expression) {
     this->expression = expression;
 	this->noParenthesis = false;
 }
@@ -155,7 +155,10 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
             {
                 cout << "MULTIPLYING: " + expression[i]->toString();
                 cout << " and " + sumNumExp[j]->toString() << endl;
-                finalExp.push_back(expression[i]->multiply(sumNumExp[j]));
+                tr1::shared_ptr<AbstractNumber> tmp = expression[i]->multiply(sumNumExp[j]);
+                finalExp.push_back(tmp);
+                cout << "RESULT: " + tmp->toString() << endl;
+                cout << "EXPRESSION[i]: " + expression[i]->toString() << endl;
             }
         }
         finalExp = simplifyVector(finalExp);
