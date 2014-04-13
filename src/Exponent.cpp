@@ -46,14 +46,15 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 // shared_ptr<AbstractNumber> 			resulting sum of addition
  tr1::shared_ptr<AbstractNumber> Exponent::add(tr1::shared_ptr<AbstractNumber> number){
  	// Checks for cancellation
- 	if(this->toDouble() == number->toDouble() &&
+ 	number = number->simplify();
+ 	if(abs(toDouble() - number->toDouble()) < 0.000001 &&
  	   this->getSign() != number->getSign()){
  		tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
 
  	    return r;
  	}
  	// Checks for duplication/simplification
- 	else if(this->toDouble() == number->toDouble() &&
+ 	else if(abs(toDouble() - number->toDouble()) < 0.000001 &&
  			this->getSign() == number->getSign()){
  		vector< tr1::shared_ptr<AbstractNumber> > MultVector;
 		tr1::shared_ptr<AbstractNumber> i(new SmartInteger(2));
@@ -93,9 +94,11 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
  // shared_ptr<AbstractNumber> 			resulting product of multiplication
 tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumber> number){
 	// Checks for simplification if both exponents
+	number = number->simplify();
 	if(number->getName() == "Exponent"){
-		if(number->getValue("base") == base){
-			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(number->getValue("power")), this->calcSign(number)));
+        tr1::shared_ptr<Exponent> givenNumber = tr1::static_pointer_cast<Exponent>(number);
+		if(abs(givenNumber->getValue("base")->toDouble() - base->toDouble()) < 0.000001){
+			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(givenNumber->getValue("power")), this->calcSign(number)));
 
 		    return r;
 		}
@@ -103,7 +106,7 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 
 	// Checks for simplification if number = base
 	// Adds 1 to exponent
-	else if(number->toDouble() == base->toDouble()){
+	else if(abs(number->toDouble() - base->toDouble()) < 0.000001 ){
 		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1));
 		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
 	    return r;

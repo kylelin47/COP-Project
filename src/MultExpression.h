@@ -43,6 +43,8 @@ public:
 	vector<tr1::shared_ptr<AbstractNumber> > getDenominator();
 	tr1::shared_ptr<AbstractNumber> noSign();
 
+	int GCF(int x, int y);
+
 private:
 	char sign;
 };

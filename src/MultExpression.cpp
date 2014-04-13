@@ -144,8 +144,23 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
         tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(number);
         vector < tr1::shared_ptr<AbstractNumber> > numberNumerator = tmpMult->getNumerator();
         vector < tr1::shared_ptr<AbstractNumber> > numberDenominator = tmpMult->getDenominator();
-
-
+        if (numerator.size() == 1 && denominator.size() == 1 &&
+            numberNumerator.size() == 1 && numberDenominator.size() == 1)
+        {
+            if (numerator[0]->getName() == "Integer" && denominator[0]->getName() == "Integer" &&
+                numberNumerator[0]->getName() == "Integer" && numberDenominator[0]->getName() == "Integer")
+            {
+                int numValue = (int)(numerator[0]->toDouble() * numberDenominator[0]->toDouble()
+                                     + numberNumerator[0]->toDouble() * denominator[0]->toDouble());
+                int demValue = (int)(denominator[0]->toDouble() * numberDenominator[0]->toDouble());
+                int commonFactor = GCF(numValue, demValue);
+                numValue = numValue/commonFactor;
+                demValue = demValue/commonFactor;
+                tr1::shared_ptr<AbstractNumber> intNum(new SmartInteger(numValue));
+                tr1::shared_ptr<AbstractNumber> intDem(new SmartInteger(demValue));
+                return tr1::shared_ptr<AbstractNumber>(new MultExpression(intNum, intDem, '+'));
+            }
+        }
         for (int i=0; i<numberDenominator.size(); i++)
         {
             d = d * numberDenominator[i]->toDouble();
@@ -372,7 +387,8 @@ double MultExpression::toDouble()
 tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
 {
     cout <<"SIMPLIFYING MULT EXPRESSION" << endl;
-
+    cout <<"SIGN: ";
+    cout << sign << endl;
     tr1::shared_ptr<AbstractNumber> tmp;
 
     if (toDouble() == round(toDouble()))
@@ -445,8 +461,26 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
         cout << "FINAL SIMPLIFICATION: " + vec[0]->toString() << endl;
         vec.erase(vec.begin() + 1);
     }
-
+    if (sign == '-' && vec.size() > 0)
+    {
+        tr1::shared_ptr<AbstractNumber> minus_one(new SmartInteger(-1));
+        vec[0] = vec[0]->multiply(minus_one);
+    }
     return vec;
+}
+int MultExpression::GCF(int x, int y)
+{
+    int a;
+
+    a = abs(x - y);
+    for (int i = 2; i<=a; i++)
+    {
+        if ((x%i == 0) && (y%i == 0))
+        {
+            return i * GCF(x/i, y/i);
+        }
+    }
+    return 1;
 }
 string MultExpression::getName()
 {
