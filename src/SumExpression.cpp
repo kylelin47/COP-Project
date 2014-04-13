@@ -135,7 +135,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
 tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<AbstractNumber>number){
 
 	vector<tr1::shared_ptr<AbstractNumber> > output = expression;
-	for (int i = 0; i < output.size(); i++)
+	for (int i = 0; i < output.size() - 1; i++)
 	{
 		output[i] = output[i]->multiply(number);
 	}

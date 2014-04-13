@@ -259,6 +259,8 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
     vector< tr1::shared_ptr<AbstractNumber> > MultTerms = numerator;
+    cout << "Multiplying MultExpression: " + toString();
+    cout << " and " + number->toString() << endl;
     MultTerms.push_back(number->simplify());
 
     tr1::shared_ptr<AbstractNumber> tmp;
@@ -300,17 +302,48 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
 }
 
 tr1::shared_ptr<AbstractNumber> MultExpression::divide(tr1::shared_ptr<AbstractNumber> number){
-	denominator.push_back(number);
+    vector< tr1::shared_ptr<AbstractNumber> > MultTerms = denominator;
+    cout << "Dividing MultExpression: " + toString();
+    cout << " and " + number->toString() << endl;
+    MultTerms.push_back(number->simplify());
 
+    tr1::shared_ptr<AbstractNumber> tmp;
+    for (int i=0; (unsigned)i < numerator.size(); i++)
+    {
+        if (numerator[i]->toDouble() == number->toDouble())
+        {
+            numerator.erase(numerator.begin() + i);
+            return shared_from_this();
+        }
+    }
+    for (int i=0; (unsigned)i < MultTerms.size() - 1; i++)
+    {
+        if (MultTerms[i]->getName() == MultTerms[MultTerms.size() - 1]->getName())
+        {
+            if (MultTerms[i]->getName() != "MultExpression")
+            {
+                tmp = MultTerms[i]->divide(MultTerms[MultTerms.size() - 1]);
+
+                if (tmp->getName() != "MultExpression")
+                {
+                    MultTerms[i] = tmp;
+                    MultTerms.erase(MultTerms.end() - 1);
+                }
+            }
+        }
+    }
+    tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(numerator, MultTerms, '+'));
 	if (this->sign == number->getSign())
 	{
-	    sign = '+';
-		return shared_from_this();
+	    tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(numerator, MultTerms, '+'));
+		return finalMult;
 	}
 	else{
-        sign = '-';
-		return shared_from_this();
+        tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(numerator, MultTerms, '-'));
+		return finalMult;
 	}
+
+
 }
 
 char MultExpression::getSign()
