@@ -225,10 +225,16 @@ double Exponent::toDouble()
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)toDouble())); // call toDouble and cast as integer
 	 	 return r;
 	 }
-	 // no simplification possible, return as is
-	 else{
-		 return shared_from_this();
+	 // simplifies radicals
+	 else if(base->getName() == "Radical"){
+		 if(fmod(power->toDouble(),base->getValue("root")->toDouble()) == 0){
+			 tr1::shared_ptr<AbstractNumber> r(new Exponent(base->getValue("value"), power->divide(base->getValue("root")), sign)); // call toDouble and cast as integer
+			 return r->simplify();
+		 }
 	 }
+	 // no simplification possible, return as is
+	return shared_from_this();
+	 
 }
 
 // Returns string identifying number type
