@@ -63,21 +63,17 @@ tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 		}
 
 	}
-	else if(number->getName() == "MultExpression")
+	else if(number->getName() == "MultExpression" || number->getName() == "SumExpression")
     {
         return number->add(shared_from_this());
     }
 
-	else
-	{
-		vector<tr1::shared_ptr<AbstractNumber> > N;
-		N.push_back(number);
-        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-		N.push_back(me);
-		tr1::shared_ptr<AbstractNumber> output1(new SumExpression(N));
-		return output1;
-
-	}
+    vector<tr1::shared_ptr<AbstractNumber> > N;
+    N.push_back(number);
+    tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+    N.push_back(me);
+    tr1::shared_ptr<AbstractNumber> output1(new SumExpression(N));
+    return output1;
 }
 
 
@@ -130,7 +126,6 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
-			 cout << "			InvertedRoot: " << invertedRoot->toString() << endl;
 			 SumVector.push_back(one);
 			 SumVector.push_back(invertedRoot);
 			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
@@ -143,15 +138,13 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 	{
         return number->multiply(shared_from_this());
 	}
-	else
-    {
-        vector<tr1::shared_ptr<AbstractNumber> > M;
-	    M.push_back(number);
-        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-	    M.push_back(me);
-		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
-		return ans3;
-    }
+
+    vector<tr1::shared_ptr<AbstractNumber> > M;
+    M.push_back(number);
+    tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+    M.push_back(me);
+    tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+    return ans3;
 }
 
 tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number){
@@ -217,28 +210,34 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
                 return output2;
             }
 		}
+		else if(number->getName() == "MultExpression")
+        {
+            tr1::shared_ptr<MultExpression> MultE = tr1::static_pointer_cast<MultExpression>(number);
+            vector<tr1::shared_ptr<AbstractNumber> > MultENum = MultE->getNumerator();
+            vector<tr1::shared_ptr<AbstractNumber> > MultEDem = MultE->getDenominator();
+            if (MultEDem.size() == 0)
+            {
+                tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+                MultEDem.push_back(one);
+            }
+            tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
+            return reversedMultE->multiply(shared_from_this());
+        }
 
+        char newSign;
 
-		else
-		{
-			char newSign;
+        if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
+        {
+            newSign = '+';
+        }
 
-			if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
-			{
-				newSign = '+';
-			}
-
-			else
-			{
-				newSign = '-';
-			}
-            tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
-			tr1::shared_ptr<AbstractNumber> output2(new MultExpression(me, number, newSign));
-			return output2;
-
-		}
-		//either return 1 or this
-
+        else
+        {
+            newSign = '-';
+        }
+        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+        tr1::shared_ptr<AbstractNumber> output2(new MultExpression(me, number, newSign));
+        return output2;
 }
 string Pi::toString(){
 	if (sign == '-')

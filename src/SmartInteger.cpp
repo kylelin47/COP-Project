@@ -181,18 +181,26 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
 
         }
 
+        vector<tr1::shared_ptr<AbstractNumber> > DividedTerms;
 
+        tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->noSign()->toDouble() / number->noSign()->toDouble()));
+        DividedTerms.push_back(n);
+        tr1::shared_ptr<AbstractNumber> D(new MultExpression(DividedTerms, sign));
+        return D;
 
-        else
+    }
+    else if(number->getName() == "MultExpression")
+    {
+        tr1::shared_ptr<MultExpression> MultE = tr1::static_pointer_cast<MultExpression>(number);
+        vector<tr1::shared_ptr<AbstractNumber> > MultENum = MultE->getNumerator();
+        vector<tr1::shared_ptr<AbstractNumber> > MultEDem = MultE->getDenominator();
+        if (MultEDem.size() == 0)
         {
-            vector<tr1::shared_ptr<AbstractNumber> > DividedTerms;
-
-            tr1::shared_ptr<AbstractNumber> n(new SmartInteger(this->noSign()->toDouble() / number->noSign()->toDouble()));
-            DividedTerms.push_back(n);
-            tr1::shared_ptr<AbstractNumber> D(new MultExpression(DividedTerms, sign));
-            return D;
+            tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+            MultEDem.push_back(one);
         }
-
+        tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
+        return reversedMultE->multiply(shared_from_this());
     }
     vector<tr1::shared_ptr<AbstractNumber> > numerator;
 	vector<tr1::shared_ptr<AbstractNumber> > denominator;
@@ -228,7 +236,6 @@ string SmartInteger::toString(){
 
 double SmartInteger::toDouble()
 {
-	//cout << value;
 	if (sign == '-')
 	{
 			return -1*(double)value;

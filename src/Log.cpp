@@ -122,11 +122,7 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 sign = '-';
 	 }
 	 tr1::shared_ptr<AbstractNumber> copy(new Log(base, value, '+'));
-	 //cout << "copy: " << copy->toString()<< endl;
 	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
-
-	 //cout << "num: " << num->toString()<< endl;
-
 
 	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
@@ -156,7 +152,6 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
-			 cout << "			InvertedRoot: " << invertedRoot->toString() << endl;
 			 SumVector.push_back(one);
 			 SumVector.push_back(invertedRoot);
 			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
@@ -164,6 +159,19 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 return output;
 		 }
 	 }
+	 else if(number->getName() == "MultExpression")
+     {
+        tr1::shared_ptr<MultExpression> MultE = tr1::static_pointer_cast<MultExpression>(number);
+        vector<tr1::shared_ptr<AbstractNumber> > MultENum = MultE->getNumerator();
+        vector<tr1::shared_ptr<AbstractNumber> > MultEDem = MultE->getDenominator();
+        if (MultEDem.size() == 0)
+        {
+        tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+        MultEDem.push_back(one);
+        }
+        tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
+        return reversedMultE->multiply(shared_from_this());
+     }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
 	 std::vector< tr1::shared_ptr<AbstractNumber> > den;
 	 numer.push_back(copy);
@@ -229,7 +237,7 @@ double Log::toDouble()
                     if (factors[i] == factors[i + 1])
                     {
                         int sameFactor = 2;
-                        for (int k=i+2; k<factors.size(); k++)
+                        for (int k=i+2; (unsigned)k<factors.size(); k++)
                         {
                             if (factors[k] == factors[i])
                             {
@@ -317,13 +325,11 @@ tr1::shared_ptr<AbstractNumber> Log::getValue(string name){
 	}
 	else
 	{
-		cout << "ERROR";
-		throw "tried to get a " + name + " from a log";
+		throw "ERROR: tried to get a " + name + " from a log";
 	}
 }
 
 tr1::shared_ptr<AbstractNumber> Log::removeNegative(tr1::shared_ptr<AbstractNumber>number){
-		//cout << number->toString() << " is a " << number->getName() << endl;
 	//*******************************************************
 		 //Copy and paste this to git rid of negetives
 		 //****************************************************

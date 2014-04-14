@@ -32,7 +32,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   		s.erase(0,1);
   		s.erase(s.size()-1,1);
   	}
-  	cout << "Reduced String: " << s << endl;
   	string emptyExp2 = " ";
     if (text.size() == 0)
     {
@@ -50,7 +49,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  if (count(s.substr(0 , pos), 0, pos, '(') > count(s.substr(0 , pos), 0, pos, ')'))
 	  {
 		  skipUntil = pos + 1;
-		  cout << "Skipping until " << skipUntil << endl;
 	  }
 	  else if (s[pos-1] == ':' || s[pos-1] == '^' || s[pos-1] == '_')
 	  {
@@ -117,8 +115,6 @@ SumExpression::~SumExpression() {
 
 tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumber>number){
     number = number->simplify();
-    cout << "ADDING SUM TERMS: " + toString();
-    cout << "and " + number->toString() << endl;
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
     if (expression.size() == 1)
     {
@@ -138,8 +134,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
     }
     SumTerms.push_back(number);
     tr1::shared_ptr<AbstractNumber> tmp;
-    cout << "Size: ";
-    cout << SumTerms.size() << endl;
     for (int i=0; (unsigned)i < SumTerms.size() - 1; i++)
     {
         if (SumTerms[i]->getName() != "SumExpression")
@@ -165,8 +159,6 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
     }
     if (number->getName() == "SumExpression")
     {
-        cout << "INITIAL MULTIPLY: " + number->toString();
-        cout << " and " + toString() << endl;
         tr1::shared_ptr<SumExpression> sumNum = tr1::static_pointer_cast<SumExpression>(number);
         vector<tr1::shared_ptr<AbstractNumber> > sumNumExp = sumNum->getExpression();
         vector<tr1::shared_ptr<AbstractNumber> > finalExp;
@@ -174,16 +166,11 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
         {
             for (int j=0; j<sumNumExp.size(); j++)
             {
-                cout << "MULTIPLYING: " + expression[i]->toString();
-                cout << " and " + sumNumExp[j]->toString() << endl;
                 tr1::shared_ptr<AbstractNumber> tmp = expression[i]->multiply(sumNumExp[j]);
                 finalExp.push_back(tmp);
-                cout << "RESULT: " + tmp->toString() << endl;
-                cout << "EXPRESSION[i]: " + expression[i]->toString() << endl;
             }
         }
         finalExp = simplifyVector(finalExp);
-        cout << "FINAL EXPRESSION: " + finalExp[0]->toString() << endl;
         tr1::shared_ptr<AbstractNumber> finalSum(new SumExpression(finalExp));
         return finalSum;
     }
@@ -258,7 +245,6 @@ double SumExpression::toDouble()
 tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 {
     expression = simplifyVector(expression);
-    cout << "simplify exp[0]: " + expression[0]->getName() << endl;
     if (expression[0]->getName() == "SumExpression")
     {
         tr1::shared_ptr<SumExpression> tmp = tr1::static_pointer_cast<SumExpression>(expression[0]);
@@ -405,7 +391,6 @@ string SumExpression::makeStringUsable(string input)
 			end++;
 		}
 	}
-	//cout << "Usable string: "<< output << endl << endl;
 	return output;
 }
 

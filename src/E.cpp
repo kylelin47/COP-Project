@@ -62,32 +62,27 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 		}
 
 	}
+	else if(number->getName() == "MultExpression" || number->getName() == "SumExpression")
+    {
+        return number->add(shared_from_this());
+    }
 
-	else
-	{
-		vector<tr1::shared_ptr<AbstractNumber> > N;
-		N.push_back(number);
-		N.push_back(shared_from_this());
-		tr1::shared_ptr<AbstractNumber> output1(new SumExpression(N));
-		return output1;
-
-	}
+    vector<tr1::shared_ptr<AbstractNumber> > N;
+    N.push_back(number);
+    N.push_back(shared_from_this());
+    tr1::shared_ptr<AbstractNumber> output1(new SumExpression(N));
+    return output1;
 
 }
 
 tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>number){
 
-		if(number -> getName() == "E")
+    if(number -> getName() == "E")
 	{
 
 		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
 		tr1::shared_ptr<AbstractNumber> ans(new Exponent(shared_from_this(), exp));
 		return ans;
-
-
-//		tr1::shared_ptr<AbstractNumber> ans(new Exponent(shared_from_this(), 2));
-//		return ans;
-
 	}
 
 	else if (number -> getName() == "Exponent")
@@ -108,23 +103,31 @@ tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>numbe
 			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
-			 cout << "			InvertedRoot: " << invertedRoot->toString() << endl;
 			 SumVector.push_back(one);
 			 SumVector.push_back(invertedRoot);
 			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
 			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
 			 return output;
 		 }
+		 else
+         {
+            vector<tr1::shared_ptr<AbstractNumber> > M;
+            M.push_back(number);
+            M.push_back(shared_from_this());
+            tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+            return ans3;
+         }
 	 }
 
-	else
-	{
-	    vector<tr1::shared_ptr<AbstractNumber> > M;
-	    M.push_back(number);
-	    M.push_back(shared_from_this());
-		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
-		return ans3;
-	}
+    else if(number->getName() == "MultExpression")
+    {
+        return number->multiply(shared_from_this());
+    }
+    vector<tr1::shared_ptr<AbstractNumber> > M;
+    M.push_back(number);
+    M.push_back(shared_from_this());
+    tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+    return ans3;
 
 }
 
@@ -172,28 +175,33 @@ tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number)
 				return output2;
 			}
 		}
+        else if(number->getName() == "MultExpression")
+        {
+            tr1::shared_ptr<MultExpression> MultE = tr1::static_pointer_cast<MultExpression>(number);
+            vector<tr1::shared_ptr<AbstractNumber> > MultENum = MultE->getNumerator();
+            vector<tr1::shared_ptr<AbstractNumber> > MultEDem = MultE->getDenominator();
+            if (MultEDem.size() == 0)
+            {
+                tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+                MultEDem.push_back(one);
+            }
+            tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
+            return reversedMultE->multiply(shared_from_this());
+        }
+        char newSign;
 
+        if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
+        {
+            newSign = '+';
+        }
 
-		else
-		{
-			char newSign;
+        else
+        {
+            newSign = '-';
+        }
 
-			if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
-			{
-				newSign = '+';
-			}
-
-			else
-			{
-				newSign = '-';
-			}
-
-			tr1::shared_ptr<AbstractNumber> output2(new MultExpression(shared_from_this(), number, newSign));
-			return output2;
-
-		}
-		//either return 1 or this
-
+        tr1::shared_ptr<AbstractNumber> output2(new MultExpression(shared_from_this(), number, newSign));
+        return output2;
 }
 
 string E::toString(){

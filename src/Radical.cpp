@@ -43,13 +43,15 @@ tr1::shared_ptr<AbstractNumber> Radical::add(tr1::shared_ptr<AbstractNumber>numb
 
 
 		}
-		else {
-			std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
-			OutVector.push_back(shared_from_this());
-			OutVector.push_back(number);
-			tr1::shared_ptr<AbstractNumber>output(new SumExpression(OutVector));
-			return output;
-		}
+    else if(number->getName() == "SumExpression" || number->getName() == "MultExpression")
+    {
+        return number->add(shared_from_this());
+    }
+    std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
+    OutVector.push_back(shared_from_this());
+    OutVector.push_back(number);
+    tr1::shared_ptr<AbstractNumber>output(new SumExpression(OutVector));
+    return output;
 }
 
 tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber>number)
@@ -64,11 +66,7 @@ tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber
 		 sign = '-';
 	 }
 	 tr1::shared_ptr<AbstractNumber> copy(noSign());
-	 //cout << "copy: " << copy->toString()<< endl;
 	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
-
-	 //cout << "num: " << num->toString()<< endl;
-	 //cout << root->toDouble() << " - " << num->getValue("root")->toDouble() << endl;
 
 	 if (number->getName() == "Radical"){
 		 if (  abs(root->toDouble() - num->getValue("root")->toDouble()) < 0.000001)
@@ -89,7 +87,10 @@ tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber
 			 return output;
 		 }
 	 }
-
+    else if(number->getName() == "SumExpression" || number->getName() == "MultExpression")
+    {
+        return number->multiply(shared_from_this());
+    }
 
 	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
 	 MultVector.push_back(copy);
@@ -111,11 +112,7 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 			 sign = '-';
 		 }
 		 tr1::shared_ptr<AbstractNumber> copy(noSign());
-		 //cout << "copy: " << copy->toString()<< endl;
 		 tr1::shared_ptr<AbstractNumber> num(number->noSign());
-
-		 //cout << "num: " << num->toString()<< endl;
-		 //cout << root->toDouble() << " - " << num->getValue("root")->toDouble() << endl;
 
 		 if (number->getName() == "Radical"){
 			 if (  abs(root->toDouble() - num->getValue("root")->toDouble()) < 0.000001)

@@ -131,16 +131,18 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
 	    return r;
 	}
+	else if(number->getName() == "SumExpression" || number->getName() == "MultExpression")
+    {
+        return number->multiply(shared_from_this());
+    }
 
-	else{
-		vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-		tr1::shared_ptr<AbstractNumber> me(new Exponent(base, power, sign));
-		MultVector.push_back(me);
-		MultVector.push_back(number);
-		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
+    vector< tr1::shared_ptr<AbstractNumber> > MultVector;
+    tr1::shared_ptr<AbstractNumber> me(new Exponent(base, power, sign));
+    MultVector.push_back(me);
+    MultVector.push_back(number);
+    tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
 
-		return r;
-	}
+    return r;
 }
 
 // Divides this by number and returns the product
@@ -172,16 +174,27 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
 		return r;
 	}
+	else if(number->getName() == "MultExpression")
+    {
+        tr1::shared_ptr<MultExpression> MultE = tr1::static_pointer_cast<MultExpression>(number);
+        vector<tr1::shared_ptr<AbstractNumber> > MultENum = MultE->getNumerator();
+        vector<tr1::shared_ptr<AbstractNumber> > MultEDem = MultE->getDenominator();
+        if (MultEDem.size() == 0)
+        {
+            tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+            MultEDem.push_back(one);
+        }
+        tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
+        return reversedMultE->multiply(shared_from_this());
+    }
 
-	else{
-		vector< tr1::shared_ptr<AbstractNumber> > NumVector;
-		tr1::shared_ptr<AbstractNumber> me(new Exponent(base, power, sign));
-		NumVector.push_back(me);
-		vector< tr1::shared_ptr<AbstractNumber> > DenVector;
-		DenVector.push_back(number);
-		tr1::shared_ptr<AbstractNumber> r(new MultExpression(NumVector, DenVector, this->calcSign(number)));
-		return r;
-	}
+    vector< tr1::shared_ptr<AbstractNumber> > NumVector;
+    tr1::shared_ptr<AbstractNumber> me(new Exponent(base, power, sign));
+    NumVector.push_back(me);
+    vector< tr1::shared_ptr<AbstractNumber> > DenVector;
+    DenVector.push_back(number);
+    tr1::shared_ptr<AbstractNumber> r(new MultExpression(NumVector, DenVector, this->calcSign(number)));
+    return r;
 }
 
 // Returns this formatted as a string in the format:
@@ -331,7 +344,6 @@ tr1::shared_ptr<AbstractNumber> Exponent::getValue(string name){
 	}
 	else
 	{
-		cout << "tried to get a " + name + " from an exponent" << endl;
 		throw "tried to get a " + name + " from an exponent";
 	}
 }
