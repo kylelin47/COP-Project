@@ -174,30 +174,34 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
             {
                 for (int j=0; j<numberNumerator.size(); j++)
                 {
-                    tr1::shared_ptr<AbstractNumber> tmpDivide = numerator[i]->divide(numberNumerator[j]);
-                    if (tmpDivide->getName() != "MultExpression")
+                    if (numerator[i]->getName() != "Exponent" && numberNumerator[j]->getName() != "Exponent")
                     {
-                        cout << "Factor: " + numberNumerator[j]->toString() << endl;
-                        mFinal.push_back(numberNumerator[j]);
-                        tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-                        numberNumerator[j] = one;
-                        numerator[i] = tmpDivide;
-                    }
-
-                    else
-                    {
-                        cout << "DIVIDING: " + numberNumerator[j]->toString();
-                        cout << " and " + numerator[i]->toString() << endl;
-                        tr1::shared_ptr<AbstractNumber> tmpDivide2 = numberNumerator[j]->divide(numerator[i]);
-                        if (tmpDivide2->getName() != "MultExpression")
+                        tr1::shared_ptr<AbstractNumber> tmpDivide = numerator[i]->divide(numberNumerator[j]);
+                        if (tmpDivide->getName() != "MultExpression" && tmpDivide->getName() != "SumExpression")
                         {
-                            cout << "Factor: " + numerator[i]->toString() << endl;
-                            mFinal.push_back(numerator[i]);
+                            cout << "Factor: " + numberNumerator[j]->toString() << endl;
+                            mFinal.push_back(numberNumerator[j]);
                             tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-                            numberNumerator[j] = tmpDivide2;
-                            numerator[i] = one;
+                            numberNumerator[j] = one;
+                            numerator[i] = tmpDivide;
+                        }
+
+                        else
+                        {
+                            cout << "DIVIDING: " + numberNumerator[j]->toString();
+                            cout << " and " + numerator[i]->toString() << endl;
+                            tr1::shared_ptr<AbstractNumber> tmpDivide2 = numberNumerator[j]->divide(numerator[i]);
+                            if (tmpDivide2->getName() != "MultExpression" && tmpDivide2->getName() != "SumExpression")
+                            {
+                                cout << "Factor: " + numerator[i]->toString() << endl;
+                                mFinal.push_back(numerator[i]);
+                                tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+                                numberNumerator[j] = tmpDivide2;
+                                numerator[i] = one;
+                            }
                         }
                     }
+
                 }
             }
             if (mFinal.size() == 0)
