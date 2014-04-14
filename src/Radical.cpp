@@ -129,7 +129,7 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 		 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		 		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
 		 		 std::vector< tr1::shared_ptr<AbstractNumber> > den;
-		 		 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(1,'-'));
+		 		 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
 		 		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 		 		 SumVector.push_back(number->getValue("power"));
 		 		 SumVector.push_back(negetive_one);
