@@ -43,9 +43,11 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
         tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(number);
         vector < tr1::shared_ptr<AbstractNumber> > numberNumerator = tmpMult->getNumerator();
         vector < tr1::shared_ptr<AbstractNumber> > numberDenominator = tmpMult->getDenominator();
-        if (numberNumerator[0]->getName() == "Integer" && numberDenominator[0]->getName() == "Integer" &&
+        if (numberNumerator[0]->getName() == "Integer" &&
             numberNumerator.size() == 1 && numberDenominator.size() == 1)
         {
+            if (numberDenominator[0]->getName() == "Integer")
+            {
 
             int num1 = (int)numberNumerator[0]->toDouble();
             int denom = (int)numberDenominator[0]->toDouble();
@@ -73,7 +75,11 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
 
             }
 
-
+            }
+            else
+            {
+            return number->add(shared_from_this());
+            }
         }
         else
         {

@@ -239,32 +239,28 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
                 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
                 if (numerator.size() == 2)
                 {
-                    for(int j=0; j<2; j++)
+                    if (numerator[0]->getName() == "Integer" || numerator[1]->getName() == "Integer")
                     {
-                        if (numerator[j]->getName() == "Integer")
-                        {
-                            numerator[j] = numerator[j]->add(one);
-                            return shared_from_this();
-                        }
+                        if (numerator[0]->getName() == "Integer")
+                            numerator[0] = numerator[0]->add(one);
+                        else
+                            numerator[1] = numerator[1]->add(one);
+                        return shared_from_this();
                     }
                 }
-                else
+                vector<tr1::shared_ptr<AbstractNumber> > newMult;
+                vector<tr1::shared_ptr<AbstractNumber> > newSum;
+                for (int j=0; j<numerator.size(); j++)
                 {
-                    tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-                    vector<tr1::shared_ptr<AbstractNumber> > newMult;
-                    vector<tr1::shared_ptr<AbstractNumber> > newSum;
-                    for (int j=0; j<numerator.size(); j++)
-                    {
-                        if (j != i)
-                            newSum.push_back(numerator[j]);
-                    }
-                    newSum.push_back(one);
-                    tr1::shared_ptr<AbstractNumber> s(new SumExpression(newSum));
-                    newMult.push_back(s);
-                    newMult.push_back(number);
-                    tr1::shared_ptr<AbstractNumber> m(new MultExpression(newMult, '+'));
-                    return m;
+                    if (j != i)
+                        newSum.push_back(numerator[j]);
                 }
+                newSum.push_back(one);
+                tr1::shared_ptr<AbstractNumber> s(new SumExpression(newSum));
+                newMult.push_back(s);
+                newMult.push_back(number);
+                tr1::shared_ptr<AbstractNumber> m(new MultExpression(newMult, '+'));
+                return m;
             }
 
         }
