@@ -63,6 +63,10 @@ tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 		}
 
 	}
+	else if(number->getName() == "MultExpression")
+    {
+        return number->add(shared_from_this());
+    }
 
 	else
 	{
