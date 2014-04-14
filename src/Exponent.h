@@ -2,6 +2,7 @@
 #define EXPONENT_H
 #include "SumExpression.h"
 #include "Radical.h"
+#include "Log.h"
 
 class Exponent: public AbstractNumber
 {
