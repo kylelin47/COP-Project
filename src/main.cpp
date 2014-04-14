@@ -50,10 +50,15 @@ void printHelp() {
 	cout << "=====================================================================" << endl;
 }
 int main() {
-/*
+	/*
 	tr1::shared_ptr<AbstractNumber> plus( new Pi());
-	tr1::shared_ptr<AbstractNumber> minus( new Pi('-'));
-	cout << plus->add(minus)->toString() << endl;
+	tr1::shared_ptr<AbstractNumber> two( new SmartInteger(-2));
+	tr1::shared_ptr<AbstractNumber> three( new SmartInteger(6));
+	tr1::shared_ptr<AbstractNumber> num1( new Log(plus,two));
+	tr1::shared_ptr<AbstractNumber> num4( new Log(plus,three));
+	tr1::shared_ptr<AbstractNumber> num3( new Radical(num4,two));
+	tr1::shared_ptr<AbstractNumber> num2( new Pi('-'));
+	cout << num4->toString() << " / " << num3->toString() << " = " << num4->divide(num3)->toString() << endl;
 	/*/
   vector< tr1::shared_ptr<AbstractNumber> > ansHistory;
   bool menuLoop = true;
