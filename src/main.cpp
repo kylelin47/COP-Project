@@ -16,10 +16,7 @@ tr1::shared_ptr<AbstractNumber> historyAns;
 
 using namespace std;
 
-std::string ansReplace(std::string &a, std::string ansWer, std::string theHistory)
-{
-    return(a.replace(a.find(ansWer), ansWer.length(), theHistory));
-}
+
 
 
 void printHelp() {
