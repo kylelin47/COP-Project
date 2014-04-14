@@ -272,6 +272,13 @@ double Exponent::toDouble()
 		 tr1::shared_ptr<AbstractNumber> r(new Exponent(baseExp->getValue("base"), power->multiply(baseExp->getValue("power")), sign));
 		 return r;
 	 }
+	 else if (abs(1/toDouble() - round(1/toDouble())) < 0.000001)
+    {
+        tr1::shared_ptr<AbstractNumber>n(new SmartInteger(1));
+        tr1::shared_ptr<AbstractNumber>n2(new SmartInteger((int)round(1/toDouble())));
+        tr1::shared_ptr<AbstractNumber>nF(new MultExpression(n, n2, '+'));
+        return nF;
+    }
 	 // no simplification possible, return as is
 	return shared_from_this();
 

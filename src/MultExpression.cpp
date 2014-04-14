@@ -117,7 +117,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
     cout << "MULTEXPRESSION ADDING: " + toString();
     cout << " and " + number->getName();
     cout << " " + number->toString() << endl;
-
     if(numerator.size() == 1)
     {
         if (numerator[0]->getName() == "MultExpression")
@@ -130,6 +129,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
             return numerator[0]->add(number);
         }
     }
+
     double d = 1;
     double e = 1;
     if (number->getName() == "SumExpression")
@@ -261,9 +261,15 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
 {
     cout << "Multiplying MultExpression: " + toString();
     cout << " and " + number->toString() << endl;
+
     if (number->getName() == "SumExpression")
     {
         return number->multiply(shared_from_this());
+    }
+    if (number->getName() == "Integer")
+    {
+        numerator.push_back(number);
+        return shared_from_this()->simplify();
     }
     if (number->getName() == "MultExpression")
     {
@@ -310,6 +316,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             }
         }
     }
+
     tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
 	if (this->sign == number->getSign())
 	{
