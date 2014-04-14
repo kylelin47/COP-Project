@@ -179,7 +179,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
                         tr1::shared_ptr<AbstractNumber> tmpDivide = numerator[i]->divide(numberNumerator[j]);
                         if (tmpDivide->getName() != "MultExpression" && tmpDivide->getName() != "SumExpression")
                         {
-                            cout << "Factor: " + numberNumerator[j]->toString() << endl;
                             mFinal.push_back(numberNumerator[j]);
                             tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
                             numberNumerator[j] = one;
@@ -188,12 +187,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 
                         else
                         {
-                            cout << "DIVIDING: " + numberNumerator[j]->toString();
-                            cout << " and " + numerator[i]->toString() << endl;
                             tr1::shared_ptr<AbstractNumber> tmpDivide2 = numberNumerator[j]->divide(numerator[i]);
                             if (tmpDivide2->getName() != "MultExpression" && tmpDivide2->getName() != "SumExpression")
                             {
-                                cout << "Factor: " + numerator[i]->toString() << endl;
                                 mFinal.push_back(numerator[i]);
                                 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
                                 numberNumerator[j] = tmpDivide2;
@@ -241,16 +237,34 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
             if (abs(numerator[i]->toDouble() - number->toDouble()) < 0.00001)
             {
                 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-                for(int j=0; j<numerator.size(); j++)
+                if (numerator.size() == 2)
                 {
-                    if (numerator[j]->getName() == "Integer")
+                    for(int j=0; j<2; j++)
                     {
-                        numerator[j] = numerator[j]->add(one);
-                        return shared_from_this();
+                        if (numerator[j]->getName() == "Integer")
+                        {
+                            numerator[j] = numerator[j]->add(one);
+                            return shared_from_this();
+                        }
                     }
                 }
-                numerator[i] = numerator[i]->add(one);
-                return shared_from_this();
+                else
+                {
+                    tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+                    vector<tr1::shared_ptr<AbstractNumber> > newMult;
+                    vector<tr1::shared_ptr<AbstractNumber> > newSum;
+                    for (int j=0; j<numerator.size(); j++)
+                    {
+                        if (j != i)
+                            newSum.push_back(numerator[j]);
+                    }
+                    newSum.push_back(one);
+                    tr1::shared_ptr<AbstractNumber> s(new SumExpression(newSum));
+                    newMult.push_back(s);
+                    newMult.push_back(number);
+                    tr1::shared_ptr<AbstractNumber> m(new MultExpression(newMult, '+'));
+                    return m;
+                }
             }
 
         }
