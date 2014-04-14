@@ -2,6 +2,7 @@
 #include "SmartInteger.h"
 #include "SumExpression.h"
 #include "Log.h"
+#include "Pi.h"
 #include "Exponent.h"
 #include "Radical.h"
 #include <exception>
@@ -49,8 +50,11 @@ void printHelp() {
 	cout << "=====================================================================" << endl;
 }
 int main() {
-
-
+/*
+	tr1::shared_ptr<AbstractNumber> plus( new Pi());
+	tr1::shared_ptr<AbstractNumber> minus( new Pi('-'));
+	cout << plus->add(minus)->toString() << endl;
+	/*/
   vector< tr1::shared_ptr<AbstractNumber> > ansHistory;
   bool menuLoop = true;
     int input = 0;

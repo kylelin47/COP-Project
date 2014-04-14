@@ -56,6 +56,7 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  }
 	  else
 	  {
+		  cout << "Split: " << sign + s.substr(0,pos) << endl;
 		  tr1::shared_ptr<AbstractNumber> n (new MultExpression(sign + s.substr(0 , pos)));
 		  this->expression.push_back(n);
 
