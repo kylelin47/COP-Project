@@ -179,7 +179,6 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
                 tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
 				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
 				tr1::shared_ptr<AbstractNumber> output2(new MultExpression(num, ans2, newSign));
-				cout << "Success!" << endl;
 				return output2;
 			}
 			else

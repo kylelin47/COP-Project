@@ -29,7 +29,6 @@ using namespace std;
 extern string history;
 
 void MultExpression::split(vector<tr1::shared_ptr<AbstractNumber> > &num, vector<tr1::shared_ptr<AbstractNumber> > &den, const string &text, char sep1, char sep2) {
-	  cout << "TotalMultExpression Input: " << text  << endl;
 	  //This chunk pulls out the string from the  without the * or /
 	  int hasSign;
 	  char nextValue = '*';
@@ -115,9 +114,10 @@ MultExpression::MultExpression(vector<tr1::shared_ptr<AbstractNumber> > nums, ch
 
 tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumber> number)
 {
-    cout << "MULTEXPRESSION ADDING: " + number->getName();
-    cout << " " + number->toString();
-    cout << " and " + toString() << endl;
+    cout << "MULTEXPRESSION ADDING: " + toString();
+    cout << " and " + number->getName();
+    cout << " " + number->toString() << endl;
+
     if(numerator.size() == 1)
     {
         if (numerator[0]->getName() == "MultExpression")
@@ -234,9 +234,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
     {
         for (int i=0; i<numerator.size(); i++)
         {
-            cout << "NUMERATOR SIZE: ";
-            cout << numerator.size() << endl;
-            cout << numerator[0]->toString() << endl;
             if (abs(numerator[i]->toDouble() - number->toDouble()) < 0.00001)
             {
                 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
@@ -435,7 +432,6 @@ MultExpression::~MultExpression() {
 }
 
 string MultExpression::toString(){
-	cout << "Starting to String: " << endl;
 	string output ="";
 	bool hasZero = false;
 	tr1::shared_ptr<AbstractNumber> temp(numerator[0]);
@@ -454,7 +450,6 @@ string MultExpression::toString(){
 		{
 
 			swap = i;
-			cout << "swap: " << swap << endl;
 		}
 	}
 	for (int i =0; i < numerator.size(); i++){
@@ -550,7 +545,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
 
     if (denominator.size() != 0)
     {
-        cout << denominator[0]->toString() << endl;
         tmp = numerator[0]->divide(denominator[0]);
 
         if (tmp->getName() != "MultExpression")
@@ -677,15 +671,12 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 		cout << findOutside('^', input) << endl;
 		cout << input << " is a exponent" << endl;
 		tr1::shared_ptr<AbstractNumber> base(new SumExpression(input.substr(0 , findOutside('^', input)) , false));
-		cout << "step two \n";
 		tr1::shared_ptr<AbstractNumber> value(new SumExpression(input.substr(findOutside('^', input)+1, input.size()) , false));
-		cout << "step two \n";
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new Exponent(base, value)));
 
 	}
 	else if (input[0] == 'a' && input[1] == 'n' && input[2] == 's' && input.size() == 3)
 	{
-		cout << "found and ANSWER" << endl;
 		if (history == "")
 		{
 			throw "No previous answer found";
