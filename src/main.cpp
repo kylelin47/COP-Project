@@ -10,10 +10,12 @@
 //#include "AbstractNumber.h"
 
 string history;
-tr1::shared_ptr<AbstractNumber> history2;
+
+tr1::shared_ptr<AbstractNumber> historyAns;
 
 
 using namespace std;
+
 
 void printHelp() {
 
@@ -50,12 +52,14 @@ void printHelp() {
 	cout << "=====================================================================" << endl;
 }
 int main() {
-/*
-	tr1::shared_ptr<AbstractNumber> plus( new Pi());
-	tr1::shared_ptr<AbstractNumber> minus( new Pi('-'));
-	cout << plus->add(minus)->toString() << endl;
-	/*/
+	/*
+		tr1::shared_ptr<AbstractNumber> plus( new Pi());
+		tr1::shared_ptr<AbstractNumber> minus( new Pi('-'));
+		cout << plus->add(minus)->toString() << endl;
+		/*/
+
   vector< tr1::shared_ptr<AbstractNumber> > ansHistory;
+  vector<string>  expHistory;
   bool menuLoop = true;
     int input = 0;
     cout << "||||   WELCOME   ||||" << endl;
@@ -105,22 +109,30 @@ int main() {
                 bool keepCompute = true;
                 while (keepCompute)
                 {
+
                     string input2;
                     cout << "Enter the expression to compute. (Type 'back' to go back to the main menu)" << endl;
                     getline(cin, input2);
-                    if (input2.find("back") != string::npos)
+                    if(input2 != "")
                     {
-                        keepCompute = false;
-                    }
-                    else
-                    {
+
+
+                    	if (input2.find("back") != string::npos)
+                    	{
+                    		keepCompute = false;
+                    	}
+                    	else
+                    	{
 
                     				try{
                     					tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
-                    					history2 = num->simplify();
-                    					cout << "Result: \n" << history2->toString() << endl;
-                    					ansHistory.push_back(history2);
+                    					historyAns = num->simplify();
+                    					cout << "Result: \n" << historyAns->toString() << endl;
+                    					ansHistory.push_back(historyAns);
                     					history = input2;
+
+                    					expHistory.push_back(history);
+
 
 
                     				}
@@ -133,6 +145,11 @@ int main() {
 
                     				cout << "\n" << endl;
 
+                    		}
+                    	}
+                    else
+                    {
+                    	cout << "Result: Invalid Expression\n" << endl;
                     }
                 }
 
@@ -144,13 +161,18 @@ int main() {
 
                 break;
             case 3:
-            	cout << "The previous answer was: " << history2->toString() << endl;
+            	cout << "The previous answer was: " << historyAns->toString() << endl;
             	cout << "This answer may be used in further calculations by using the keyword 'ans'" << endl;
-            	cout << "\nThe previous answers calculated are as follows: " << endl;
+            	cout << "\nThe previous expressions and answers calculated are as follows: " << endl;
+
             	for(int i=0; i<ansHistory.size(); i++)
             	{
-            		cout << ansHistory[i]->toString() << endl;
+
+            		cout << "(#)" << "Expression: " << expHistory[i] << endl;
+            		cout << "Answer: " << ansHistory[i]->toString() << "\n" << endl;
+
             	}
+
 
                 break;
             case 4:
@@ -160,4 +182,5 @@ int main() {
         }
     }
 }
+
 
