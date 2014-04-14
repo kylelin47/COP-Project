@@ -266,10 +266,13 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     {
         return number->multiply(shared_from_this());
     }
-    if (number->getName() == "Integer")
+    if (number->getName() == "Integer" && denominator.size() == 1 && numerator.size() == 1)
     {
-        numerator.push_back(number);
-        return shared_from_this()->simplify();
+        if (denominator[0]->getName() == "Integer" && numerator[0]->getName() == "Integer")
+        {
+            numerator.push_back(number);
+            return shared_from_this()->simplify();
+        }
     }
     if (number->getName() == "MultExpression")
     {
