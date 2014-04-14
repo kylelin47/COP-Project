@@ -1,4 +1,5 @@
 #include "Radical.h"
+#include "Exponent.h"
 
 Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root)
 {
@@ -85,6 +86,29 @@ tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber
 			 tr1::shared_ptr<AbstractNumber> output(new Radical(value->multiply(num->getValue("value")), root, sign));
 			 return output;
 		 }
+		 else if ( abs(value->toDouble() - num->getValue("value")->toDouble()) < 0.000001)
+		 {
+			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
+			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+			 tr1::shared_ptr<AbstractNumber> thisInv(one->divide(root));
+			 tr1::shared_ptr<AbstractNumber> thatInv(one->divide(num->getValue("root")));
+			 tr1::shared_ptr<AbstractNumber> sum(thisInv->add(thatInv));
+			 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, sum, sign));
+
+			 return expo;
+		 }
+	 }
+	 else if (abs(number->toDouble()-value->toDouble()) < 0.000001 )
+	 {
+		 cout<< "started Rad*sameBase" << endl;
+		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+		 tr1::shared_ptr<AbstractNumber> invert(one->divide(root));
+		 tr1::shared_ptr<AbstractNumber> express(one->add(invert));
+		 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, express, sign));
+		 return expo;
+
 	 }
 	 else if (number->getName() == "Exponent") {
 		 if ( abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
@@ -131,31 +155,54 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 				 tr1::shared_ptr<AbstractNumber> output(new Radical(value->divide(num->getValue("value")), root, sign));
 				 return output;
 			 }
+			 else if ( abs(value->toDouble() - num->getValue("value")->toDouble()) < 0.000001)
+			 {
+				 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+				 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
+				 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+				 tr1::shared_ptr<AbstractNumber> thisInv(one->divide(root));
+				 tr1::shared_ptr<AbstractNumber> thatInv(one->divide(num->getValue("root")));
+				 tr1::shared_ptr<AbstractNumber> negThatInv(thatInv->multiply(negetive_one));
+				 tr1::shared_ptr<AbstractNumber> sum(thisInv->add(negThatInv));
+				 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, sum, sign));
+
+				 return expo;
+			 }
 		 }
-		 else if (number->getName() == "Exponent" && abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
+		 else if (abs(number->toDouble()-value->toDouble()) < 0.000001 )
+		 {
+			 cout<< "started Rad/sameBase" << endl;
+			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
+			 tr1::shared_ptr<AbstractNumber> invert(one->divide(root));
+			 tr1::shared_ptr<AbstractNumber> express(invert->add(negetive_one));
+			 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, express, sign));
+			 return expo;
+
+		 }
+		 else if (number->getName() == "Exponent")
+		 {
+			 if (abs(number->getValue("base")->toDouble() - value->toDouble()) < 0.000001 )
 		 	 {
-		 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
-		 		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
-		 		 std::vector< tr1::shared_ptr<AbstractNumber> > den;
-		 		 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
-		 		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-		 		 SumVector.push_back(number->getValue("power"));
-		 		 SumVector.push_back(negetive_one);
-		 		 numer.push_back(one);
-		 		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-		 		 tr1::shared_ptr<AbstractNumber> exponential(new Exponent(copy, power));
-		 		 den.push_back(exponential);
-		 		 tr1::shared_ptr<AbstractNumber> output(new MultExpression(numer, den, sign));
-
-		 		 return output;
+				 cout<< "started Rad/Expo" << endl;
+				 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+				 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+				 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
+				 tr1::shared_ptr<AbstractNumber> negetivePower(number->getValue("power")->multiply(negetive_one));
+				 tr1::shared_ptr<AbstractNumber> invert(one->divide(root));
+				 tr1::shared_ptr<AbstractNumber> express(invert->add(negetivePower));
+				 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, express, sign));
+				 return expo;
 		 	 }
-		 	 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
-		 	 std::vector< tr1::shared_ptr<AbstractNumber> > den;
-		 	 numer.push_back(copy);
-		 	 den.push_back(num);
+		 }
+		 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
+		 std::vector< tr1::shared_ptr<AbstractNumber> > den;
+		 numer.push_back(copy);
+		 den.push_back(num);
 
-		 	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(numer, den, sign));
-		 	 return r;
+		 tr1::shared_ptr<AbstractNumber> r(new MultExpression(numer, den, sign));
+		 return r;
 }
 
  tr1::shared_ptr<AbstractNumber>  Radical::simplify()

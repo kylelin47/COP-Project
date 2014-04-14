@@ -17,6 +17,8 @@ tr1::shared_ptr<AbstractNumber> historyAns;
 using namespace std;
 
 
+
+
 void printHelp() {
 
 	cout << "=====================================================================" << endl;
@@ -52,11 +54,6 @@ void printHelp() {
 	cout << "=====================================================================" << endl;
 }
 int main() {
-	/*
-		tr1::shared_ptr<AbstractNumber> plus( new Pi());
-		tr1::shared_ptr<AbstractNumber> minus( new Pi('-'));
-		cout << plus->add(minus)->toString() << endl;
-		/*/
 
   vector< tr1::shared_ptr<AbstractNumber> > ansHistory;
   vector<string>  expHistory;
@@ -125,14 +122,29 @@ int main() {
                     	{
 
                     				try{
+                    					unsigned found = input2.rfind("ans");
+                    					if(found != std::string::npos)
+                    					{
+
+                    					input2.replace(found, std::string("ans").length(), "(" + history + ")");
+                    					cout << "HistorySwap: " << history << endl;
+
                     					tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
                     					historyAns = num->simplify();
                     					cout << "Result: \n" << historyAns->toString() << endl;
                     					ansHistory.push_back(historyAns);
                     					history = input2;
-
                     					expHistory.push_back(history);
-
+                    					}
+                    					else
+                    					{
+                    						tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
+                    						historyAns = num->simplify();
+                    						cout << "Result: \n" << historyAns->toString() << endl;
+                    						ansHistory.push_back(historyAns);
+                    						history = input2;
+                    						expHistory.push_back(history);
+                    					}
 
 
                     				}
@@ -142,7 +154,6 @@ int main() {
                     				}
 
 
-                    				cout << "\n" << endl;
 
                     		}
                     	}
@@ -181,5 +192,4 @@ int main() {
         }
     }
 }
-
 

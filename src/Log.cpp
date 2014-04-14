@@ -100,8 +100,9 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 return output;
 		 }
 	 }
-     else if (number->getName() == "MultExpression")
+     else if (number->getName() == "MultExpression" || number->getName() == "Radical")
      {
+
          return number->multiply(shared_from_this());
      }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
@@ -149,12 +150,11 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 else if (number->getName() == "Radical") {
 		 if (abs(number->getValue("value")->toDouble() - toDouble()) < 0.000001 )
 		 {
-			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
-			 SumVector.push_back(one);
-			 SumVector.push_back(invertedRoot);
-			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
+			 tr1::shared_ptr<AbstractNumber> invertedRoot(one->divide(number->getValue("root")));
+			 tr1::shared_ptr<AbstractNumber> negInvertedRoot(invertedRoot->multiply(negetive_one));
+			 tr1::shared_ptr<AbstractNumber> power(one->add(negInvertedRoot));
 			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
 			 return output;
 		 }
