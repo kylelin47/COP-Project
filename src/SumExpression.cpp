@@ -158,6 +158,11 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
 }
 
 tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<AbstractNumber>number){
+    number = number->simplify();
+    if (expression.size() == 1)
+    {
+        return expression[0]->multiply(number);
+    }
     if (number->getName() == "SumExpression")
     {
         cout << "INITIAL MULTIPLY: " + number->toString();
@@ -253,6 +258,7 @@ double SumExpression::toDouble()
 tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
 {
     expression = simplifyVector(expression);
+    cout << "simplify exp[0]: " + expression[0]->getName() << endl;
     if (expression[0]->getName() == "SumExpression")
     {
         tr1::shared_ptr<SumExpression> tmp = tr1::static_pointer_cast<SumExpression>(expression[0]);
@@ -261,6 +267,10 @@ tr1::shared_ptr<AbstractNumber> SumExpression::simplify()
         {
             return tmpExp[0];
         }
+    }
+    if (expression[0]->getName() == "MultExpression")
+    {
+        return expression[0]->simplify();
     }
     else
     {

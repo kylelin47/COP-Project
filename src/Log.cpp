@@ -80,11 +80,7 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 sign = '-';
 	 }
 	 tr1::shared_ptr<AbstractNumber> copy(noSign());
-	 cout << "copy: " << copy->toString()<< endl;
 	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
-
-	 cout << "num: " << num->toString()<< endl;
-	 cout << toDouble() << " - " << num->toDouble() << endl;
 
 	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
@@ -104,6 +100,10 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 return output;
 		 }
 	 }
+     else if (number->getName() == "MultExpression")
+     {
+         return number->multiply(shared_from_this());
+     }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
 	 MultVector.push_back(copy);
 	 MultVector.push_back(num);
@@ -216,50 +216,53 @@ double Log::toDouble()
     if (value->getName() == "Integer")
     {
         vector<int> factors = primeFactors((int)(value->toDouble()));
-        for (int i=0; (unsigned)i < factors.size(); i++)
+        if (factors.size() > 1)
         {
-            if (base->toDouble() == factors[i])
+            for (int i=0; (unsigned)i < factors.size(); i++)
             {
-                numOnes++;
-            }
-            else
-            {
-                if (factors[i] == factors[i + 1])
+                if (base->toDouble() == factors[i])
                 {
-                    int sameFactor = 2;
-                    for (int k=i+2; k<factors.size(); k++)
-                    {
-                        if (factors[k] == factors[i])
-                        {
-                            sameFactor++;
-                        }
-                        else
-                        {
-                            break;
-                        }
-
-                    }
-                    tr1::shared_ptr<AbstractNumber>Coefficient(new SmartInteger(sameFactor));
-                    tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
-                    tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
-                    vector<tr1::shared_ptr<AbstractNumber> > M;
-                    M.push_back(Coefficient);
-                    M.push_back(L);
-                    tr1::shared_ptr<AbstractNumber>Mult(new MultExpression(M, '+'));
-                    SimplifiedTerms.push_back(Mult);
-                    i = i + sameFactor - 1;
+                    numOnes++;
                 }
                 else
                 {
-                    tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
-                    tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+                    if (factors[i] == factors[i + 1])
+                    {
+                        int sameFactor = 2;
+                        for (int k=i+2; k<factors.size(); k++)
+                        {
+                            if (factors[k] == factors[i])
+                            {
+                                sameFactor++;
+                            }
+                            else
+                            {
+                                break;
+                            }
 
-                    SimplifiedTerms.push_back(L);
+                        }
+                        tr1::shared_ptr<AbstractNumber>Coefficient(new SmartInteger(sameFactor));
+                        tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
+                        tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+                        vector<tr1::shared_ptr<AbstractNumber> > M;
+                        M.push_back(Coefficient);
+                        M.push_back(L);
+                        tr1::shared_ptr<AbstractNumber>Mult(new MultExpression(M, '+'));
+                        SimplifiedTerms.push_back(Mult);
+                        i = i + sameFactor - 1;
+                    }
+                    else
+                    {
+                        tr1::shared_ptr<AbstractNumber>Int(new SmartInteger(factors[i]));
+                        tr1::shared_ptr<AbstractNumber>L(new Log(base, Int));
+
+                        SimplifiedTerms.push_back(L);
+                    }
                 }
-
             }
-
         }
+        else
+            return shared_from_this();
     }
     else
     {
