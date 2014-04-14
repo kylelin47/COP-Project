@@ -170,7 +170,7 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
 
 	// Subtracts 1 from power if base = number
 	else if(number->toDouble() == base->toDouble()){
-		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(1,'-'));
+		tr1::shared_ptr<AbstractNumber> c(new SmartInteger(-1));
 		tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(c), this->calcSign(number)));
 		return r;
 	}

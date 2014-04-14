@@ -459,10 +459,6 @@ string MultExpression::toString(){
   	{
   		output+='-';
   	}
-	if (getSign() == '-')
-	{
-		output+='-';
-	}
 	for (int i = 0; i < numerator.size(); i++) //find the integer to swap
 	{
 		if (numerator[i]->getName() == "Integer")

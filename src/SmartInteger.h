@@ -14,7 +14,7 @@ using namespace std;
 class SmartInteger: public AbstractNumber {
 public:
 	SmartInteger(int value);
-	SmartInteger(int value, char sign);
+	//SmartInteger(int value, char sign);
     SmartInteger(const string &input);
 	virtual ~SmartInteger();
 	tr1::shared_ptr<AbstractNumber> add(tr1::shared_ptr<AbstractNumber>number);
