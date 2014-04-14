@@ -16,6 +16,11 @@ tr1::shared_ptr<AbstractNumber> historyAns;
 
 using namespace std;
 
+std::string ansReplace(std::string &a, std::string ansWer, std::string theHistory)
+{
+    return(a.replace(a.find(ansWer), ansWer.length(), theHistory));
+}
+
 
 void printHelp() {
 
@@ -52,24 +57,7 @@ void printHelp() {
 	cout << "=====================================================================" << endl;
 }
 int main() {
-	/*
-<<<<<<< HEAD
-	tr1::shared_ptr<AbstractNumber> plus( new Pi());
-	tr1::shared_ptr<AbstractNumber> two( new SmartInteger(-2));
-	tr1::shared_ptr<AbstractNumber> three( new SmartInteger(6));
-	tr1::shared_ptr<AbstractNumber> num1( new Log(plus,two));
-	tr1::shared_ptr<AbstractNumber> num4( new Log(plus,three));
-	tr1::shared_ptr<AbstractNumber> num3( new Radical(num4,two));
-	tr1::shared_ptr<AbstractNumber> num2( new Pi('-'));
-	cout << num4->toString() << " / " << num3->toString() << " = " << num4->divide(num3)->toString() << endl;
-	/*/
-=======
-		tr1::shared_ptr<AbstractNumber> plus( new Pi());
-		tr1::shared_ptr<AbstractNumber> minus( new Pi('-'));
-		cout << plus->add(minus)->toString() << endl;
-		/*/
 
->>>>>>> 3e77c9983ebb124db64f44c0155adfd2ff158d91
   vector< tr1::shared_ptr<AbstractNumber> > ansHistory;
   vector<string>  expHistory;
   bool menuLoop = true;
@@ -137,14 +125,29 @@ int main() {
                     	{
 
                     				try{
+                    					unsigned found = input2.rfind("ans");
+                    					if(found != std::string::npos)
+                    					{
+
+                    					input2.replace(found, std::string("ans").length(), "(" + history + ")");
+                    					cout << "HistorySwap: " << history << endl;
+
                     					tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
                     					historyAns = num->simplify();
                     					cout << "Result: \n" << historyAns->toString() << endl;
                     					ansHistory.push_back(historyAns);
                     					history = input2;
-
                     					expHistory.push_back(history);
-
+                    					}
+                    					else
+                    					{
+                    						tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
+                    						historyAns = num->simplify();
+                    						cout << "Result: \n" << historyAns->toString() << endl;
+                    						ansHistory.push_back(historyAns);
+                    						history = input2;
+                    						expHistory.push_back(history);
+                    					}
 
 
                     				}
@@ -155,7 +158,6 @@ int main() {
                     				}
 
 
-                    				cout << "\n" << endl;
 
                     		}
                     	}
@@ -194,5 +196,4 @@ int main() {
         }
     }
 }
-
 
