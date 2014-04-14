@@ -56,6 +56,10 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 
 
 	}
+	else if (number->getName() == "MultExpression" || number->getName() == "SumExpression")
+    {
+        return number->add(shared_from_this());
+    }
 	else {
 		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
 		OutVector.push_back(shared_from_this());

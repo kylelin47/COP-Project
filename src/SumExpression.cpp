@@ -14,7 +14,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	string emptyExp = " ";
    if (text.size() == 0)
 	{
-	  cout << "Check1" << endl;
 	  throw "ERROR: Empty expression entered." + emptyExp;
 	}
 
@@ -30,7 +29,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   }
   if (s[0] == '(' && s[s.size()-1] == ')')
   	{
-  		cout << "Before reduce: " << s << endl;
   		s.erase(0,1);
   		s.erase(s.size()-1,1);
   	}
@@ -38,10 +36,8 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   	string emptyExp2 = " ";
     if (text.size() == 0)
     {
-      cout << "Check1" << endl;
   	  throw "ERROR: Empty expression entered." + emptyExp2;
     }
-    cout << "Check2" << endl;
   while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {
 	  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
 	  {
@@ -50,8 +46,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  else {
 		  pos = s.find(sep2, skipUntil);
 	  }
-
-	  cout << "Working Substring: " << s.substr(0,pos) << endl;
 
 	  if (count(s.substr(0 , pos), 0, pos, '(') > count(s.substr(0 , pos), 0, pos, ')'))
 	  {
@@ -64,7 +58,6 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  }
 	  else
 	  {
-		  cout << "Substring:" << s.substr(0 , pos) << endl;
 		  tr1::shared_ptr<AbstractNumber> n (new MultExpression(sign + s.substr(0 , pos)));
 		  this->expression.push_back(n);
 
@@ -127,10 +120,17 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
     cout << "ADDING SUM TERMS: " + toString();
     cout << "and " + number->toString() << endl;
     vector< tr1::shared_ptr<AbstractNumber> > SumTerms;
-    if (expression.size() == 1 && expression[0]->getName() == "SumExpression")
+    if (expression.size() == 1)
     {
-        tr1::shared_ptr<SumExpression> realYou = tr1::static_pointer_cast<SumExpression>(number);
-        SumTerms = realYou->getExpression();
+        if (expression[0]->getName() == "SumExpression")
+        {
+            tr1::shared_ptr<SumExpression> realYou = tr1::static_pointer_cast<SumExpression>(number);
+            SumTerms = realYou->getExpression();
+        }
+        else
+        {
+            return expression[0]->add(number);
+        }
     }
     else
     {
