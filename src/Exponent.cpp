@@ -226,8 +226,9 @@ double Exponent::toDouble()
 
 	// simplifies exponents with logarithmic power
 	 if(power->getName() == "Log"){
-		 if(power->getValue("base")->toDouble() == base->toDouble()){
-			 return power->getValue("value");
+        tr1::shared_ptr<Log> numLog = tr1::static_pointer_cast<Log>(number);
+		 if(numLog->getValue("base")->toDouble() == base->toDouble()){
+			 return numLog->getValue("value");
 		 }
 	 }
     power = power->simplify();
