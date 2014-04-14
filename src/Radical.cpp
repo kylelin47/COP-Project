@@ -165,9 +165,7 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
 			 tr1::shared_ptr<AbstractNumber> invert(one->divide(root));
-			 SumVector.push_back(invert);
-			 SumVector.push_back(negetive_one);
-			 tr1::shared_ptr<AbstractNumber> express(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> express(invert->add(negetive_one));
 			 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, express, sign));
 			 return expo;
 
@@ -182,9 +180,7 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 				 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
 				 tr1::shared_ptr<AbstractNumber> negetivePower(number->getValue("power")->multiply(negetive_one));
 				 tr1::shared_ptr<AbstractNumber> invert(one->divide(root));
-				 SumVector.push_back(invert);
-				 SumVector.push_back(negetivePower);
-				 tr1::shared_ptr<AbstractNumber> express(new SumExpression(SumVector));
+				 tr1::shared_ptr<AbstractNumber> express(invert->add(negetivePower));
 				 tr1::shared_ptr<AbstractNumber> expo(new Exponent(value, express, sign));
 				 return expo;
 		 	 }

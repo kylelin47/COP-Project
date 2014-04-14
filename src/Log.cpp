@@ -153,7 +153,7 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
 			 tr1::shared_ptr<AbstractNumber> invertedRoot(one->divide(number->getValue("root")));
-			 tr1::shared_ptr<AbstractNumber> negInvertedRoot(one->divide(invertedRoot->multiply(negetive_one)));
+			 tr1::shared_ptr<AbstractNumber> negInvertedRoot(invertedRoot->multiply(negetive_one));
 			 tr1::shared_ptr<AbstractNumber> power(one->add(negInvertedRoot));
 			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
 			 return output;
