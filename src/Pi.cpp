@@ -78,47 +78,62 @@ tr1::shared_ptr<AbstractNumber> Pi::add(tr1::shared_ptr<AbstractNumber>number){
 
 
 tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>number){
-	char sign;
-		 if (getSign() == number->getSign())
-		 {
-			 sign = '+';
-		 }
-		 else
-		 {
-			 sign = '-';
-		 }
-		 tr1::shared_ptr<AbstractNumber> copy(noSign());
-		 cout << "copy: " << copy->toString()<< endl;
-		 tr1::shared_ptr<AbstractNumber> num(number->noSign());
 
-		 cout << "num: " << num->toString()<< endl;
-		 cout << toDouble() << " - " << num->toDouble() << endl;
+	//if pi, return exponent with pi and 2
+	//otherwise, return multexpression of number and pi
+	//create multexpression with shared_from_this() and number
+	//if it's an exponent, check to see if base is pi, return exponent with base pi, and power the number's(given) power plus 1
 
-		 if (number->getName() == "Pi")
-		 {
-			 tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
-			 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, two, sign));
-			 return output;
-		 }
-		 else if (number->getName() == "Exponent") {
-			 if (abs(number->getValue("base")->toDouble() - toDouble()) < 0.000001 )
-			 {
-				 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
-				 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-				 SumVector.push_back(one);
-				 SumVector.push_back(number->getValue("power"));
-				 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-				 tr1::shared_ptr<AbstractNumber> output(new Exponent(copy, power, sign));
-				 return output;
-			 }
-		 }
-		 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
-		 MultVector.push_back(copy);
-		 MultVector.push_back(num);
+	if(number -> getName() == "Pi")
+	{
+//		vector<tr1::shared_ptr<AbstractNumber> > A;
+		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
+//		A.push_back(exp);
+        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+		tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp));
+		return ans;
 
-		 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
-		 return r;
 
+//		tr1::shared_ptr<AbstractNumber> ans(new Exponent(shared_from_this(), 2));
+//		return ans;
+
+	}
+
+	else if (number -> getName() == "Exponent")
+	{
+	    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
+		if (numExp -> getValue("base") -> getName() == "Pi")
+		{
+			tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
+			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
+			tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
+			return ans2;
+		}
+		else
+        {
+            vector<tr1::shared_ptr<AbstractNumber> > M;
+            M.push_back(number);
+            tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+            M.push_back(me);
+            tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+            return ans3;
+        }
+	}
+
+	else if (number -> getName() == "SumExpression" || number -> getName() == "MultExpression")
+	{
+        return number->multiply(shared_from_this());
+	}
+	else
+    {
+        vector<tr1::shared_ptr<AbstractNumber> > M;
+	    M.push_back(number);
+        tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+	    M.push_back(me);
+		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+		return ans3;
+    }
 }
 
 tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number){
@@ -142,7 +157,9 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 
 		else if (number -> getName() == "Exponent")
 		{
-			if (number -> getValue("base") -> getName() == "Pi")
+		    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
+		    tr1::shared_ptr<AbstractNumber> numExpBase = numExp -> getValue("base");
+			if (numExpBase -> getName() == "Pi")
 			{
 				char newSign;
 
@@ -157,13 +174,31 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 				}
 
 				tr1::shared_ptr<AbstractNumber> num(new SmartInteger(1));
-				tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
+				tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 				tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(-1));
                 tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
 				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
 				tr1::shared_ptr<AbstractNumber> output2(new MultExpression(num, ans2, newSign));
+				cout << "Success!" << endl;
 				return output2;
 			}
+			else
+            {
+                char newSign;
+
+                if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
+                {
+                    newSign = '+';
+                }
+
+                else
+                {
+                    newSign = '-';
+                }
+                tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+                tr1::shared_ptr<AbstractNumber> output2(new MultExpression(me, number, newSign));
+                return output2;
+            }
 		}
 
 

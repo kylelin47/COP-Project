@@ -246,14 +246,16 @@ double Exponent::toDouble()
 	 }
 	 // simplifies radicals
 	 else if(base->getName() == "Radical"){
-		 if(fmod(power->toDouble(),base->getValue("root")->toDouble()) == 0){
-			 tr1::shared_ptr<AbstractNumber> r(new Exponent(base->getValue("value"), power->divide(base->getValue("root")), sign));
+	     tr1::shared_ptr<Radical> baseRad = tr1::static_pointer_cast<Radical>(base);
+		 if(fmod(power->toDouble(),baseRad->getValue("root")->toDouble()) == 0){
+			 tr1::shared_ptr<AbstractNumber> r(new Exponent(baseRad->getValue("value"), power->divide(baseRad->getValue("root")), sign));
 			 return r;
 		 }
 	 }
 	 // simplifies exponents of exponents
 	 else if(base->getName() == "Exponent"){
-		 tr1::shared_ptr<AbstractNumber> r(new Exponent(base->getValue("base"), power->multiply(base->getValue("power")), sign));
+	     tr1::shared_ptr<Exponent> baseExp = tr1::static_pointer_cast<Exponent>(base);
+		 tr1::shared_ptr<AbstractNumber> r(new Exponent(baseExp->getValue("base"), power->multiply(baseExp->getValue("power")), sign));
 		 return r;
 	 }
 	 // no simplification possible, return as is

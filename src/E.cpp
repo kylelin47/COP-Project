@@ -92,9 +92,10 @@ tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>numbe
 
 	else if (number -> getName() == "Exponent")
 	{
-		if (number -> getValue("base") -> getName() == "E")
+	    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
+		if (numExp -> getValue("base") -> getName() == "E")
 		{
-			tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
+			tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
 
 			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(shared_from_this(), exp -> add(exp2)));
@@ -134,7 +135,8 @@ tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number)
 
 		else if (number -> getName() == "Exponent")
 		{
-			if (number -> getValue("base") -> getName() == "E")
+		    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
+			if (numExp -> getValue("base") -> getName() == "E")
 			{
 				char newSign;
 
