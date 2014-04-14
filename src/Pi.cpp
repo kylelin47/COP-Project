@@ -101,9 +101,10 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 
 	else if (number -> getName() == "Exponent")
 	{
-		if (number -> getValue("base") -> getName() == "Pi")
+	    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
+		if (numExp -> getValue("base") -> getName() == "Pi")
 		{
-			tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
+			tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
 			tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
 			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
@@ -148,7 +149,9 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 
 		else if (number -> getName() == "Exponent")
 		{
-			if (number -> getValue("base") -> getName() == "Pi")
+		    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
+		    tr1::shared_ptr<AbstractNumber> numExpBase = numExp -> getValue("base");
+			if (numExpBase -> getName() == "Pi")
 			{
 				char newSign;
 
@@ -163,13 +166,31 @@ tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number
 				}
 
 				tr1::shared_ptr<AbstractNumber> num(new SmartInteger(1));
-				tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
+				tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 				tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(-1));
                 tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
 				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
 				tr1::shared_ptr<AbstractNumber> output2(new MultExpression(num, ans2, newSign));
+				cout << "Success!" << endl;
 				return output2;
 			}
+			else
+            {
+                char newSign;
+
+                if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
+                {
+                    newSign = '+';
+                }
+
+                else
+                {
+                    newSign = '-';
+                }
+                tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+                tr1::shared_ptr<AbstractNumber> output2(new MultExpression(me, number, newSign));
+                return output2;
+            }
 		}
 
 

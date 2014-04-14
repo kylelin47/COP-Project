@@ -186,13 +186,15 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 
                     else
                     {
-                        tmpDivide = numberNumerator[j]->divide(numerator[i]);
-                        if (tmpDivide->getName() != "MultExpression")
+                        cout << "DIVIDING: " + numberNumerator[j]->toString();
+                        cout << " and " + numerator[i]->toString() << endl;
+                        tr1::shared_ptr<AbstractNumber> tmpDivide2 = numberNumerator[j]->divide(numerator[i]);
+                        if (tmpDivide2->getName() != "MultExpression")
                         {
                             cout << "Factor: " + numerator[i]->toString() << endl;
                             mFinal.push_back(numerator[i]);
                             tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-                            numberNumerator[j] = tmpDivide;
+                            numberNumerator[j] = tmpDivide2;
                             numerator[i] = one;
                         }
                     }
@@ -440,13 +442,14 @@ string MultExpression::toString(){
   	{
   		output+='-';
   	}
+  	/*
  	for (int i =0; i < numerator.size(); i++){
  		if (numerator[i]->getName() == "Integer")
  		{
  			numerator[0] = numerator[i];
  			numerator[i] = temp;
  		}
- 	}
+ 	}*/
 	if (getSign() == '-')
 	{
 		output+='-';
