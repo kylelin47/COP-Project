@@ -717,7 +717,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else
 	{
-		throw input + " is not a valid expression" // THROW here
+		throw input + " is not a valid expression"; // THROW here
 	}
 }
 
