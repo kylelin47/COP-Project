@@ -136,10 +136,9 @@ int main() {
 
 
                     				}
-                    				catch(string &msg)
+                    				catch(exception &msg)
                     				{
-                    					cout << msg << endl;
-                    					cout << "Result: Invalid Expression" << endl;
+                    					cout << "***ERROR:"<< msg.what() << "***"  << endl;
                     				}
 
 

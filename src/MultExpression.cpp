@@ -548,7 +548,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         for (int i=0; i < denominator.size(); i++)
         {
             if (denominator[i]->toDouble() == 0)
-                throw "Can't divide by zero." + DBZ;
+            	throw NumException((const char*)"Can't divide by zero.");
         }
     }
     if (toDouble() == round(toDouble()))
@@ -683,10 +683,9 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else if (input[0] == 'a' && input[1] == 'n' && input[2] == 's' && input.size() == 3)
 	{
-		string noAns = " ";
 		if (history == "")
 		{
-			throw "No previous answer found" + noAns;
+        	throw NumException((const char*)"No previous answer found.");
 		}
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(history)));
 	}
@@ -711,7 +710,8 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else
 	{
-		throw input + " is not a valid expression"; // THROW here
+		const char* msg = (input + "is not a valid expression").c_str();
+		throw NumException(msg);
 	}
 }
 
@@ -747,7 +747,8 @@ size_t MultExpression::findOutside(char symbol , string input)
 
 tr1::shared_ptr<AbstractNumber> MultExpression::getValue(string name){
 
-	throw "tried to get a " + name + " from a MultExpression";
+	const char* msg = ("tried to get" + name + "from a MultExpression").c_str();
+	throw NumException(msg);
 
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::noSign()

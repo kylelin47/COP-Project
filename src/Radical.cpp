@@ -2,6 +2,12 @@
 
 Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root)
 {
+	// Cannot have negative of even nth root
+	if(value->toDouble() < 0 &&
+	   fmod(root->toDouble(),2) >= -.000001 &&
+	   fmod(root->toDouble(),2) <= .000001){
+		throw NumException((const char*)"Negative value cannot be contained in an nth root where n is even");
+	}
     this->value = value;
     this->root = root;
     this->sign = '+';
@@ -10,6 +16,11 @@ Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<Abstr
 
 Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root, char sign)
 {
+	if(value->toDouble() < 0 &&
+	   fmod(root->toDouble(),2) >= -.000001 &&
+	   fmod(root->toDouble(),2) <= .000001){
+		throw NumException((const char*)"Negative value cannot be contained in an nth root where n is even");
+	}
     this->value = value;
     this->root = root;
     this->sign = sign;
@@ -251,7 +262,8 @@ tr1::shared_ptr<AbstractNumber> Radical::getValue(string name){
 		return value;
 	}
 	else {
-		throw "tried to get a " + name + " from a Radical";
+		const char* msg = ("tried to get" + name + "from an radical").c_str();
+		throw NumException(msg);
 	}
 
 
@@ -266,6 +278,6 @@ void Radical::checkValidity(tr1::shared_ptr<AbstractNumber> value, tr1::shared_p
 {
     if (root->toDouble() == 0)
     {
-        throw "Roots can't be 0.\nSource: 0rt:";
+		throw NumException((const char*)"Roots can't be 0.\nSource: 0rt:");
     }
 }

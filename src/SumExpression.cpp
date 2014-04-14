@@ -11,10 +11,9 @@ using namespace std;
 extern string history;
 
 void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
-	string emptyExp = " ";
    if (text.size() == 0)
 	{
-	  throw "ERROR: Empty expression entered." + emptyExp;
+	   	throw NumException((const char*)"Empty expression entered");
 	}
 
   size_t pos = 0;
@@ -32,10 +31,9 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   		s.erase(0,1);
   		s.erase(s.size()-1,1);
   	}
-  	string emptyExp2 = " ";
     if (text.size() == 0)
     {
-  	  throw "ERROR: Empty expression entered." + emptyExp2;
+    	throw NumException((const char*)"Empty expression entered");
     }
   while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {
 	  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
@@ -309,14 +307,16 @@ string SumExpression::makeStringUsable(string input)
 						j = end;
 					}
 					if (j == (end - 1)){
-						throw "ERROR: Uneven Parentheses at " + input ;
+						const char* msg = ("Uneven Parentheses at " + input).c_str();
+						throw NumException(msg);
 					}
 				}
 
 			}
 			if (checkPar[i] == ')')
 			{
-				throw "ERROR: Uneven Parentheses at " + input ;
+				const char* msg = ("Uneven Parentheses at " + input).c_str();
+				throw NumException(msg);
 			}
 
 
@@ -335,7 +335,9 @@ string SumExpression::makeStringUsable(string input)
 	end = output.size();
 	if (output[end-1] == ':' || output[end-1] == '^' || output[end-1] == '_')
 	{
-		throw "ERROR: " + input + " is an invalid expression." ;
+
+		const char* msg = (input + " is an invalid expression.").c_str();
+		throw NumException(msg);
 	}
 	for (size_t i = 0; i < end-1; i++)
 	{
@@ -351,7 +353,8 @@ string SumExpression::makeStringUsable(string input)
 				output[i+1] == '+'  ||
 				output[i+1] == '-'  )) //make sure the split point is not already signed
 		{
-			throw "ERROR: Double Operator at " + input;
+			const char* msg = ("Double operator at "+ input).c_str();
+			throw NumException(msg);
 		}
 	}
 	for (size_t i = 0; i < end-1; i++)
@@ -359,7 +362,8 @@ string SumExpression::makeStringUsable(string input)
 			if ((	output[i] == '_' && output[i+1] == ':' ))
 
 			{
-				throw "ERROR: " + input + " is an unfilled log";
+				const char* msg = (input + " is an unfilled log.").c_str();
+				throw NumException(msg);
 			}
 		}
 
@@ -397,7 +401,8 @@ string SumExpression::makeStringUsable(string input)
 
 tr1::shared_ptr<AbstractNumber> SumExpression::getValue(string name){
 
-	throw "tried to get a " + name + " from a SumExpression";
+	const char* msg = ("Tried to get a " + name + " from a SumExpression.").c_str();
+	throw NumException(msg);
 
 }
 

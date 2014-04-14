@@ -6,6 +6,7 @@
  */
 
 #include "History.h"
+#include "AbstractNumber.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ void History::setHistroy(int num){
 	}
 	else
 	{
-		throw "Value out of range for SetHistory";
+		throw NumException((const char*)"Value out of range for SetHistory");
 	}
 }
 

@@ -21,7 +21,8 @@ E::~E()
 }
 
 tr1::shared_ptr<AbstractNumber> E::getValue(string name){
-	throw "tried to get" + name + "from an E()";
+	const char* msg = ("tried to get" + name + "from an E()").c_str();
+	throw NumException(msg);
 }
 
 tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){

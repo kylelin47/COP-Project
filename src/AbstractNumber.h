@@ -39,3 +39,31 @@ public:
 
 
 #endif /* ABSTRACTNUMBER_H_ */
+
+
+// Exceptions for the class AbstractNumber
+struct NumException : exception {
+
+		// Constructor for NumException
+		//
+		// Parameters:
+		// char* errorMessage	message to be displayed when an exception occurs
+		NumException(const char* errorMessage){
+			this->errorMessage = errorMessage;
+		}
+
+		// Destructor that is stopping a compilation error
+		// No clue what it's doing but it's working
+		~NumException() throw(){
+		}
+
+		// Overrides the what function for meaningful notes
+		//
+		// Returns:
+		// const char*			message to be displayed when an exception occurs
+		const char* what() const throw(){
+		  return errorMessage;
+		}
+
+		const char* errorMessage;		//message to be displayed when an exception occurs
+};
