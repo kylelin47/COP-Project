@@ -32,7 +32,7 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   		s.erase(s.size()-1,1);
   	}
     if (text.size() == 0)
-    {
+    {	//
     	throw NumException((const char*)"Empty expression entered");
     }
   while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {

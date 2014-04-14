@@ -3,7 +3,7 @@
 
 Radical::Radical( tr1::shared_ptr<AbstractNumber>  value,  tr1::shared_ptr<AbstractNumber>  root)
 {
-	// Cannot have negative of even nth root
+	// Cannot have negative of even nth root.
 	if(value->toDouble() < 0 &&
 	   fmod(root->toDouble(),2) >= -.000001 &&
 	   fmod(root->toDouble(),2) <= .000001){

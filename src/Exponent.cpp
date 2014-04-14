@@ -329,7 +329,7 @@ char Exponent::calcSign(tr1::shared_ptr<AbstractNumber> number){
 
 // Takes in a string representing a variable name and returns the given variable
 //
-// Paramters
+// Parameters
 // string name					name of the variable to be returned
 //
 // Returns:

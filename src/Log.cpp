@@ -7,6 +7,7 @@
 
 Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>value)
 {
+	//
     if (value->toDouble() <= 0)
     {
 		throw NumException((const char*)"Can't take log of a negative number");

@@ -150,7 +150,8 @@ int main() {
                     				}
                     				catch(exception &msg)
                     				{
-                    					cout << "***ERROR:"<< msg.what() << "***"  << endl;
+
+                    					cout << "***ERROR: "<< msg.what() << "***"  << endl;
                     				}
 
 

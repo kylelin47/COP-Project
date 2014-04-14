@@ -60,7 +60,7 @@ struct NumException : exception {
 		// Overrides the what function for meaningful notes
 		//
 		// Returns:
-		// const char*			message to be displayed when an exception occurs
+		// const char*			message to be printed when an exception occurs
 		const char* what() const throw(){
 		  return errorMessage;
 		}

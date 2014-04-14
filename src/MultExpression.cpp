@@ -683,6 +683,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	{
 		if (history == "")
 		{
+			//
         	throw NumException((const char*)"No previous answer found.");
 		}
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(history)));

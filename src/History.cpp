@@ -7,6 +7,7 @@ tr1::shared_ptr<AbstractNumber> plus( new Pi());
 	tr1::shared_ptr<AbstractNumber> num3( new Exponent(plus,two));
 	tr1::shared_ptr<AbstractNumber> num2( new Pi('-'));
 	cout << num1->toString() << " * " << plus->toString() << " = " << num4->multiply(plus)->toString() << endl;
+
  */
 
 #include "History.h"

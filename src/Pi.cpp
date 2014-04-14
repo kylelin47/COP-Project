@@ -269,6 +269,7 @@ char Pi::getSign()
 
 tr1::shared_ptr<AbstractNumber> Pi::getValue(string name){
 
+	//
 	const char* msg = ("tried to get" + name + "from pi").c_str();
 	throw NumException(msg);
 
