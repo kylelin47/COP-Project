@@ -535,10 +535,11 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     tr1::shared_ptr<AbstractNumber> tmp;
     if (denominator.size() > 0)
     {
+    	string DBZ = " ";
         for (int i=0; i < denominator.size(); i++)
         {
             if (denominator[i]->toDouble() == 0)
-                throw "Can't divide by zero.";
+                throw "Can't divide by zero." + DBZ;
         }
     }
     if (toDouble() == round(toDouble()))
@@ -686,9 +687,10 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	else if (input[0] == 'a' && input[1] == 'n' && input[2] == 's' && input.size() == 3)
 	{
 		cout << "found and ANSWER" << endl;
+		string noAns = " ";
 		if (history == "")
 		{
-			throw "No previous answer found";
+			throw "No previous answer found" + noAns;
 		}
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(history)));
 	}
@@ -715,7 +717,7 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else
 	{
-		cout << input << " is not a valid expression" << endl; // THROW here
+		throw input + " is not a valid expression" // THROW here
 	}
 }
 

@@ -8,7 +8,8 @@
 #include "History.h"
 //#include "AbstractNumber.h"
 
-tr1::shared_ptr<AbstractNumber> history;
+string history;
+tr1::shared_ptr<AbstractNumber> history2;
 
 
 using namespace std;
@@ -110,23 +111,24 @@ int main() {
                     else
                     {
 
-
-
-
                     				try{
                     					tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
-                    					history = num->simplify();
+                    					history2 = num->simplify();
+                    					cout << "Result: \n" << history2->toString() << endl;
+                    					ansHistory.push_back(history2);
+                    					history = input2;
 
 
                     				}
-                    				catch(string msg)
+                    				catch(string &msg)
                     				{
                     					cout << msg << endl;
+                    					cout << "Result: Invalid Expression" << endl;
                     				}
 
-                    				cout << "Result: \n" << history->toString() << endl;
+
                     				cout << "\n" << endl;
-                    				ansHistory.push_back(history);
+
                     }
                 }
 
@@ -138,7 +140,7 @@ int main() {
 
                 break;
             case 3:
-            	cout << "The previous answer was: " << history->toString() << endl;
+            	cout << "The previous answer was: " << history2->toString() << endl;
             	cout << "This answer may be used in further calculations by using the keyword 'ans'" << endl;
             	cout << "\nThe previous answers calculated are as follows: " << endl;
             	for(int i=0; i<ansHistory.size(); i++)
