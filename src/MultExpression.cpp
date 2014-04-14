@@ -269,7 +269,13 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 
         }
     }
-
+    if (number->getName() == "Integer" && denominator.size() == 1 && numerator.size() == 1)
+    {
+        if (numerator[0]->getName() == "Integer" && denominator[0]->getName() == "Integer")
+        {
+            return number->add(shared_from_this());
+        }
+    }
     vector< tr1::shared_ptr<AbstractNumber> > s;
     s.push_back(shared_from_this());
     s.push_back(number);

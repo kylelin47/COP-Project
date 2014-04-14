@@ -38,7 +38,49 @@ SmartInteger::~SmartInteger() {
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber>number){
-	if (number->getName() == "Integer")
+    if (number->getName() == "MultExpression")
+    {
+        tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(number);
+        vector < tr1::shared_ptr<AbstractNumber> > numberNumerator = tmpMult->getNumerator();
+        vector < tr1::shared_ptr<AbstractNumber> > numberDenominator = tmpMult->getDenominator();
+        if (numberNumerator[0]->getName() == "Integer" && numberDenominator[0]->getName() == "Integer" &&
+            numberNumerator.size() == 1 && numberDenominator.size() == 1)
+        {
+
+            int num1 = (int)numberNumerator[0]->toDouble();
+            int denom = (int)numberDenominator[0]->toDouble();
+
+            int num2 = this->value * denom;
+
+            int num3 = num2 + num1;
+
+            int commonFactor = GCF(num3, denom);
+            if(num3 % commonFactor == 0)
+            {
+                tr1::shared_ptr<AbstractNumber> n(new SmartInteger((num3 / commonFactor),'+'));
+                tr1::shared_ptr<AbstractNumber> d(new SmartInteger((denom / commonFactor), '+'));
+
+                tr1::shared_ptr<AbstractNumber> A(new MultExpression(n, d, sign));
+                return A;
+            }
+            else
+            {
+                tr1::shared_ptr<AbstractNumber> n(new SmartInteger(num3,'+'));
+                tr1::shared_ptr<AbstractNumber> d(new SmartInteger(denom, '+'));
+
+                tr1::shared_ptr<AbstractNumber> A(new MultExpression(n, d, sign));
+                return A;
+
+            }
+
+
+        }
+        else
+        {
+            return number->add(shared_from_this());
+        }
+    }
+    else if (number->getName() == "Integer")
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger(this->value + number->toDouble()));
         return n;
