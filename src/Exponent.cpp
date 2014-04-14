@@ -104,6 +104,19 @@ tr1::shared_ptr<AbstractNumber>  Exponent::multiply(tr1::shared_ptr<AbstractNumb
 			tr1::shared_ptr<AbstractNumber> r(new Exponent(base, power->add(givenNumber->getValue("power")), this->calcSign(number)));
 		    return r;
 		}
+	else if (number->getName() == "Radical") {
+		 if (abs(number->getValue("value")->toDouble() - base->toDouble()) < 0.000001 )
+		 {
+			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
+			 SumVector.push_back(power);
+			 SumVector.push_back(invertedRoot);
+			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
+			 return output;
+		 }
+	}
         else{
             tr1::shared_ptr<AbstractNumber> me(new Exponent(base, power, sign));
             tr1::shared_ptr<AbstractNumber> r(new MultExpression(me, number, this->calcSign(number)));

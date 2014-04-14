@@ -150,6 +150,20 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 
 		 return output;
 	 }
+	 else if (number->getName() == "Radical") {
+		 if (abs(number->getValue("value")->toDouble() - toDouble()) < 0.000001 )
+		 {
+			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
+			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
+			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
+			 cout << "			InvertedRoot: " << invertedRoot->toString() << endl;
+			 SumVector.push_back(one);
+			 SumVector.push_back(invertedRoot);
+			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
+			 return output;
+		 }
+	 }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
 	 std::vector< tr1::shared_ptr<AbstractNumber> > den;
 	 numer.push_back(copy);

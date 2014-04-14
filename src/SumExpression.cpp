@@ -11,9 +11,10 @@ using namespace std;
 extern string history;
 
 void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, const string &text, char sep1, char sep2) {
+	string emptyExp = " ";
    if (text.size() == 0)
 	{
-	  throw "ERROR: Empty expression entered.";
+	  throw "ERROR: Empty expression entered." + emptyExp;
 	}
 
   size_t pos = 0;
@@ -32,10 +33,10 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
   		s.erase(s.size()-1,1);
   	}
   	cout << "Reduced String: " << s << endl;
-
+  	string emptyExp2 = " ";
     if (text.size() == 0)
     {
-  	  throw "ERROR: Empty expression entered.";
+  	  throw "ERROR: Empty expression entered." + emptyExp2;
     }
   while ((s.find(sep1, skipUntil)) != string::npos || (s.find(sep2, skipUntil)) != string::npos) {
 	  if (s.find(sep1, skipUntil) < s.find(sep2, skipUntil))
