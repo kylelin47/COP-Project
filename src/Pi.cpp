@@ -110,6 +110,15 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2)));
 			return ans2;
 		}
+		else
+        {
+            vector<tr1::shared_ptr<AbstractNumber> > M;
+            M.push_back(number);
+            tr1::shared_ptr<AbstractNumber> me(new Pi(sign));
+            M.push_back(me);
+            tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
+            return ans3;
+        }
 	}
 
 	else if (number -> getName() == "SumExpression" || number -> getName() == "MultExpression")
@@ -125,7 +134,6 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 		tr1::shared_ptr<AbstractNumber> ans3(new MultExpression(M, '+'));
 		return ans3;
     }
-
 }
 
 tr1::shared_ptr<AbstractNumber> Pi::divide(tr1::shared_ptr<AbstractNumber>number){

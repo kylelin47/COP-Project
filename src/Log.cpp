@@ -36,7 +36,6 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 }
 
  tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
-
 	if (number->getName() == "Log" && abs(toDouble() - number->toDouble()) < 0.000001)
 	{
 		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
