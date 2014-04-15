@@ -83,13 +83,17 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 	//otherwise, return multexpression of number and pi
 	//create multexpression with shared_from_this() and number
 	//if it's an exponent, check to see if base is pi, return exponent with base pi, and power the number's(given) power plus 1
-
+    char newSign = '-';
+    if (getSign() == number->getSign())
+    {
+        newSign = '+';
+    }
 
 	if(number -> getName() == "Pi")
 	{
 		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
         tr1::shared_ptr<AbstractNumber> me(new Pi());
-		tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp, sign));
+		tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp, newSign));
 		return ans;
 	}
 
