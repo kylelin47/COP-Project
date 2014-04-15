@@ -128,9 +128,9 @@ int main() {
                     					if(input2.rfind("ans") != std::string::npos)
                     					{
                         				unsigned found = input2.rfind("ans");
-
+                                        if (history == "")
+                                            history = "0";
                     					input2.replace(found, std::string("ans").length(), "(" + history + ")");
-                    					cout << "HistorySwap: " << history << endl;
 
                     					tr1::shared_ptr<AbstractNumber> num(new SumExpression(input2,true));
                     					historyAns = num->simplify();

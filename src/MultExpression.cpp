@@ -323,7 +323,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     {
         if (MultTerms[i]->getName() == MultTerms[MultTerms.size() - 1]->getName())
         {
-            if (MultTerms[i]->getName() != "MultExpression")
+            if (MultTerms[i]->getName() != "MultExpression" )
             {
                 tmp = MultTerms[i]->multiply(MultTerms[MultTerms.size() - 1]);
 
@@ -337,8 +337,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     }
 	tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
 	return finalMult;
-
-
 }
 
 tr1::shared_ptr<AbstractNumber> MultExpression::divide(tr1::shared_ptr<AbstractNumber> number){
@@ -543,7 +541,10 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         for (int i=0; i < denominator.size(); i++)
         {
             if (denominator[i]->toDouble() == 0)
-                throw "Can't divide by zero." + DBZ;
+            {
+                const char* msg = ("tried to divide by zero");
+                throw NumException(msg);
+            }
         }
     }
     if (toDouble() == round(toDouble()))
@@ -552,26 +553,54 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
     }
     numerator = simplifyVector(numerator);
     denominator = simplifyVector(denominator);
-
-    if (denominator.size() != 0)
+    if (denominator.size() == 1)
     {
-        tmp = numerator[0]->divide(denominator[0]);
-
-        if (tmp->getName() != "MultExpression")
+        if (denominator[0]->getName() == "MultExpression")
         {
-            numerator[0] = tmp;
-            denominator.erase(denominator.begin());
-        }
-        else
-        {
-            tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(tmp);
-            vector <tr1::shared_ptr<AbstractNumber> > tmpNumerator = tmpMult->getNumerator();
-            vector <tr1::shared_ptr<AbstractNumber> > tmpDenominator = tmpMult->getDenominator();
+            tr1::shared_ptr<MultExpression> tmp = tr1::static_pointer_cast<MultExpression>(denominator[0]);
+            denominator = tmp->getNumerator();
+            vector<tr1::shared_ptr<AbstractNumber> > tmpNum = tmp->getNumerator();
+            for (int i=0; i<tmpNum.size(); i++)
+            {
+                numerator.push_back(tmpNum[i]);
+            }
 
-            numerator = tmpNumerator;
-            denominator = tmpDenominator;
         }
     }
+    if (numerator[0]->getName() == "MultExpression")
+    {
+        tr1::shared_ptr<MultExpression> tmp = tr1::static_pointer_cast<MultExpression>(numerator[0]);
+        numerator = tmp->getNumerator();
+        vector<tr1::shared_ptr<AbstractNumber> > tmpDem = tmp->getDenominator();
+        for (int i=0; i<tmpDem.size(); i++)
+        {
+            denominator.push_back(tmpDem[i]);
+        }
+
+    }
+    if (denominator.size() != 0)
+    {
+        if (!(denominator.size() == 1 && denominator[0]->getName() == "MultExpression"))
+        {
+            tmp = numerator[0]->divide(denominator[0]);
+
+            if (tmp->getName() != "MultExpression")
+            {
+                numerator[0] = tmp;
+                denominator.erase(denominator.begin());
+            }
+            else
+            {
+                tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(tmp);
+                vector <tr1::shared_ptr<AbstractNumber> > tmpNumerator = tmpMult->getNumerator();
+                vector <tr1::shared_ptr<AbstractNumber> > tmpDenominator = tmpMult->getDenominator();
+
+                numerator = tmpNumerator;
+                denominator = tmpDenominator;
+            }
+        }
+    }
+
     if (numerator.size() == 1 || denominator.size() == 1)
     {
         if (numerator.size() == 0)
@@ -672,7 +701,8 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 		string noAns = " ";
 		if (history == "")
 		{
-			throw "No previous answer found" + noAns;
+			const char* msg = ( "No previous answer found");
+            throw NumException(msg);
 		}
 		express.push_back(tr1::shared_ptr<AbstractNumber>(new SumExpression(history)));
 	}
@@ -697,7 +727,8 @@ void MultExpression::appendNumberFromString(string input, vector<tr1::shared_ptr
 	}
 	else
 	{
-		throw input + " is not a valid expression"; // THROW here
+	    const char* msg = ( " is not a valid expression; Try removing the spaces.");
+        throw NumException(msg);
 	}
 }
 
@@ -733,8 +764,7 @@ size_t MultExpression::findOutside(char symbol , string input)
 
 tr1::shared_ptr<AbstractNumber> MultExpression::getValue(string name){
 
-	throw "tried to get a " + name + " from a MultExpression";
-
+    const char* msg = ("tried to get" + name + "from a multE").c_str();
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::noSign()
 {

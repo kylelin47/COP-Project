@@ -236,7 +236,7 @@ double Exponent::toDouble()
  tr1::shared_ptr<AbstractNumber>  Exponent::simplify()
 {
     base = base->simplify();
-
+    power = power->simplify();
 	// simplifies exponents with logarithmic power
 	 if(power->getName() == "Log"){
         tr1::shared_ptr<Log> numLog = tr1::static_pointer_cast<Log>(power);
@@ -244,8 +244,6 @@ double Exponent::toDouble()
 			 return numLog->getValue("value");
 		 }
 	 }
-    power = power->simplify();
-
 	 // if base = 0, returns integer 0
 	 if(base->toDouble() == 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger(0));
@@ -267,7 +265,8 @@ double Exponent::toDouble()
 	 }
 	 // if power and base have finite values(i.e. are integers), return integer
 	 else if(base->getName() == "Integer" &&
-			  power->getName() == "Integer"){
+			  power->getName() == "Integer" &&
+              power->toDouble() > 0){
 		 tr1::shared_ptr<AbstractNumber> r(new SmartInteger((int)round(toDouble()))); // call toDouble and cast as integer
 	 	 return r;
 	 }
@@ -285,7 +284,7 @@ double Exponent::toDouble()
 		 tr1::shared_ptr<AbstractNumber> r(new Exponent(baseExp->getValue("base"), power->multiply(baseExp->getValue("power")), sign));
 		 return r;
 	 }
-	 else if (abs(1/toDouble() - round(1/toDouble())) < 0.000001)
+	 else if (abs(1/toDouble() - round(1/toDouble())) < 0.00001)
     {
         tr1::shared_ptr<AbstractNumber>n(new SmartInteger(1));
         tr1::shared_ptr<AbstractNumber>n2(new SmartInteger((int)round(1/toDouble())));
