@@ -35,7 +35,6 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > M;
 			tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 			M.push_back(two);
-
 			M.push_back(shared_from_this());
 			tr1::shared_ptr<AbstractNumber> output(new MultExpression(M, '+'));
 			return output;
@@ -46,21 +45,16 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > N;
 			tr1::shared_ptr<AbstractNumber> twoN(new SmartInteger(-2));
 			N.push_back(twoN);
-			N.push_back(shared_from_this());
-			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '-'));
+			tr1::shared_ptr<AbstractNumber> me(new E());
+			N.push_back(me);
+			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '+'));
 			return output1;
-
 		}
 
 		else
 		{
-			vector<tr1::shared_ptr<AbstractNumber> > N;
 			tr1::shared_ptr<AbstractNumber> zero(new SmartInteger(0));
-			N.push_back(zero);
-			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '+'));
-			return output1;
-
-
+			return zero;
 		}
 
 	}
@@ -78,13 +72,28 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 }
 
 tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>number){
+    char newSign = '-';
+    if (getSign() == number->getSign())
+    {
+        newSign = '+';
+    }
 
     if(number -> getName() == "E")
 	{
-
-		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
-		tr1::shared_ptr<AbstractNumber> ans(new Exponent(shared_from_this(), exp));
-		return ans;
+	    if (newSign == '+')
+        {
+            tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
+            tr1::shared_ptr<AbstractNumber> me(new E());
+            tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp));
+            return ans;
+        }
+        else
+        {
+            tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(-2));
+            tr1::shared_ptr<AbstractNumber> me(new E());
+            tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp));
+            return ans;
+        }
 	}
 
 	else if (number -> getName() == "Exponent")
@@ -94,21 +103,19 @@ tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>numbe
 		{
 			tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
+			tr1::shared_ptr<AbstractNumber> me(new E());
 
-			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(shared_from_this(), exp -> add(exp2)));
+			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2), newSign));
 			return ans2;
 		}
 	}
 	else if (number->getName() == "Radical") {
 		 if (abs(number->getValue("value")->toDouble() - toDouble()) < 0.000001 )
 		 {
-			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
-			 SumVector.push_back(one);
-			 SumVector.push_back(invertedRoot);
-			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
+			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root"), '+'));
+			 tr1::shared_ptr<AbstractNumber> me(new E());
+			 tr1::shared_ptr<AbstractNumber> output(new Exponent(me, invertedRoot->add(one), newSign));
 			 return output;
 		 }
 		 else
@@ -134,11 +141,15 @@ tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>numbe
 }
 
 tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number){
-
+    char newSign = '-';
+    if (getSign() == number->getSign())
+    {
+        newSign = '+';
+    }
 		if (number -> getName() == "E")
 		{
 
-			if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
+			if (newSign == '+')
 			{
 				tr1::shared_ptr<AbstractNumber> output(new SmartInteger(1));
 				return output;
@@ -157,23 +168,12 @@ tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number)
 		    tr1::shared_ptr<Exponent> numExp = tr1::static_pointer_cast<Exponent>(number);
 			if (numExp -> getValue("base") -> getName() == "E")
 			{
-				char newSign;
-
-				if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
-				{
-					newSign = '+';
-				}
-
-				else
-				{
-					newSign = '-';
-				}
-
 				tr1::shared_ptr<AbstractNumber> num(new SmartInteger(1));
 				tr1::shared_ptr<AbstractNumber> exp = number->getValue("power");
 				tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(-1));
-				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(shared_from_this(), exp -> add(exp2)));
-				tr1::shared_ptr<AbstractNumber> output2(new MultExpression(num, ans2, newSign));
+				tr1::shared_ptr<AbstractNumber> me(new E());
+				tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2), newSign));
+				tr1::shared_ptr<AbstractNumber> output2(new MultExpression(num, ans2, '+'));
 				return output2;
 			}
 		}
@@ -190,17 +190,6 @@ tr1::shared_ptr<AbstractNumber> E::divide(tr1::shared_ptr<AbstractNumber>number)
             tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
             return reversedMultE->multiply(shared_from_this());
         }
-        char newSign;
-
-        if ((number -> getSign() == '+' && getSign() == '+' ) || (number -> getSign() == '-' && getSign() == '-'))
-        {
-            newSign = '+';
-        }
-
-        else
-        {
-            newSign = '-';
-        }
 
         tr1::shared_ptr<AbstractNumber> output2(new MultExpression(shared_from_this(), number, newSign));
         return output2;
@@ -216,6 +205,8 @@ string E::toString(){
 
 double E::toDouble()
 {
+    if (sign == '-')
+        return -value;
 	return value;
 }
 
