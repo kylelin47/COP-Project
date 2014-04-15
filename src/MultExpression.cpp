@@ -279,11 +279,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-	/*char sign = '-';
-	if (sign == number->getSign())
-	{
-		sign = '+';
-	}*/
     if (number->getName() == "SumExpression")
     {
         return number->multiply(shared_from_this());
@@ -563,14 +558,6 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         }
         else
         {
-            if (tmp->toDouble() < 0)
-            {
-                char sign = '-';
-            }
-            else
-            {
-                char sign = '+';
-            }
             tr1::shared_ptr<MultExpression> tmpMult = tr1::static_pointer_cast<MultExpression>(tmp);
             vector <tr1::shared_ptr<AbstractNumber> > tmpNumerator = tmpMult->getNumerator();
             vector <tr1::shared_ptr<AbstractNumber> > tmpDenominator = tmpMult->getDenominator();
@@ -587,8 +574,22 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         }
         if (denominator.size() == 0)
         {
-            return numerator[0];
+            if (sign == '-')
+            {
+                tr1::shared_ptr<AbstractNumber> negativeOne(new SmartInteger(-1));
+                return numerator[0]->multiply(negativeOne);
+            }
+            else
+            {
+                return numerator[0];
+            }
         }
+    }
+    if (sign == '-')
+    {
+        tr1::shared_ptr<AbstractNumber> negativeOne(new SmartInteger(-1));
+        sign = '+';
+        return shared_from_this()->multiply(negativeOne);
     }
     return shared_from_this();
 }
