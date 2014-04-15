@@ -201,9 +201,10 @@ string SumExpression::toString(){
 	for (int i =0; i < expression.size(); i++){
 		if (expression[i]->getSign() == '+')
 		{
+			//for mult
 			if (expression[i]->getName() == "MultExpression")
 			{
-				if (expression[i]->toDouble() > 0)
+				if (expression[i]->toDouble() >= 0)
 				{
 					output += '+';
 				}
@@ -211,6 +212,7 @@ string SumExpression::toString(){
 			else {
 				output += expression[i]->getSign();
 			}
+			//end mult
 			output += expression[i]->toString();
 		}
 		else
