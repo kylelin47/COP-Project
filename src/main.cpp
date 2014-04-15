@@ -29,6 +29,8 @@ void printHelp() {
 	cout << "|-------------------------------------------------------------------|" << endl;
 	cout << "|     PEMDAS rules will be applied to any expression entered.       |" << endl;
 	cout << "|     Use +, -, /, * as their respective operators.                 |" << endl;
+	cout << "|-------------------------------------------------------------------|" << endl;
+	cout << "|                  No double operators such as: *-                  |" << endl;
 	cout << "|===================================================================|" << endl;
 	cout << "|                    SUPPORTED NUMBER TYPES                         |" << endl;
 	cout << "|===================================================================|" << endl;

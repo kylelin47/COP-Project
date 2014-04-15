@@ -7,15 +7,12 @@ Pi::Pi()
 {
     this->sign = '+';
 	value = atan(1.0)*4;
-
-	cout << "Created: " << toString() << endl;
 }
 
 Pi::Pi(char sign)
 {
 	value = atan(1.0)*4;
 	this->sign = sign;
-	cout << "Created: " << toString() << endl;
 }
 
 Pi::~Pi()

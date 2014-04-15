@@ -298,9 +298,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
         vector<tr1::shared_ptr<AbstractNumber> > numDenominator(numMult->getDenominator());
 
         for (int i=0; i<numerator.size(); i++)
-            numNumerator.push_back(numNumerator[i]);
+            numNumerator.push_back(numerator[i]);
         for (int i=0; i<denominator.size(); i++)
-            numDenominator.push_back(numDenominator[i]);
+            numDenominator.push_back(denominator[i]);
         numNumerator = simplifyVector(numNumerator);
         numDenominator = simplifyVector(numDenominator);
         tr1::shared_ptr<AbstractNumber> me(new MultExpression(numNumerator, numDenominator, '+'));
@@ -599,11 +599,10 @@ MultExpression::simplifyVector(vector <tr1::shared_ptr<AbstractNumber> > vec)
         vec[0] = vec[0]->multiply(vec[1]);
         vec.erase(vec.begin() + 1);
     }
-    if (sign == '-' && vec.size() > 0)
-    {
-        tr1::shared_ptr<AbstractNumber> minus_one(new SmartInteger(-1));
-        vec[0] = vec[0]->multiply(minus_one);
-    }
+
+  //  tr1::shared_ptr<AbstractNumber> minus_one(new SmartInteger(-1));
+   // vec[0] = vec[0]->multiply(minus_one);
+
     return vec;
 }
 int MultExpression::GCF(int x, int y)

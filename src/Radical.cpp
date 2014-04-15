@@ -101,7 +101,6 @@ tr1::shared_ptr<AbstractNumber> Radical::multiply(tr1::shared_ptr<AbstractNumber
 	 }
 	 else if (abs(number->toDouble()-value->toDouble()) < 0.000001 )
 	 {
-		 cout<< "started Rad*sameBase" << endl;
 		 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 		 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 		 tr1::shared_ptr<AbstractNumber> invert(one->divide(root));
@@ -171,7 +170,6 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 		 }
 		 else if (abs(number->toDouble()-value->toDouble()) < 0.000001 )
 		 {
-			 cout<< "started Rad/sameBase" << endl;
 			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
@@ -185,7 +183,6 @@ tr1::shared_ptr<AbstractNumber> Radical::divide(tr1::shared_ptr<AbstractNumber>n
 		 {
 			 if (abs(number->getValue("base")->toDouble() - value->toDouble()) < 0.000001 )
 		 	 {
-				 cout<< "started Rad/Expo" << endl;
 				 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 				 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
 				 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
