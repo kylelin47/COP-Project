@@ -279,6 +279,11 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
+	char sign = '-';
+	if (sign == number->getSign())
+	{
+		sign = '+';
+	}
     if (number->getName() == "SumExpression")
     {
         return number->multiply(shared_from_this());
@@ -287,7 +292,8 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     {
         if (denominator[0]->getName() == "Integer" && numerator[0]->getName() == "Integer")
         {
-            numerator.push_back(number);
+            numerator.push_back(number->noSign());
+            this->sign = sign;
             return shared_from_this()->simplify();
         }
     }
@@ -335,17 +341,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             }
         }
     }
+	tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, sign));
+	return finalMult;
 
-    tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
-	if (this->sign == number->getSign())
-	{
-	    tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
-		return finalMult;
-	}
-	else{
-        tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '-'));
-		return finalMult;
-	}
 
 }
 
@@ -458,7 +456,11 @@ MultExpression::~MultExpression() {
 string MultExpression::toString(){
 	string output ="";
 	bool hasZero = false;
-	tr1::shared_ptr<AbstractNumber> temp(numerator[0]);
+
+  	if (toDouble() < 0)
+  	{
+  		output+='-';
+  	}
 
 	for (int i =0; i < numerator.size(); i++){
         if (numerator[i]->toDouble() == 0)
@@ -484,7 +486,7 @@ string MultExpression::toString(){
         }(*/
        if (numerator[i]->toDouble() != 1 || numerator.size() == 1)
        {
- 			output += numerator[i]->toString();
+ 			output += numerator[i]->noSign()->toString();
  			if (i < numerator.size()-1)
  			{
  				output += "*";
@@ -493,7 +495,7 @@ string MultExpression::toString(){
 	}
 	for (int i = 0; i < denominator.size(); i++){
 		output += "/";
-		output += denominator[i]->toString();
+		output += denominator[i]->noSign()->toString();
 	}
 	if (hasZero)
         output = '0';
@@ -748,3 +750,4 @@ tr1::shared_ptr<AbstractNumber> MultExpression::noSign()
 	tr1::shared_ptr<AbstractNumber> output(new MultExpression(numerator, denominator, '+'));
 	return output;
 }
+

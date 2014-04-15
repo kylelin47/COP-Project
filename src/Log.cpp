@@ -38,22 +38,16 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
  tr1::shared_ptr<AbstractNumber>  Log::add(tr1::shared_ptr<AbstractNumber>number){
 	if (number->getName() == "Log" && abs(toDouble() - number->toDouble()) < 0.000001)
 	{
-		std::vector< tr1::shared_ptr<AbstractNumber> > OutVector;
 		tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
-		tr1::shared_ptr<AbstractNumber> log(new Log(base, value)); // this gets rid of the old sign just in case
-		OutVector.push_back(two);
-		OutVector.push_back(log);
-		if (number->getSign() == getSign())
-		{
-			tr1::shared_ptr<AbstractNumber> output(new MultExpression(OutVector, getSign()));
-			return output;
-		}
-		else{
-			tr1::shared_ptr<AbstractNumber> output(new SmartInteger(0));
-			return output;
-		}
+		//tr1::shared_ptr<AbstractNumber> log(new Log(base, value)); // this gets rid of the old sign just in case
 
-
+		tr1::shared_ptr<AbstractNumber> output(shared_from_this()->multiply(two));
+		return output;
+	}
+	else if (abs(number->toDouble() + toDouble() )<  0.000001)
+	{
+		tr1::shared_ptr<AbstractNumber> zero(new SmartInteger(0));
+		return zero;
 
 	}
 	else if (number->getName() == "MultExpression" || number->getName() == "SumExpression")
@@ -70,17 +64,14 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 
 }
  tr1::shared_ptr<AbstractNumber>  Log::multiply(tr1::shared_ptr<AbstractNumber>number){
-	 char sign;
+	 char sign = '-';
 	 if (getSign() == number->getSign())
 	 {
 		 sign = '+';
 	 }
-	 else
-	 {
-		 sign = '-';
-	 }
-	 tr1::shared_ptr<AbstractNumber> copy(noSign());
-	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
+
+	 tr1::shared_ptr<AbstractNumber> copy(shared_from_this());
+	 tr1::shared_ptr<AbstractNumber> num(number);
 
 	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
@@ -100,15 +91,14 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 return output;
 		 }
 	 }
-     else if (number->getName() == "MultExpression")
+     else if (number->getName() == "MultExpression" || number->getName() == "Radical")
      {
          return number->multiply(shared_from_this());
      }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > MultVector;
 	 MultVector.push_back(copy);
 	 MultVector.push_back(num);
-
-	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
+	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
 	 return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
@@ -149,12 +139,11 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 else if (number->getName() == "Radical") {
 		 if (abs(number->getValue("value")->toDouble() - toDouble()) < 0.000001 )
 		 {
-			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-			 tr1::shared_ptr<AbstractNumber> invertedRoot(new MultExpression(one, number->getValue("root")->noSign(), number->getValue("root")->getSign()));
-			 SumVector.push_back(one);
-			 SumVector.push_back(invertedRoot);
-			 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
+			 tr1::shared_ptr<AbstractNumber> negetive_one(new SmartInteger(-1));
+			 tr1::shared_ptr<AbstractNumber> invertedRoot(one->divide(number->getValue("root")));
+			 tr1::shared_ptr<AbstractNumber> negInvertedRoot(invertedRoot->multiply(negetive_one));
+			 tr1::shared_ptr<AbstractNumber> power(one->add(negInvertedRoot));
 			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
 			 return output;
 		 }
@@ -380,3 +369,4 @@ tr1::shared_ptr<AbstractNumber> Log::noSign()
 	tr1::shared_ptr<AbstractNumber> output(new Log(base, value));
 	return output;
 }
+

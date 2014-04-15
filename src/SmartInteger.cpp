@@ -244,9 +244,9 @@ char SmartInteger::getSign()
 }
 
 tr1::shared_ptr<AbstractNumber> SmartInteger::getValue(string name){
-
-
-	throw "tried to get a " + name + " from a SmartInteger";
+//
+	const char* msg = ("tried to get" + name + "from an integer").c_str();
+	throw NumException(msg);
 
 }
 

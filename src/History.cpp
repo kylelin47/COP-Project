@@ -1,11 +1,17 @@
 /*
- * History.cpp
- *
- *  Created on: Apr 12, 2014
- *      Author: Alex
+tr1::shared_ptr<AbstractNumber> plus( new Pi());
+	tr1::shared_ptr<AbstractNumber> two( new SmartInteger(2));
+	tr1::shared_ptr<AbstractNumber> three( new SmartInteger(3));
+	tr1::shared_ptr<AbstractNumber> num1( new Radical(plus,two));
+	tr1::shared_ptr<AbstractNumber> num4( new Radical(plus,three));
+	tr1::shared_ptr<AbstractNumber> num3( new Exponent(plus,two));
+	tr1::shared_ptr<AbstractNumber> num2( new Pi('-'));
+	cout << num1->toString() << " * " << plus->toString() << " = " << num4->multiply(plus)->toString() << endl;
+
  */
 
 #include "History.h"
+#include "AbstractNumber.h"
 
 using namespace std;
 
@@ -30,7 +36,7 @@ void History::setHistroy(int num){
 	}
 	else
 	{
-		throw "Value out of range for SetHistory";
+		throw NumException((const char*)"Value out of range for SetHistory");
 	}
 }
 

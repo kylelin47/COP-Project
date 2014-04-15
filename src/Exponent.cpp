@@ -329,7 +329,7 @@ char Exponent::calcSign(tr1::shared_ptr<AbstractNumber> number){
 
 // Takes in a string representing a variable name and returns the given variable
 //
-// Paramters
+// Parameters
 // string name					name of the variable to be returned
 //
 // Returns:
@@ -344,7 +344,8 @@ tr1::shared_ptr<AbstractNumber> Exponent::getValue(string name){
 	}
 	else
 	{
-		throw "tried to get a " + name + " from an exponent";
+		const char* msg = ("tried to get" + name + "from an exponent").c_str();
+		throw NumException(msg);
 	}
 }
 

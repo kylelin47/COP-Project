@@ -7,12 +7,15 @@ Pi::Pi()
 {
     this->sign = '+';
 	value = atan(1.0)*4;
+
+	cout << "Created: " << toString() << endl;
 }
 
 Pi::Pi(char sign)
 {
 	value = atan(1.0)*4;
 	this->sign = sign;
+	cout << "Created: " << toString() << endl;
 }
 
 Pi::~Pi()
@@ -104,8 +107,9 @@ tr1::shared_ptr<AbstractNumber> Pi::multiply(tr1::shared_ptr<AbstractNumber>numb
 		{
 			tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
-			tr1::shared_ptr<AbstractNumber> pi(new Pi());
-			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(pi, exp -> add(exp2), sign));
+
+			tr1::shared_ptr<AbstractNumber> me(new Pi());
+			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2), newSign));
 			return ans2;
 		}
 	}
@@ -226,7 +230,9 @@ char Pi::getSign()
 
 tr1::shared_ptr<AbstractNumber> Pi::getValue(string name){
 
-	throw "tried to get a " + name + " from a pi";
+	//
+	const char* msg = ("tried to get" + name + "from pi").c_str();
+	throw NumException(msg);
 
 }
 
