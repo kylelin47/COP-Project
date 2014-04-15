@@ -20,15 +20,7 @@ using namespace std;
 SmartInteger::SmartInteger(int value) {
 
 	this->value = value;
-	if ( value < 0)
-	{
-		this->sign = '-';
-	}
-	else
-	{
-		this->sign = '+';
-	}
-
+    this->sign = '+';
 }
 
 
@@ -68,7 +60,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
                 tr1::shared_ptr<AbstractNumber> n(new SmartInteger((num3 / commonFactor)));
                 tr1::shared_ptr<AbstractNumber> d(new SmartInteger((denom / commonFactor)));
 
-                tr1::shared_ptr<AbstractNumber> A(new MultExpression(n, d, sign));
+                tr1::shared_ptr<AbstractNumber> A(new MultExpression(n, d, '+'));
                 return A;
             }
             else
@@ -76,7 +68,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::add(tr1::shared_ptr<AbstractNumber
                 tr1::shared_ptr<AbstractNumber> n(new SmartInteger(num3));
                 tr1::shared_ptr<AbstractNumber> d(new SmartInteger(denom));
 
-                tr1::shared_ptr<AbstractNumber> A(new MultExpression(n, d, sign));
+                tr1::shared_ptr<AbstractNumber> A(new MultExpression(n, d, '+'));
                 return A;
 
             }
@@ -181,7 +173,7 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
 
 
 
-				tr1::shared_ptr<AbstractNumber> D(new MultExpression(numerator, denominator, sign));
+				tr1::shared_ptr<AbstractNumber> D(new MultExpression(numerator, denominator, '+'));
 				return D;
         	}
 
