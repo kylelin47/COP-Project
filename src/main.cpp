@@ -59,6 +59,7 @@ int main() {
   vector<string>  expHistory;
   bool menuLoop = true;
     int input = 0;
+    int setAns;
     cout << "||||   WELCOME   ||||" << endl;
     cout << "||||   TO OUR    ||||" << endl;
     cout << "|||| CALCULATOR  ||||" << endl;
@@ -172,19 +173,53 @@ int main() {
 
                 break;
             case 3:
+            	if(ansHistory.size() == 0)
+            	{
+            		cout << "Please enter some expressions before viewing this option." << endl;
+            	}
+            	else
+            	{
             	cout << "The previous answer was: " << historyAns->toString() << endl;
+            	cout << "The previous answer as a decimal: " << historyAns->toDouble() << endl;
             	cout << "This answer may be used in further calculations by using the keyword 'ans'" << endl;
             	cout << "\nThe previous expressions and answers calculated are as follows: " << endl;
 
             	for(int i=0; i<ansHistory.size(); i++)
+
             	{
 
-            		cout << "(#)" << "Expression: " << expHistory[i] << endl;
+            		cout << "(#" << (ansHistory.size()-i) << ")" << "Expression: " << expHistory[i] << endl;
             		cout << "Answer: " << ansHistory[i]->toString() << "\n" << endl;
 
             	}
 
 
+
+
+            		cout << "To set 'ans' to a previous expressions's answer, please enter the corresponding digit: " << endl;
+            		cin>>setAns;
+
+            		if(!( (1 <= setAns) && (setAns <= ansHistory.size()) ))
+            		{
+
+            			cin.clear();
+            			while (cin.get() != '\n');
+            			cout << "\nNot a valid menu option. Please enter 1-10." << endl;
+            			continue;
+            		}
+
+            			else if(((1 <= setAns) && (setAns <= ansHistory.size()))== 1)
+            			{
+            			history = ansHistory[ansHistory.size() - setAns]->toString();
+
+
+            		}
+            		else
+            		{
+            			cout << "\nNot a valid menu option. Please enter 1-10." << endl;
+            		}
+
+            	}
                 break;
             case 4:
             	cout << "The calculator will now exit. Thank you!" << endl;
