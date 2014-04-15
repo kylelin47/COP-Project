@@ -122,9 +122,9 @@ int main() {
                     	{
 
                     				try{
-                    					unsigned found = input2.rfind("ans");
-                    					if(found != std::string::npos)
+                    					if(input2.rfind("ans") != std::string::npos)
                     					{
+                        				unsigned found = input2.rfind("ans");
 
                     					input2.replace(found, std::string("ans").length(), "(" + history + ")");
                     					cout << "HistorySwap: " << history << endl;

@@ -102,17 +102,14 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 	 return r;
 }
  tr1::shared_ptr<AbstractNumber>  Log::divide(tr1::shared_ptr<AbstractNumber>number){
-	 char sign;
+	 char sign= '-';
 	 if (getSign() == number->getSign())
 	 {
 		 sign = '+';
 	 }
-	 else
-	 {
-		 sign = '-';
-	 }
-	 tr1::shared_ptr<AbstractNumber> copy(new Log(base, value, '+'));
-	 tr1::shared_ptr<AbstractNumber> num(number->noSign());
+
+	 tr1::shared_ptr<AbstractNumber> copy(shared_from_this());
+	 tr1::shared_ptr<AbstractNumber> num(number);
 
 	 if (number->getName() == "Log" &&  abs(toDouble() - number->toDouble()) < 0.000001)
 	 {
@@ -130,9 +127,9 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 		 SumVector.push_back(negetive_one);
 		 numer.push_back(one);
 		 tr1::shared_ptr<AbstractNumber> power(new SumExpression(SumVector));
-		 tr1::shared_ptr<AbstractNumber> exponential(new Exponent(copy, power));
+		 tr1::shared_ptr<AbstractNumber> exponential(new Exponent(copy, power, sign));
 		 den.push_back(exponential);
-		 tr1::shared_ptr<AbstractNumber> output(new MultExpression(numer, den, sign));
+		 tr1::shared_ptr<AbstractNumber> output(new MultExpression(numer, den, '+'));
 
 		 return output;
 	 }
@@ -144,29 +141,20 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 			 tr1::shared_ptr<AbstractNumber> invertedRoot(one->divide(number->getValue("root")));
 			 tr1::shared_ptr<AbstractNumber> negInvertedRoot(invertedRoot->multiply(negetive_one));
 			 tr1::shared_ptr<AbstractNumber> power(one->add(negInvertedRoot));
-			 tr1::shared_ptr<AbstractNumber> output(new Exponent(number->getValue("value")->noSign(), power, sign));
+			 tr1::shared_ptr<AbstractNumber> output(new Exponent(value, power, sign));
 			 return output;
 		 }
 	 }
 	 else if(number->getName() == "MultExpression")
      {
-        tr1::shared_ptr<MultExpression> MultE = tr1::static_pointer_cast<MultExpression>(number);
-        vector<tr1::shared_ptr<AbstractNumber> > MultENum = MultE->getNumerator();
-        vector<tr1::shared_ptr<AbstractNumber> > MultEDem = MultE->getDenominator();
-        if (MultEDem.size() == 0)
-        {
-        tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
-        MultEDem.push_back(one);
-        }
-        tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
-        return reversedMultE->multiply(shared_from_this());
+        number->divide(shared_from_this());
      }
 	 std::vector< tr1::shared_ptr<AbstractNumber> > numer;
 	 std::vector< tr1::shared_ptr<AbstractNumber> > den;
 	 numer.push_back(copy);
 	 den.push_back(num);
 
-	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(numer, den, sign));
+	 tr1::shared_ptr<AbstractNumber> r(new MultExpression(numer, den, '+'));
 	 return r;
 }
 string Log::toString(){

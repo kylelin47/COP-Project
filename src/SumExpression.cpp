@@ -48,7 +48,7 @@ void SumExpression::split(vector< tr1::shared_ptr<AbstractNumber> > &tokens, con
 	  {
 		  skipUntil = pos + 1;
 	  }
-	  else if (s[pos-1] == ':' || s[pos-1] == '^' || s[pos-1] == '_')
+	  else if (s[pos-1] == ':' || s[pos-1] == '^' || s[pos-1] == '_' || s[pos-1] == '/' || s[pos-1] == '*')
 	  {
 		  skipUntil = pos+1;
 	  }
@@ -201,7 +201,16 @@ string SumExpression::toString(){
 	for (int i =0; i < expression.size(); i++){
 		if (expression[i]->getSign() == '+')
 		{
-			output += expression[i]->getSign();
+			if (expression[i]->getName() == "MultExpression")
+			{
+				if (expression[i]->toDouble() > 0)
+				{
+					output += '+';
+				}
+			}
+			else {
+				output += expression[i]->getSign();
+			}
 			output += expression[i]->toString();
 		}
 		else
@@ -350,8 +359,7 @@ string SumExpression::makeStringUsable(string input)
 				output[i+1] == '^'  ||
 				output[i+1] == '*'  ||
 				output[i+1] == '/'  ||
-				output[i+1] == '+'  ||
-				output[i+1] == '-'  )) //make sure the split point is not already signed
+				output[i+1] == '+'  )) //make sure the split point is not already signed
 		{
 			const char* msg = ("Double operator at "+ input).c_str();
 			throw NumException(msg);
