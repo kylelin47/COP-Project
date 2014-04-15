@@ -61,7 +61,7 @@ Exponent::Exponent(tr1::shared_ptr<AbstractNumber> base,
 		MultVector.push_back(i);
 		tr1::shared_ptr<AbstractNumber> me(new Exponent(base, power, sign));
 		MultVector.push_back(me);
-		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, sign));
+		tr1::shared_ptr<AbstractNumber> r(new MultExpression(MultVector, '+'));
 
 	    return r;
   	}
@@ -184,7 +184,7 @@ tr1::shared_ptr<AbstractNumber>  Exponent::divide(tr1::shared_ptr<AbstractNumber
             tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));
             MultEDem.push_back(one);
         }
-        tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, number->getSign()));
+        tr1::shared_ptr<AbstractNumber> reversedMultE(new MultExpression(MultEDem, MultENum, '+'));
         return reversedMultE->multiply(shared_from_this());
     }
 
@@ -320,7 +320,7 @@ char Exponent::getSign(){
 // char 			'+' or '-'
 char Exponent::calcSign(tr1::shared_ptr<AbstractNumber> number){
 	if(sign == number->getSign()){
-		return sign;
+		return '+';
 	}
 	else{
 		return '-';

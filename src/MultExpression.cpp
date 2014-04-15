@@ -335,7 +335,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             }
         }
     }
-	tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, sign));
+	tr1::shared_ptr<AbstractNumber> finalMult(new MultExpression(MultTerms, denominator, '+'));
 	return finalMult;
 
 
@@ -530,6 +530,12 @@ double MultExpression::toDouble()
 
 tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
 {
+    if (sign == '-')
+    {
+        sign = '+';
+        tr1::shared_ptr<AbstractNumber> nOne = tr1::shared_ptr<AbstractNumber>(new SmartInteger(-1));
+        numerator.push_back(nOne);
+    }
     tr1::shared_ptr<AbstractNumber> tmp;
     if (denominator.size() > 0)
     {
@@ -574,22 +580,8 @@ tr1::shared_ptr<AbstractNumber> MultExpression::simplify()
         }
         if (denominator.size() == 0)
         {
-            if (sign == '-')
-            {
-                tr1::shared_ptr<AbstractNumber> negativeOne(new SmartInteger(-1));
-                return numerator[0]->multiply(negativeOne);
-            }
-            else
-            {
-                return numerator[0];
-            }
+            return numerator[0];
         }
-    }
-    if (sign == '-')
-    {
-        tr1::shared_ptr<AbstractNumber> negativeOne(new SmartInteger(-1));
-        sign = '+';
-        return shared_from_this()->multiply(negativeOne);
     }
     return shared_from_this();
 }
