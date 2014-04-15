@@ -33,7 +33,6 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > M;
 			tr1::shared_ptr<AbstractNumber> two(new SmartInteger(2));
 			M.push_back(two);
-
 			M.push_back(shared_from_this());
 			tr1::shared_ptr<AbstractNumber> output(new MultExpression(M, '+'));
 			return output;
@@ -44,21 +43,16 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 			vector<tr1::shared_ptr<AbstractNumber> > N;
 			tr1::shared_ptr<AbstractNumber> twoN(new SmartInteger(-2));
 			N.push_back(twoN);
-			N.push_back(shared_from_this());
-			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '-'));
+			tr1::shared_ptr<AbstractNumber> me(new E());
+			N.push_back(me);
+			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '+'));
 			return output1;
-
 		}
 
 		else
 		{
-			vector<tr1::shared_ptr<AbstractNumber> > N;
 			tr1::shared_ptr<AbstractNumber> zero(new SmartInteger(0));
-			N.push_back(zero);
-			tr1::shared_ptr<AbstractNumber> output1(new MultExpression(N, '+'));
-			return output1;
-
-
+			return zero;
 		}
 
 	}
@@ -76,13 +70,28 @@ tr1::shared_ptr<AbstractNumber> E::add(tr1::shared_ptr<AbstractNumber>number){
 }
 
 tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>number){
+    char newSign = '-';
+    if (getSign() == number->getSign())
+    {
+        newSign = '+';
+    }
 
     if(number -> getName() == "E")
 	{
-
-		tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
-		tr1::shared_ptr<AbstractNumber> ans(new Exponent(shared_from_this(), exp));
-		return ans;
+	    if (newSign == '+')
+        {
+            tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(2));
+            tr1::shared_ptr<AbstractNumber> me(new E());
+            tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp));
+            return ans;
+        }
+        else
+        {
+            tr1::shared_ptr<AbstractNumber> exp(new SmartInteger(-2));
+            tr1::shared_ptr<AbstractNumber> me(new E());
+            tr1::shared_ptr<AbstractNumber> ans(new Exponent(me, exp));
+            return ans;
+        }
 	}
 
 	else if (number -> getName() == "Exponent")
@@ -92,13 +101,14 @@ tr1::shared_ptr<AbstractNumber> E::multiply(tr1::shared_ptr<AbstractNumber>numbe
 		{
 			tr1::shared_ptr<AbstractNumber> exp = numExp->getValue("power");
 			tr1::shared_ptr<AbstractNumber> exp2(new SmartInteger(1));
+			tr1::shared_ptr<AbstractNumber> me(new E());
 
-			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(shared_from_this(), exp -> add(exp2)));
+			tr1::shared_ptr<AbstractNumber> ans2(new Exponent(me, exp -> add(exp2), newSign));
 			return ans2;
 		}
 	}
 	else if (number->getName() == "Radical") {
-		 if (abs(number->getValue("value")->toDouble() - toDouble()) < 0.000001 )
+		 if (abs(number->getValue("value")->toDouble())) - abs(toDouble()) < 0.000001 )
 		 {
 			 std::vector< tr1::shared_ptr<AbstractNumber> > SumVector;
 			 tr1::shared_ptr<AbstractNumber> one(new SmartInteger(1));

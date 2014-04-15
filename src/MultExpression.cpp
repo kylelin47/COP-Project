@@ -164,6 +164,11 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 
         if (abs(d - e) < 0.000001)
         {
+            if (numerator.size() == 1 && numberNumerator.size() == 1)
+            {
+                numerator[0] = numerator[0]->add(numberNumerator[0]);
+                return shared_from_this();
+            }
             vector< tr1::shared_ptr<AbstractNumber> > mFinal;
             for (int i=0; i<numerator.size(); i++)
             {
@@ -454,19 +459,7 @@ string MultExpression::toString(){
 	string output ="";
 	bool hasZero = false;
 	tr1::shared_ptr<AbstractNumber> temp(numerator[0]);
-	int swap =0 ;
-  	if (getSign() == '-')
-  	{
-  		output+='-';
-  	}
-	for (int i = 0; i < numerator.size(); i++) //find the integer to swap
-	{
-		if (numerator[i]->getName() == "Integer")
-		{
 
-			swap = i;
-		}
-	}
 	for (int i =0; i < numerator.size(); i++){
         if (numerator[i]->toDouble() == 0)
         {
