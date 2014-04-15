@@ -279,11 +279,11 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
 }
 tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<AbstractNumber>number)
 {
-	char sign = '-';
+	/*char sign = '-';
 	if (sign == number->getSign())
 	{
 		sign = '+';
-	}
+	}*/
     if (number->getName() == "SumExpression")
     {
         return number->multiply(shared_from_this());
@@ -292,8 +292,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
     {
         if (denominator[0]->getName() == "Integer" && numerator[0]->getName() == "Integer")
         {
-            numerator.push_back(number->noSign());
-            this->sign = sign;
+            numerator.push_back(number);
             return shared_from_this()->simplify();
         }
     }
@@ -309,7 +308,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::multiply(tr1::shared_ptr<Abstrac
             numDenominator.push_back(numDenominator[i]);
         numNumerator = simplifyVector(numNumerator);
         numDenominator = simplifyVector(numDenominator);
-        tr1::shared_ptr<AbstractNumber> me(new MultExpression(numNumerator, numDenominator, sign));
+        tr1::shared_ptr<AbstractNumber> me(new MultExpression(numNumerator, numDenominator, '+'));
 
         return me;
     }
