@@ -20,15 +20,7 @@ using namespace std;
 SmartInteger::SmartInteger(int value) {
 
 	this->value = value;
-	if ( value < 0)
-	{
-		this->sign = '-';
-	}
-	else
-	{
-		this->sign = '+';
-	}
-
+    this->sign = '+';
 }
 
 
