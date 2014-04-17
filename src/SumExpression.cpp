@@ -198,25 +198,18 @@ string SumExpression::toString(){
 	}
 
 	for (int i =0; i < expression.size(); i++){
-		if (expression[i]->getSign() == '+')
+		if (expression[i]->toDouble() != 0)
 		{
-			//for mult
-			if (expression[i]->getName() == "MultExpression")
+			if (expression[i]->toDouble() >= 0)
 			{
-				if (expression[i]->toDouble() >= 0)
-				{
-					output += '+';
-				}
+				output += '+';
+
+				output += expression[i]->toString();
 			}
-			else {
-				output += expression[i]->getSign();
+			else
+			{
+				output += expression[i]->toString();
 			}
-			//end mult
-			output += expression[i]->toString();
-		}
-		else
-		{
-			output += expression[i]->toString();
 		}
 
 	}
