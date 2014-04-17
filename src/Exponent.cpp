@@ -208,9 +208,20 @@ string Exponent::toString(){
 	{
 		ss << '-';
 	}
-    ss << "(";
+	if (power->toDouble() == 1)
+	{
+		return base->toString();
+	}
+	if (base->getName() == "Log" || base->getName() == "Radical" || base->getName() == "MultExpression")
+	{
+		ss << "(";
+	}
 	ss << base->toString();
-	ss << ")^";
+	if (base->getName() == "Log" || base->getName() == "Radical" || base->getName() == "MultExpression")
+	{
+		ss << ")";
+	}
+	ss << "^";
 	ss << power->toString();
 	return ss.str();
 }

@@ -90,6 +90,11 @@ SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > expression
 	this->noParenthesis = false;
 }
 
+SumExpression::SumExpression(vector<tr1::shared_ptr<AbstractNumber> > expression, bool noParenthesis) {
+    this->expression = expression;
+	this->noParenthesis = noParenthesis;
+}
+
 int SumExpression::count(string input, int begin, int end, char symbol)
 {
 	int count = 0;
@@ -126,6 +131,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::add(tr1::shared_ptr<AbstractNumbe
             return expression[0]->add(number);
         }
     }
+
     else
     {
         SumTerms = expression;
@@ -169,7 +175,7 @@ tr1::shared_ptr<AbstractNumber> SumExpression::multiply(tr1::shared_ptr<Abstract
             }
         }
         finalExp = simplifyVector(finalExp);
-        tr1::shared_ptr<AbstractNumber> finalSum(new SumExpression(finalExp));
+        tr1::shared_ptr<AbstractNumber> finalSum(new SumExpression(finalExp, true));
         return finalSum;
     }
 	vector<tr1::shared_ptr<AbstractNumber> > output = expression;
