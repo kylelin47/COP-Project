@@ -120,6 +120,10 @@ tr1::shared_ptr<AbstractNumber> SmartInteger::divide(tr1::shared_ptr<AbstractNum
 
     if (number -> getName() == "Integer")
     {
+        if (number->toDouble() == 0)
+        {
+            throw NumException((const char*)"Tried to divide by zero. Our bad!");
+        }
 
         if((this->value % (int)(number->toDouble())) != 0)
         {
