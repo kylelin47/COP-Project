@@ -176,6 +176,9 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
                 {
                     if (numerator[i]->getName() != "Exponent" && numberNumerator[j]->getName() != "Exponent")
                     {
+                        if (numberNumerator[j]->toDouble() != 0 && numerator[i]->toDouble() != 0)
+                        {
+
                         tr1::shared_ptr<AbstractNumber> tmpDivide = numerator[i]->divide(numberNumerator[j]);
                         if (tmpDivide->getName() != "MultExpression" && tmpDivide->getName() != "SumExpression")
                         {
@@ -195,6 +198,7 @@ tr1::shared_ptr<AbstractNumber> MultExpression::add(tr1::shared_ptr<AbstractNumb
                                 numberNumerator[j] = tmpDivide2;
                                 numerator[i] = one;
                             }
+                        }
                         }
                     }
 
