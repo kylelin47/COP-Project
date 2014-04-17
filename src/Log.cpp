@@ -9,11 +9,11 @@ Log::Log(tr1::shared_ptr<AbstractNumber>base, tr1::shared_ptr<AbstractNumber>val
 {
     if (value->toDouble() <= 0)
     {
-        throw "Can't take log of a negative number";
+    	throw NumException((const char*)"Can't take log of a negative number");
     }
     if (base->toDouble() == 1 || base->toDouble() <= 0)
     {
-    	throw "Invalid log base";
+    	throw NumException((const char*)"Invalid log base");
     }
     this->base = base;
     this->value = value;
